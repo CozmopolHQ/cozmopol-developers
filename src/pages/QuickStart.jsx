@@ -1,0 +1,136 @@
+import React from 'react'
+import { CheckCircle, Copy, ExternalLink } from 'lucide-react'
+import CodeBlock from '../components/CodeBlock'
+
+const QuickStart = () => {
+  const steps = [
+    {
+      title: 'API Anahtarı Alın',
+      description: 'Cozmopol Partner Portal\'dan API anahtarınızı oluşturun',
+      action: 'Partner Portal\'a Git',
+      link: '#'
+    },
+    {
+      title: 'İlk API Çağrısı',
+      description: 'Test endpoint\'i kullanarak bağlantınızı doğrulayın',
+      code: `curl -X GET \\
+  https://api.cozmopol.com/v2/test \\
+  -H 'Authorization: Bearer YOUR_API_KEY' \\
+  -H 'Content-Type: application/json'`
+    },
+    {
+      title: 'Ürün Yükleme',
+      description: 'İlk ürünlerinizi API üzerinden yükleyin',
+      code: `curl -X POST \\
+  https://api.cozmopol.com/v2/products \\
+  -H 'Authorization: Bearer YOUR_API_KEY' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "title": "Premium Kulaklık",
+    "description": "Yüksek kaliteli wireless kulaklık",
+    "price": 299.99,
+    "category_id": 15,
+    "stock_quantity": 50
+  }'`
+    }
+  ]
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">Hızlı Başlangıç</h1>
+        <p className="text-xl text-gray-600">
+          Cozmopol API ile entegrasyonunuzu 3 basit adımda tamamlayın
+        </p>
+      </div>
+
+      <div className="space-y-12">
+        {steps.map((step, index) => (
+          <div key={index} className="relative">
+            {/* Step indicator line */}
+            {index < steps.length - 1 && (
+              <div className="absolute left-4 top-12 w-0.5 h-24 bg-gray-200"></div>
+            )}
+            
+            <div className="flex items-start space-x-6">
+              {/* Step number */}
+              <div className="flex-shrink-0 w-8 h-8 bg-cozmopol-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">
+                {index + 1}
+              </div>
+              
+              {/* Step content */}
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">{step.title}</h3>
+                <p className="text-gray-600 mb-4">{step.description}</p>
+                
+                {step.action && (
+                  <a
+                    href={step.link}
+                    className="inline-flex items-center space-x-2 bg-cozmopol-600 text-white px-4 py-2 rounded-lg hover:bg-cozmopol-700 transition-colors"
+                  >
+                    <span>{step.action}</span>
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                )}
+                
+                {step.code && (
+                  <CodeBlock code={step.code} language="bash" />
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Success Response Example */}
+      <div className="mt-16 bg-green-50 border border-green-200 rounded-lg p-6">
+        <div className="flex items-center space-x-2 mb-4">
+          <CheckCircle className="w-5 h-5 text-green-600" />
+          <h3 className="text-lg font-semibold text-green-800">Başarılı Yanıt Örneği</h3>
+        </div>
+        <CodeBlock 
+          code={`{
+  "success": true,
+  "data": {
+    "id": 12345,
+    "title": "Premium Kulaklık",
+    "description": "Yüksek kaliteli wireless kulaklık",
+    "price": 299.99,
+    "category_id": 15,
+    "stock_quantity": 50,
+    "status": "active",
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-01-15T10:30:00Z"
+  }
+}`}
+          language="json"
+        />
+      </div>
+
+      {/* Next Steps */}
+      <div className="mt-16 bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <h3 className="text-lg font-semibold text-blue-800 mb-4">Sonraki Adımlar</h3>
+        <ul className="space-y-2 text-blue-700">
+          <li className="flex items-center space-x-2">
+            <CheckCircle className="w-4 h-4" />
+            <span>Kimlik doğrulama detaylarını öğrenin</span>
+          </li>
+          <li className="flex items-center space-x-2">
+            <CheckCircle className="w-4 h-4" />
+            <span>Tüm API endpoint'lerini keşfedin</span>
+          </li>
+          <li className="flex items-center space-x-2">
+            <CheckCircle className="w-4 h-4" />
+            <span>Webhook'ları yapılandırın</span>
+          </li>
+          <li className="flex items-center space-x-2">
+            <CheckCircle className="w-4 h-4" />
+            <span>SDK'ları kullanarak geliştirme sürecinizi hızlandırın</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+export default QuickStart

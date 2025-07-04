@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+  
+  code {
+    font-family: 'Fira Code', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+    font-feature-settings: 'calt' 1;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    @apply bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600 bg-clip-text text-transparent;
+  }
+  
+  .glass-effect {
+    @apply backdrop-blur-sm bg-white/95 border border-slate-200/50;
+  }
+  
+  .code-block {
+    @apply bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto font-mono text-sm leading-relaxed;
+  }
+  
+  .endpoint-badge {
+    @apply px-2 py-1 rounded text-xs font-medium uppercase tracking-wide;
+  }
+  
+  .endpoint-get {
+    @apply bg-emerald-50 text-emerald-700 border border-emerald-200;
+  }
+  
+  .endpoint-post {
+    @apply bg-blue-50 text-blue-700 border border-blue-200;
+  }
+  
+  .endpoint-put {
+    @apply bg-amber-50 text-amber-700 border border-amber-200;
+  }
+  
+  .endpoint-delete {
+    @apply bg-red-50 text-red-700 border border-red-200;
+  }
+  
+  .parameter-required {
+    @apply bg-red-50 text-red-700 px-2 py-1 rounded text-xs font-medium border border-red-200;
+  }
+  
+  .parameter-optional {
+    @apply bg-slate-50 text-slate-600 px-2 py-1 rounded text-xs font-medium border border-slate-200;
+  }
+  
+  .parameter-type {
+    @apply bg-slate-100 text-slate-700 px-2 py-1 rounded text-xs font-medium border border-slate-300;
+  }
+
+  .card {
+    @apply bg-white border border-slate-200 rounded-lg p-6 hover:border-slate-300 hover:shadow-sm transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply bg-slate-900 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-slate-800 transition-colors duration-200;
+  }
+
+  .btn-secondary {
+    @apply border border-slate-300 text-slate-700 px-6 py-2.5 rounded-lg font-medium hover:bg-slate-50 hover:border-slate-400 transition-colors duration-200;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Code syntax highlighting */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #64748b;
+}
+
+.token.punctuation {
+  color: #e2e8f0;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #f87171;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #34d399;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #60a5fa;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #a78bfa;
+}
+
+.token.function,
+.token.class-name {
+  color: #fbbf24;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #fb7185;
+}
