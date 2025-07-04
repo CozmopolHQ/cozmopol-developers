@@ -5,6 +5,7 @@ import { Menu, X, ExternalLink, Github, MessageCircle, ChevronDown } from 'lucid
 const Layout = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isDocsMenuOpen, setIsDocsMenuOpen] = useState(false)
+  const [isStatusMenuOpen, setIsStatusMenuOpen] = useState(false)
   const location = useLocation()
 
   const mainNavigation = [
@@ -27,6 +28,11 @@ const Layout = ({ children }) => {
   const isDocsActive = docsNavigation.some(item => item.current)
   const isStatusActive = statusNavigation.some(item => item.current)
 
+  const closeAllDropdowns = () => {
+    setIsDocsMenuOpen(false)
+    setIsStatusMenuOpen(false)
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -34,7 +40,7 @@ const Layout = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3">
+            <Link to="/" className="flex items-center space-x-3" onClick={closeAllDropdowns}>
               <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">C</span>
               </div>
@@ -50,6 +56,7 @@ const Layout = ({ children }) => {
                 <Link
                   key={item.name}
                   to={item.href}
+                  onClick={closeAllDropdowns}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     item.current
                       ? 'text-slate-900 bg-slate-100'
@@ -63,7 +70,10 @@ const Layout = ({ children }) => {
               {/* Docs Dropdown */}
               <div className="relative">
                 <button
-                  onClick={() => setIsDocsMenuOpen(!isDocsMenuOpen)}
+                  onClick={() => {
+                    setIsStatusMenuOpen(false)
+                    setIsDocsMenuOpen(!isDocsMenuOpen)
+                  }}
                   className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     isDocsActive
                       ? 'text-slate-900 bg-slate-100'
@@ -71,7 +81,7 @@ const Layout = ({ children }) => {
                   }`}
                 >
                   <span>Dökümantasyon</span>
-                  <ChevronDown className="w-3 h-3" />
+                  <ChevronDown className={`w-3 h-3 transition-transform ${isDocsMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {isDocsMenuOpen && (
@@ -85,7 +95,7 @@ const Layout = ({ children }) => {
                             ? 'text-slate-900 bg-slate-100'
                             : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                         }`}
-                        onClick={() => setIsDocsMenuOpen(false)}
+                        onClick={closeAllDropdowns}
                       >
                         {item.name}
                       </Link>
@@ -97,7 +107,10 @@ const Layout = ({ children }) => {
               {/* Status Dropdown */}
               <div className="relative">
                 <button
-                  onClick={() => setIsDocsMenuOpen(false)}
+                  onClick={() => {
+                    setIsDocsMenuOpen(false)
+                    setIsStatusMenuOpen(!isStatusMenuOpen)
+                  }}
                   className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     isStatusActive
                       ? 'text-slate-900 bg-slate-100'
@@ -105,24 +118,27 @@ const Layout = ({ children }) => {
                   }`}
                 >
                   <span>Durum</span>
-                  <ChevronDown className="w-3 h-3" />
+                  <ChevronDown className={`w-3 h-3 transition-transform ${isStatusMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
 
-                <div className="absolute top-full left-0 mt-1 w-40 bg-white border border-slate-200 rounded-lg shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                  {statusNavigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      className={`block px-4 py-2 text-sm transition-colors ${
-                        item.current
-                          ? 'text-slate-900 bg-slate-100'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
+                {isStatusMenuOpen && (
+                  <div className="absolute top-full left-0 mt-1 w-40 bg-white border border-slate-200 rounded-lg shadow-lg py-1 z-50">
+                    {statusNavigation.map((item) => (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        className={`block px-4 py-2 text-sm transition-colors ${
+                          item.current
+                            ? 'text-slate-900 bg-slate-100'
+                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                        }`}
+                        onClick={closeAllDropdowns}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             </nav>
 
@@ -154,7 +170,10 @@ const Layout = ({ children }) => {
             {/* Mobile menu button */}
             <div className="lg:hidden">
               <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                onClick={() => {
+                  setIsMobileMenuOpen(!isMobileMenuOpen)
+                  closeAllDropdowns()
+                }}
                 className="text-slate-600 hover:text-slate-900 p-2"
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -176,7 +195,10 @@ const Layout = ({ children }) => {
                       ? 'text-slate-900 bg-slate-100'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => {
+                    setIsMobileMenuOpen(false)
+                    closeAllDropdowns()
+                  }}
                 >
                   {item.name}
                 </Link>
@@ -195,7 +217,10 @@ const Layout = ({ children }) => {
                         ? 'text-slate-900 bg-slate-100'
                         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                     }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      setIsMobileMenuOpen(false)
+                      closeAllDropdowns()
+                    }}
                   >
                     {item.name}
                   </Link>
@@ -215,7 +240,10 @@ const Layout = ({ children }) => {
                         ? 'text-slate-900 bg-slate-100'
                         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                     }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      setIsMobileMenuOpen(false)
+                      closeAllDropdowns()
+                    }}
                   >
                     {item.name}
                   </Link>
@@ -235,10 +263,10 @@ const Layout = ({ children }) => {
         )}
 
         {/* Dropdown overlay */}
-        {isDocsMenuOpen && (
+        {(isDocsMenuOpen || isStatusMenuOpen) && (
           <div 
             className="fixed inset-0 z-40" 
-            onClick={() => setIsDocsMenuOpen(false)}
+            onClick={closeAllDropdowns}
           ></div>
         )}
       </header>
