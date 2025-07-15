@@ -97,9 +97,14 @@ const QuickStart = () => {
         
         <div className="mt-6">
           <h4 className="font-semibold text-green-800 mb-2">Diğer Test Endpoint'leri</h4>
-          <div className="bg-green-100 border border-green-300 rounded p-2 mb-3">
+          <div className="bg-green-100 border border-green-300 rounded p-2 mb-2">
             <p className="text-green-800 text-xs">
               <strong>✅ Stable:</strong> Aşağıdaki endpoint'ler production'da kullanıma hazırdır.
+            </p>
+          </div>
+          <div className="bg-orange-100 border border-orange-300 rounded p-2 mb-3">
+            <p className="text-orange-800 text-xs">
+              <strong>🔧 Geliştiriliyor:</strong> Webhook test endpoint'i henüz geliştirme aşamasındadır.
             </p>
           </div>
           <div className="space-y-2 text-sm">
@@ -110,6 +115,10 @@ const QuickStart = () => {
             <div>
               <code className="bg-green-100 px-2 py-1 rounded">GET /api/health</code>
               <span className="text-green-700 ml-2">Sistem sağlık durumunu kontrol eder</span>
+            </div>
+            <div>
+              <code className="bg-orange-100 px-2 py-1 rounded">POST /api/test/webhook</code>
+              <span className="text-orange-700 ml-2">Webhook test tetikleyicisi (geliştiriliyor)</span>
             </div>
           </div>
         </div>

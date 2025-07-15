@@ -56,7 +56,7 @@ const Endpoints = () => {
       method: 'POST',
       path: '/api/test/webhook',
       description: 'Webhook test tetikleyicisi',
-      status: 'stable',
+      status: 'development',
       parameters: [
         { name: 'event', type: 'string', required: false, description: 'Test edilecek webhook event türü' },
         { name: 'data', type: 'object', required: false, description: 'Test verisi' }
