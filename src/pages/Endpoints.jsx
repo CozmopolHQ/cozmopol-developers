@@ -75,6 +75,28 @@ const Endpoints = () => {
       "order_id": 12345
     }
   }'`
+    },
+    {
+      method: 'POST',
+      path: '/api/auth/token',
+      description: 'Vendor olarak giriş yap ve token al',
+      status: 'stable',
+      parameters: [
+        { name: 'storeUserId', type: 'string', required: true, description: 'Mağaza kullanıcı ID\'si' },
+        { name: 'apiKey', type: 'string', required: true, description: 'API anahtarı' },
+        { name: 'apiSecretKey', type: 'string', required: true, description: 'API gizli anahtarı' }
+      ],
+      response: `{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}`,
+      example: `curl -X POST \\
+  https://api.cozmopol.com/api/auth/token \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "storeUserId": "67c1b95d3201a327160dbca2",
+    "apiKey": "259aa5b375e08fb26e6e0ebf3f0949ca",
+    "apiSecretKey": "720f5664ee414a5047bb130144f1a29cba65130d4e7585f18992421a02e6f065"
+  }'`
     }
   ]
 

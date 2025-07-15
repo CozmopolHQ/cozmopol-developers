@@ -24,32 +24,88 @@ const Authentication = () => {
       <div className="bg-white border border-gray-200 rounded-lg p-8 mb-8">
         <div className="flex items-center space-x-3 mb-6">
           <Key className="w-6 h-6 text-cozmopol-600" />
-          <h2 className="text-2xl font-semibold text-gray-900">Bearer Token Kimlik Doğrulaması</h2>
+          <h2 className="text-2xl font-semibold text-gray-900">Kimlik Doğrulama Yöntemleri</h2>
         </div>
         
         <p className="text-gray-600 mb-6">
-          Cozmopol API, Bearer token tabanlı kimlik doğrulama kullanır. Tüm API isteklerinizde 
-          Authorization header'ı kullanmanız gerekir.
+          Cozmopol API iki farklı kimlik doğrulama yöntemi sunar: Token tabanlı kimlik doğrulama ve Bearer token kullanımı.
         </p>
 
+        <div className="space-y-8">
+          {/* Token Authentication */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">1. Token Kimlik Doğrulaması (Önerilen)</h3>
+            <p className="text-gray-600 mb-4">
+              Vendor bilgileriniz ile token alın ve bu token'ı API isteklerinizde kullanın.
+            </p>
+            
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+              <h4 className="font-semibold text-green-800 mb-2">✅ Stable - Token Alma</h4>
+              <p className="text-green-700 text-sm">Bu endpoint production'da kullanıma hazırdır.</p>
+            </div>
+
+            <CodeBlock 
+              code={`# Token alma
+curl -X POST \\
+  https://api.cozmopol.com/api/auth/token \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "storeUserId": "67c1b95d3201a327160dbca2",
+    "apiKey": "259aa5b375e08fb26e6e0ebf3f0949ca",
+    "apiSecretKey": "720f5664ee414a5047bb130144f1a29cba65130d4e7585f18992421a02e6f065"
+  }'
+
+# Yanıt
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+
+# Token ile API kullanımı
+curl -X GET \\
+  https://api.cozmopol.com/v2/products \\
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' \\
+  -H 'Content-Type: application/json'`}
+              language="bash"
+            />
+          </div>
+
+          {/* Direct Bearer Token */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">2. Doğrudan Bearer Token</h3>
+            <p className="text-gray-600 mb-4">
+              Alternatif olarak, doğrudan API anahtarınızı Bearer token olarak kullanabilirsiniz.
+            </p>
+            
+            <CodeBlock 
+              code={`# Doğrudan API anahtarı ile
+curl -X GET \\
+  https://api.cozmopol.com/v2/products \\
+  -H 'Authorization: Bearer YOUR_API_KEY' \\
+  -H 'Content-Type: application/json'`}
+              language="bash"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Header Format */}
+      <div className="bg-white border border-gray-200 rounded-lg p-8 mb-8">
+        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Header Format</h2>
+        
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
-          <h3 className="font-semibold text-gray-900 mb-2">Header Format:</h3>
+          <h3 className="font-semibold text-gray-900 mb-2">Authorization Header:</h3>
           <code className="text-cozmopol-600 font-mono">Authorization: Bearer YOUR_API_KEY</code>
         </div>
 
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Örnek İstek</h3>
-        <CodeBlock 
-          code={`# Test endpoint'i (kimlik doğrulama gerektirmez)
-curl -X GET \\
-  https://api.cozmopol.com/api/test/ping
-
-# Kimlik doğrulama gerektiren endpoint
-curl -X GET \\
-  https://api.cozmopol.com/v2/products \\
-  -H 'Authorization: Bearer sk_live_1234567890abcdef' \\
-  -H 'Content-Type: application/json'`}
-          language="bash"
-        />
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h4 className="font-semibold text-blue-800 mb-2">💡 Önemli Notlar</h4>
+          <ul className="text-blue-700 text-sm space-y-1">
+            <li>• Token'lar belirli bir süre sonra sona erer</li>
+            <li>• Süresi dolan token'lar için yeni token almanız gerekir</li>
+            <li>• Test endpoint'leri kimlik doğrulama gerektirmez</li>
+            <li>• Production endpoint'leri için mutlaka kimlik doğrulama gereklidir</li>
+          </ul>
+        </div>
       </div>
 
       {/* API Key Types */}

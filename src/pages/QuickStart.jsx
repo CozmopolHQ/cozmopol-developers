@@ -6,16 +6,28 @@ const QuickStart = () => {
   const steps = [
     {
       title: 'API Anahtarı Alın',
-      description: 'Cozmopol Partner Portal\'dan API anahtarınızı oluşturun',
+      description: 'Cozmopol Partner Portal\'dan API anahtarınızı ve vendor bilgilerinizi alın',
       action: 'Partner Portal\'a Git',
       link: '#'
+    },
+    {
+      title: 'Token Alın (Opsiyonel)',
+      description: 'Vendor bilgileriniz ile authentication token alın',
+      code: `curl -X POST \\
+  https://api.cozmopol.com/api/auth/token \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "storeUserId": "YOUR_STORE_USER_ID",
+    "apiKey": "YOUR_API_KEY",
+    "apiSecretKey": "YOUR_API_SECRET_KEY"
+  }'`
     },
     {
       title: 'İlk API Çağrısı',
       description: 'Test endpoint\'i kullanarak bağlantınızı doğrulayın',
         code: `curl -X GET \\
   https://api.cozmopol.com/api/test/ping \\
-  -H 'Authorization: Bearer YOUR_API_KEY' \\
+  -H 'Authorization: Bearer YOUR_TOKEN_OR_API_KEY' \\
   -H 'Content-Type: application/json'`
     },
     {
@@ -23,7 +35,7 @@ const QuickStart = () => {
       description: 'İlk ürünlerinizi API üzerinden yükleyin',
       code: `curl -X POST \\
   https://api.cozmopol.com/v2/products \\
-  -H 'Authorization: Bearer YOUR_API_KEY' \\
+  -H 'Authorization: Bearer YOUR_TOKEN_OR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
     "title": "Premium Kulaklık",
@@ -88,6 +100,17 @@ const QuickStart = () => {
           <CheckCircle className="w-5 h-5 text-green-600" />
           <h3 className="text-lg font-semibold text-green-800">✅ Stable - Test API Başarılı Yanıt</h3>
         </div>
+        
+        <div className="mb-6">
+          <h4 className="font-semibold text-green-800 mb-2">Token Yanıtı</h4>
+          <CodeBlock 
+            code={`{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}`}
+            language="json"
+          />
+        </div>
+        
         <CodeBlock 
           code={`{
   "message": "pong"
@@ -108,6 +131,10 @@ const QuickStart = () => {
             </p>
           </div>
           <div className="space-y-2 text-sm">
+            <div>
+              <code className="bg-green-100 px-2 py-1 rounded">POST /api/auth/token</code>
+              <span className="text-green-700 ml-2">Vendor token alma</span>
+            </div>
             <div>
               <code className="bg-green-100 px-2 py-1 rounded">GET /api/test/version</code>
               <span className="text-green-700 ml-2">API versiyonunu döner</span>
