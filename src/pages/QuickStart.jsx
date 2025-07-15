@@ -86,7 +86,7 @@ const QuickStart = () => {
       <div className="mt-16 bg-green-50 border border-green-200 rounded-lg p-6">
         <div className="flex items-center space-x-2 mb-4">
           <CheckCircle className="w-5 h-5 text-green-600" />
-          <h3 className="text-lg font-semibold text-green-800">Test API Başarılı Yanıt</h3>
+          <h3 className="text-lg font-semibold text-green-800">✅ Stable - Test API Başarılı Yanıt</h3>
         </div>
         <CodeBlock 
           code={`{
@@ -97,6 +97,11 @@ const QuickStart = () => {
         
         <div className="mt-6">
           <h4 className="font-semibold text-green-800 mb-2">Diğer Test Endpoint'leri</h4>
+          <div className="bg-green-100 border border-green-300 rounded p-2 mb-3">
+            <p className="text-green-800 text-xs">
+              <strong>✅ Stable:</strong> Aşağıdaki endpoint'ler production'da kullanıma hazırdır.
+            </p>
+          </div>
           <div className="space-y-2 text-sm">
             <div>
               <code className="bg-green-100 px-2 py-1 rounded">GET /api/test/version</code>

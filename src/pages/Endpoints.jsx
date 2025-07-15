@@ -7,6 +7,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/api/test/ping',
       description: 'API bağlantısını test et',
+      status: 'stable',
       parameters: [],
       response: `{
   "message": "pong"
@@ -19,6 +20,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/api/test/version',
       description: 'API versiyonunu getir',
+      status: 'stable',
       parameters: [],
       response: `{
   "version": "1.0.0"
@@ -31,6 +33,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/api/health',
       description: 'Sistem sağlık durumunu kontrol et',
+      status: 'stable',
       parameters: [],
       response: `{
   "status": "ok",
@@ -53,6 +56,7 @@ const Endpoints = () => {
       method: 'POST',
       path: '/api/test/webhook',
       description: 'Webhook test tetikleyicisi',
+      status: 'stable',
       parameters: [
         { name: 'event', type: 'string', required: false, description: 'Test edilecek webhook event türü' },
         { name: 'data', type: 'object', required: false, description: 'Test verisi' }
@@ -79,6 +83,7 @@ const Endpoints = () => {
       method: 'POST',
       path: '/v2/products',
       description: 'Yeni ürün oluştur',
+      status: 'development',
       parameters: [
         { name: 'title', type: 'string', required: true, description: 'Ürün başlığı' },
         { name: 'description', type: 'string', required: true, description: 'Ürün açıklaması' },
@@ -124,6 +129,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/v2/products',
       description: 'Ürün listesini getir',
+      status: 'development',
       parameters: [
         { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası (varsayılan: 1)' },
         { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı (varsayılan: 20, maksimum: 100)' },
@@ -157,6 +163,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/v2/products/{id}',
       description: 'Ürün detayını getir',
+      status: 'development',
       parameters: [
         { name: 'id', type: 'integer', required: true, description: 'Ürün ID\'si' }
       ],
@@ -183,6 +190,7 @@ const Endpoints = () => {
       method: 'PUT',
       path: '/v2/products/{id}',
       description: 'Ürün güncelle',
+      status: 'development',
       parameters: [
         { name: 'id', type: 'integer', required: true, description: 'Ürün ID\'si' },
         { name: 'title', type: 'string', required: false, description: 'Ürün başlığı' },
@@ -212,6 +220,7 @@ const Endpoints = () => {
       method: 'DELETE',
       path: '/v2/products/{id}',
       description: 'Ürün sil',
+      status: 'development',
       parameters: [
         { name: 'id', type: 'integer', required: true, description: 'Ürün ID\'si' }
       ],
@@ -230,6 +239,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/v2/orders',
       description: 'Sipariş listesini getir',
+      status: 'development',
       parameters: [
         { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası' },
         { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı' },
@@ -266,6 +276,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/v2/orders/{id}',
       description: 'Sipariş detayını getir',
+      status: 'development',
       parameters: [
         { name: 'id', type: 'integer', required: true, description: 'Sipariş ID\'si' }
       ],
@@ -307,6 +318,7 @@ const Endpoints = () => {
       method: 'PUT',
       path: '/v2/orders/{id}/status',
       description: 'Sipariş durumunu güncelle',
+      status: 'development',
       parameters: [
         { name: 'id', type: 'integer', required: true, description: 'Sipariş ID\'si' },
         { name: 'status', type: 'string', required: true, description: 'Yeni durum (confirmed, shipped, delivered, cancelled)' },
@@ -339,6 +351,7 @@ const Endpoints = () => {
       method: 'PUT',
       path: '/v2/inventory/{product_id}',
       description: 'Stok miktarını güncelle',
+      status: 'development',
       parameters: [
         { name: 'product_id', type: 'integer', required: true, description: 'Ürün ID\'si' },
         { name: 'quantity', type: 'integer', required: true, description: 'Yeni stok miktarı' },
@@ -366,6 +379,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/v2/inventory/low-stock',
       description: 'Düşük stoklu ürünleri getir',
+      status: 'development',
       parameters: [
         { name: 'threshold', type: 'integer', required: false, description: 'Stok eşik değeri (varsayılan: 10)' },
         { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası' },
@@ -415,9 +429,9 @@ const Endpoints = () => {
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-blue-600 pb-2">
           🧪 Test & Araçlar
         </h2>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-blue-800 text-sm">
-            <strong>Not:</strong> Bu endpoint'ler kimlik doğrulama gerektirmez ve API bağlantınızı test etmek için kullanılabilir.
+            <strong>✅ Stable:</strong> Bu endpoint'ler tamamen geliştirilmiş ve production'da kullanıma hazırdır. Kimlik doğrulama gerektirmez.
           </p>
         </div>
         <div className="space-y-4">
@@ -430,8 +444,13 @@ const Endpoints = () => {
       {/* Products Section */}
       <section className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
-          Ürün Yönetimi
+          📦 Ürün Yönetimi
         </h2>
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+          <p className="text-orange-800 text-sm">
+            <strong>🔧 Geliştiriliyor:</strong> Bu endpoint'ler aktif geliştirme aşamasındadır. Değişiklikler olabilir.
+          </p>
+        </div>
         <div className="space-y-4">
           {productEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
@@ -442,8 +461,13 @@ const Endpoints = () => {
       {/* Orders Section */}
       <section className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
-          Sipariş Yönetimi
+          📋 Sipariş Yönetimi
         </h2>
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+          <p className="text-orange-800 text-sm">
+            <strong>🔧 Geliştiriliyor:</strong> Bu endpoint'ler aktif geliştirme aşamasındadır. Değişiklikler olabilir.
+          </p>
+        </div>
         <div className="space-y-4">
           {orderEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
@@ -454,8 +478,13 @@ const Endpoints = () => {
       {/* Inventory Section */}
       <section className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
-          Stok Yönetimi
+          📊 Stok Yönetimi
         </h2>
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+          <p className="text-orange-800 text-sm">
+            <strong>🔧 Geliştiriliyor:</strong> Bu endpoint'ler aktif geliştirme aşamasındadır. Değişiklikler olabilir.
+          </p>
+        </div>
         <div className="space-y-4">
           {inventoryEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />

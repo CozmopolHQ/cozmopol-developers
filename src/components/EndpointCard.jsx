@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { ChevronDown, ChevronRight } from 'lucide-react'
+import { ChevronDown, ChevronRight, CheckCircle, Clock, Wrench } from 'lucide-react'
 import CodeBlock from './CodeBlock'
 
-const EndpointCard = ({ method, path, description, parameters = [], response, example }) => {
+const EndpointCard = ({ method, path, description, parameters = [], response, example, status = 'development' }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [activeTab, setActiveTab] = useState('parameters')
 
@@ -13,6 +13,33 @@ const EndpointCard = ({ method, path, description, parameters = [], response, ex
     DELETE: 'endpoint-delete'
   }
 
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case 'stable':
+        return (
+          <div className="flex items-center space-x-1 bg-green-50 text-green-700 px-2 py-1 rounded-full text-xs font-medium border border-green-200">
+            <CheckCircle className="w-3 h-3" />
+            <span>Stable</span>
+          </div>
+        )
+      case 'beta':
+        return (
+          <div className="flex items-center space-x-1 bg-blue-50 text-blue-700 px-2 py-1 rounded-full text-xs font-medium border border-blue-200">
+            <Clock className="w-3 h-3" />
+            <span>Beta</span>
+          </div>
+        )
+      case 'development':
+        return (
+          <div className="flex items-center space-x-1 bg-orange-50 text-orange-700 px-2 py-1 rounded-full text-xs font-medium border border-orange-200">
+            <Wrench className="w-3 h-3" />
+            <span>Geliştiriliyor</span>
+          </div>
+        )
+      default:
+        return null
+    }
+  }
   return (
     <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-300 hover:shadow-sm transition-all duration-200">
       <div 
@@ -25,7 +52,10 @@ const EndpointCard = ({ method, path, description, parameters = [], response, ex
               {method}
             </span>
             <code className="text-slate-900 font-mono text-sm">{path}</code>
-            <span className="text-slate-600 hidden sm:block">{description}</span>
+            <div className="flex items-center space-x-2">
+              <span className="text-slate-600 hidden sm:block">{description}</span>
+              {getStatusBadge(status)}
+            </div>
           </div>
           {isExpanded ? (
             <ChevronDown className="w-4 h-4 text-slate-400" />
@@ -34,7 +64,10 @@ const EndpointCard = ({ method, path, description, parameters = [], response, ex
           )}
         </div>
         <div className="sm:hidden mt-2">
-          <span className="text-slate-600 text-sm">{description}</span>
+          <div className="flex items-center justify-between">
+            <span className="text-slate-600 text-sm">{description}</span>
+            {getStatusBadge(status)}
+          </div>
         </div>
       </div>
 
