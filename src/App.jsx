@@ -1,6 +1,7 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
+import DocLayout from './components/DocLayout'
 import Home from './pages/Home'
 import QuickStart from './pages/QuickStart'
 import Authentication from './pages/Authentication'
@@ -15,13 +16,13 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/quickstart" element={<QuickStart />} />
-        <Route path="/authentication" element={<Authentication />} />
-        <Route path="/endpoints" element={<Endpoints />} />
-        <Route path="/webhooks" element={<Webhooks />} />
-        <Route path="/sdks" element={<SDKs />} />
-        <Route path="/health" element={<HealthCheck />} />
-        <Route path="/status" element={<Status />} />
+        <Route path="/quickstart" element={<DocLayout><QuickStart /></DocLayout>} />
+        <Route path="/authentication" element={<DocLayout><Authentication /></DocLayout>} />
+        <Route path="/endpoints" element={<DocLayout><Endpoints /></DocLayout>} />
+        <Route path="/webhooks" element={<DocLayout><Webhooks /></DocLayout>} />
+        <Route path="/sdks" element={<DocLayout><SDKs /></DocLayout>} />
+        <Route path="/health" element={<DocLayout><HealthCheck /></DocLayout>} />
+        <Route path="/status" element={<DocLayout><Status /></DocLayout>} />
       </Routes>
     </Layout>
   )

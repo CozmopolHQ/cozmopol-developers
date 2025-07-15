@@ -160,7 +160,7 @@ const Status = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-6xl mx-auto px-6 py-8">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-slate-900 mb-4">Sistem Durumu</h1>
         <p className="text-lg text-slate-600">
