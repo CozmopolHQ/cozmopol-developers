@@ -26,7 +26,7 @@ const DocLayout = ({ children }) => {
       items: [
         { name: 'Endpoints', href: '/endpoints', icon: '📚' },
         { name: 'Webhooks', href: '/webhooks', icon: '🔗' },
-        { name: 'SDK\'lar', href: '/sdks', icon: '📦' },
+        { name: 'SDK\'lar (Yakında)', href: '/sdks', icon: '📦' },
       ]
     },
     {

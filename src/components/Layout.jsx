@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
     { name: 'Kimlik Doğrulama', href: '/authentication', current: location.pathname === '/authentication' },
     { name: 'API Endpoints', href: '/endpoints', current: location.pathname === '/endpoints' },
     { name: 'Webhooks', href: '/webhooks', current: location.pathname === '/webhooks' },
-    { name: 'SDK\'lar', href: '/sdks', current: location.pathname === '/sdks' },
+    { name: 'SDK\'lar (Yakında)', href: '/sdks', current: location.pathname === '/sdks' },
   ]
 
   const statusNavigation = [
