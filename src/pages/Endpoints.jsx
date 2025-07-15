@@ -2,6 +2,78 @@ import React from 'react'
 import EndpointCard from '../components/EndpointCard'
 
 const Endpoints = () => {
+  const testEndpoints = [
+    {
+      method: 'GET',
+      path: '/api/test/ping',
+      description: 'API bağlantısını test et',
+      parameters: [],
+      response: `{
+  "message": "pong"
+}`,
+      example: `curl -X GET \\
+  https://api.cozmopol.com/api/test/ping \\
+  -H 'Authorization: Bearer YOUR_API_KEY'`
+    },
+    {
+      method: 'GET',
+      path: '/api/test/version',
+      description: 'API versiyonunu getir',
+      parameters: [],
+      response: `{
+  "version": "1.0.0"
+}`,
+      example: `curl -X GET \\
+  https://api.cozmopol.com/api/test/version \\
+  -H 'Authorization: Bearer YOUR_API_KEY'`
+    },
+    {
+      method: 'GET',
+      path: '/api/health',
+      description: 'Sistem sağlık durumunu kontrol et',
+      parameters: [],
+      response: `{
+  "status": "ok",
+  "services": {
+    "database": {
+      "status": "connected",
+      "ping": 80,
+      "pingError": null
+    },
+    "redis": "unknown",
+    "queue": "unknown",
+    "mail": "unknown"
+  }
+}`,
+      example: `curl -X GET \\
+  https://api.cozmopol.com/api/health \\
+  -H 'Authorization: Bearer YOUR_API_KEY'`
+    },
+    {
+      method: 'POST',
+      path: '/api/test/webhook',
+      description: 'Webhook test tetikleyicisi',
+      parameters: [
+        { name: 'event', type: 'string', required: false, description: 'Test edilecek webhook event türü' },
+        { name: 'data', type: 'object', required: false, description: 'Test verisi' }
+      ],
+      response: `{
+  "success": true,
+  "message": "Test webhook triggered successfully"
+}`,
+      example: `curl -X POST \\
+  https://api.cozmopol.com/api/test/webhook \\
+  -H 'Authorization: Bearer YOUR_API_KEY' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "event": "order.created",
+    "data": {
+      "order_id": 12345
+    }
+  }'`
+    }
+  ]
+
   const productEndpoints = [
     {
       method: 'POST',
@@ -337,6 +409,23 @@ const Endpoints = () => {
           Cozmopol API'nin tüm endpoint'leri ve kullanım örnekleri
         </p>
       </div>
+
+      {/* Test & Tools Section */}
+      <section className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-blue-600 pb-2">
+          🧪 Test & Araçlar
+        </h2>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <p className="text-blue-800 text-sm">
+            <strong>Not:</strong> Bu endpoint'ler kimlik doğrulama gerektirmez ve API bağlantınızı test etmek için kullanılabilir.
+          </p>
+        </div>
+        <div className="space-y-4">
+          {testEndpoints.map((endpoint, index) => (
+            <EndpointCard key={index} {...endpoint} />
+          ))}
+        </div>
+      </section>
 
       {/* Products Section */}
       <section className="mb-16">

@@ -39,7 +39,12 @@ const Authentication = () => {
 
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Örnek İstek</h3>
         <CodeBlock 
-          code={`curl -X GET \\
+          code={`# Test endpoint'i (kimlik doğrulama gerektirmez)
+curl -X GET \\
+  https://api.cozmopol.com/api/test/ping
+
+# Kimlik doğrulama gerektiren endpoint
+curl -X GET \\
   https://api.cozmopol.com/v2/products \\
   -H 'Authorization: Bearer sk_live_1234567890abcdef' \\
   -H 'Content-Type: application/json'`}
@@ -105,6 +110,7 @@ const Authentication = () => {
         <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
           <h3 className="font-semibold text-orange-800 mb-2">Limitler</h3>
           <ul className="text-orange-700 text-sm space-y-1">
+            <li>• <strong>Test Endpoint'leri:</strong> Dakikada 100 istek (kimlik doğrulama gerektirmez)</li>
             <li>• <strong>Test Anahtarları:</strong> Dakikada 100 istek</li>
             <li>• <strong>Canlı Anahtarlar:</strong> Dakikada 1000 istek</li>
             <li>• <strong>Burst Limit:</strong> 10 saniyede 50 istek</li>
@@ -114,9 +120,10 @@ const Authentication = () => {
         <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-4">Rate Limit Headers</h3>
         <CodeBlock 
           code={`HTTP/1.1 200 OK
-X-RateLimit-Limit: 1000
-X-RateLimit-Remaining: 999
-X-RateLimit-Reset: 1640995200
+RateLimit-Policy: 100;w=60
+RateLimit-Limit: 100
+RateLimit-Remaining: 95
+RateLimit-Reset: 2
 X-RateLimit-Retry-After: 60`}
           language="http"
         />

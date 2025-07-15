@@ -13,8 +13,8 @@ const QuickStart = () => {
     {
       title: 'İlk API Çağrısı',
       description: 'Test endpoint\'i kullanarak bağlantınızı doğrulayın',
-      code: `curl -X GET \\
-  https://api.cozmopol.com/v2/test \\
+        code: `curl -X GET \\
+  https://api.cozmopol.com/api/test/ping \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json'`
     },
@@ -86,25 +86,28 @@ const QuickStart = () => {
       <div className="mt-16 bg-green-50 border border-green-200 rounded-lg p-6">
         <div className="flex items-center space-x-2 mb-4">
           <CheckCircle className="w-5 h-5 text-green-600" />
-          <h3 className="text-lg font-semibold text-green-800">Başarılı Yanıt Örneği</h3>
+          <h3 className="text-lg font-semibold text-green-800">Test API Başarılı Yanıt</h3>
         </div>
         <CodeBlock 
           code={`{
-  "success": true,
-  "data": {
-    "id": 12345,
-    "title": "Premium Kulaklık",
-    "description": "Yüksek kaliteli wireless kulaklık",
-    "price": 299.99,
-    "category_id": 15,
-    "stock_quantity": 50,
-    "status": "active",
-    "created_at": "2024-01-15T10:30:00Z",
-    "updated_at": "2024-01-15T10:30:00Z"
-  }
+  "message": "pong"
 }`}
           language="json"
         />
+        
+        <div className="mt-6">
+          <h4 className="font-semibold text-green-800 mb-2">Diğer Test Endpoint'leri</h4>
+          <div className="space-y-2 text-sm">
+            <div>
+              <code className="bg-green-100 px-2 py-1 rounded">GET /api/test/version</code>
+              <span className="text-green-700 ml-2">API versiyonunu döner</span>
+            </div>
+            <div>
+              <code className="bg-green-100 px-2 py-1 rounded">GET /api/health</code>
+              <span className="text-green-700 ml-2">Sistem sağlık durumunu kontrol eder</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Next Steps */}

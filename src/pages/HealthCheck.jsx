@@ -7,6 +7,14 @@ const HealthCheck = () => {
 
   const endpoints = [
     {
+      name: 'Test API',
+      url: '/api/test/ping',
+      status: 'healthy',
+      responseTime: 25,
+      uptime: 99.99,
+      description: 'API bağlantı testi'
+    },
+    {
       name: 'Authentication API',
       url: '/v2/auth',
       status: 'healthy',

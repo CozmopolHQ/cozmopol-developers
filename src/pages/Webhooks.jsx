@@ -255,12 +255,31 @@ function verifyWebhookSignature(payload, signature, secret) {
         <h2 className="text-2xl font-semibold text-gray-900 mb-6">Webhook Test Etme</h2>
         
         <p className="text-gray-600 mb-4">
-          Webhook'larınızı test etmek için Partner Portal'dan test webhook'ları gönderebilirsiniz.
+          Webhook'larınızı test etmek için test endpoint'ini kullanabilir veya Partner Portal'dan test webhook'ları gönderebilirsiniz.
         </p>
+
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Test Endpoint'i ile Test</h3>
+          <CodeBlock 
+            code={`curl -X POST \\
+  https://api.cozmopol.com/api/test/webhook \\
+  -H 'Authorization: Bearer YOUR_API_KEY' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "event": "order.created",
+    "data": {
+      "order_id": 12345,
+      "test": true
+    }
+  }'`}
+            language="bash"
+          />
+        </div>
 
         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
           <h3 className="font-semibold text-green-800 mb-2">Test Araçları</h3>
           <ul className="text-green-700 text-sm space-y-1">
+            <li>• <strong>Test API:</strong> /api/test/webhook endpoint'ini kullanın</li>
             <li>• <strong>ngrok:</strong> Yerel geliştirme için tunnel oluşturun</li>
             <li>• <strong>webhook.site:</strong> Webhook'ları test etmek için geçici URL</li>
             <li>• <strong>Postman:</strong> Webhook simülasyonu yapın</li>
