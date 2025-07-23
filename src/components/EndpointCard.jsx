@@ -6,6 +6,10 @@ const EndpointCard = ({ method, path, description, parameters = [], response, ex
   const [isExpanded, setIsExpanded] = useState(false)
   const [activeTab, setActiveTab] = useState('parameters')
   const [activeLanguage, setActiveLanguage] = useState('curl')
+  const [isTestMode, setIsTestMode] = useState(false)
+  const [testResult, setTestResult] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [testParams, setTestParams] = useState({})
 
   const methodColors = {
     GET: 'endpoint-get',
@@ -150,6 +154,86 @@ axios(config)
         return null
     }
   }
+
+  const handleLiveTest = async () => {
+    setIsLoading(true)
+    setTestResult(null)
+    
+    try {
+      const baseUrl = 'https://api.cozmopol.com'
+      let url = `${baseUrl}${path}`
+      
+      // Query parametrelerini ekle
+      if (method === 'GET' && Object.keys(testParams).length > 0) {
+        const queryParams = new URLSearchParams()
+        Object.entries(testParams).forEach(([key, value]) => {
+          if (value && value.trim() !== '') {
+            queryParams.append(key, value.trim())
+          }
+        })
+        if (queryParams.toString()) {
+          url += `?${queryParams.toString()}`
+        }
+      }
+      
+      const headers = {
+        'Content-Type': 'application/json'
+      }
+      
+      // Test endpoint'leri için auth gerektirmez
+      const requiresAuth = !path.includes('/test/') || path.includes('/auth/')
+      if (requiresAuth && testParams.authorization) {
+        headers['Authorization'] = `Bearer ${testParams.authorization}`
+      }
+      
+      const requestOptions = {
+        method,
+        headers,
+        mode: 'cors'
+      }
+      
+      // POST/PUT için body ekle
+      if ((method === 'POST' || method === 'PUT') && testParams.body) {
+        try {
+          requestOptions.body = JSON.stringify(JSON.parse(testParams.body))
+        } catch (e) {
+          throw new Error('Geçersiz JSON formatı')
+        }
+      }
+      
+      const response = await fetch(url, requestOptions)
+      const data = await response.json()
+      
+      setTestResult({
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers.entries()),
+        data: data,
+        success: response.ok
+      })
+    } catch (error) {
+      setTestResult({
+        status: 0,
+        statusText: 'Network Error',
+        headers: {},
+        data: { error: error.message },
+        success: false
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  
+  const handleParamChange = (key, value) => {
+    setTestParams(prev => ({
+      ...prev,
+      [key]: value
+    }))
+  }
+
+  // Test & Araçlar bölümü için canlı test özelliği
+  const isTestEndpoint = path.includes('/test/') || path.includes('/auth/') || path.includes('/health') || path.includes('/products') || path.includes('/categories') || path.includes('/brands')
+
   return (
     <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-300 hover:shadow-sm transition-all duration-200">
       <div 
@@ -214,6 +298,18 @@ axios(config)
             >
               Örnek
             </button>
+            {isTestEndpoint && (
+              <button
+                className={`px-4 py-2 text-sm font-medium ${
+                  activeTab === 'test'
+                    ? 'text-slate-900 border-b-2 border-slate-900'
+                    : 'text-slate-500 hover:text-slate-700'
+                }`}
+                onClick={() => setActiveTab('test')}
+              >
+                🧪 Canlı Test
+              </button>
+            )}
           </div>
 
           <div className="p-4">
@@ -268,6 +364,102 @@ axios(config)
                 />
               </div>
             )}
+
+            {activeTab === 'test' && isTestEndpoint && (
+              <div className="space-y-6">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-blue-800 mb-2">🧪 Canlı API Testi</h4>
+                  <p className="text-blue-700 text-sm">
+                    Bu endpoint'i gerçek API sunucusunda test edin. Test endpoint'leri kimlik doğrulama gerektirmez.
+                  </p>
+                </div>
+
+                {/* Test Parametreleri */}
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-slate-900">Test Parametreleri</h4>
+                  
+                  {/* Authorization (sadece gerekli endpoint'ler için) */}
+                  {(!path.includes('/test/') || path.includes('/auth/')) && (
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                        Authorization Token (Opsiyonel)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Bearer token'ınızı girin"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={testParams.authorization || ''}
+                        onChange={(e) => handleParamChange('authorization', e.target.value)}
+                      />
+                    </div>
+                  )}
+
+                  {/* Query Parametreleri (GET istekleri için) */}
+                  {method === 'GET' && parameters.filter(p => p.name !== 'Authorization').length > 0 && (
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                        Query Parametreleri
+                      </label>
+                      <div className="space-y-2">
+                        {parameters.filter(p => p.name !== 'Authorization').map((param, index) => (
+                          <div key={index} className="flex items-center space-x-2">
+                            <code className="text-xs bg-slate-100 px-2 py-1 rounded min-w-[100px]">
+                              {param.name}
+                            </code>
+                            <input
+                              type="text"
+                              placeholder={param.description}
+                              className="flex-1 px-3 py-1 text-sm border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                              value={testParams[param.name] || ''}
+                              onChange={(e) => handleParamChange(param.name, e.target.value)}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Request Body (POST/PUT için) */}
+                  {(method === 'POST' || method === 'PUT') && (
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                        Request Body (JSON)
+                      </label>
+                      <textarea
+                        rows={6}
+                        placeholder='{"key": "value"}'
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                        value={testParams.body || ''}
+                        onChange={(e) => handleParamChange('body', e.target.value)}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Test Butonu */}
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={handleLiveTest}
+                    disabled={isLoading}
+                    className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                      isLoading
+                        ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                    }`}
+                  >
+                    {isLoading ? '⏳ Test Ediliyor...' : '🚀 Test Et'}
+                  </button>
+                  
+                  {testResult && (
+                    <div className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      testResult.success 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {testResult.status} {testResult.statusText}
+                    </div>
+                  )}
+                </div>
           </div>
         </div>
       )}
@@ -275,4 +467,33 @@ axios(config)
   )
 }
 
+                {/* Test Sonucu */}
+                {testResult && (
+                  <div className="space-y-4">
+                    <h4 className="font-semibold text-slate-900">Test Sonucu</h4>
+                    
+                    {/* Response Headers */}
+                    <div>
+                      <h5 className="text-sm font-medium text-slate-700 mb-2">Response Headers</h5>
+                      <div className="bg-slate-50 rounded-lg p-3 text-xs font-mono">
+                        {Object.entries(testResult.headers).map(([key, value]) => (
+                          <div key={key} className="text-slate-600">
+                            <span className="text-blue-600">{key}:</span> {value}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Response Body */}
+                    <div>
+                      <h5 className="text-sm font-medium text-slate-700 mb-2">Response Body</h5>
+                      <CodeBlock 
+                        code={JSON.stringify(testResult.data, null, 2)} 
+                        language="json" 
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 export default EndpointCard
