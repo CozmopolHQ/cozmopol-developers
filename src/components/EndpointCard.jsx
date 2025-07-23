@@ -11,32 +11,32 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
   const getMethodColor = (method) => {
     switch (method?.toUpperCase()) {
       case 'GET':
-        return 'bg-green-100 text-green-800 border-green-200'
+        return 'bg-emerald-50 text-emerald-700 border border-emerald-200'
       case 'POST':
-        return 'bg-blue-100 text-blue-800 border-blue-200'
+        return 'bg-blue-50 text-blue-700 border border-blue-200'
       case 'PUT':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200'
+        return 'bg-amber-50 text-amber-700 border border-amber-200'
       case 'DELETE':
-        return 'bg-red-100 text-red-800 border-red-200'
+        return 'bg-red-50 text-red-700 border border-red-200'
       case 'PATCH':
-        return 'bg-purple-100 text-purple-800 border-purple-200'
+        return 'bg-purple-50 text-purple-700 border border-purple-200'
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200'
+        return 'bg-gray-50 text-gray-700 border border-gray-200'
     }
   }
 
   const getStatusColor = (status) => {
     switch (status) {
       case 'stable':
-        return 'bg-green-100 text-green-800'
+        return 'bg-green-50 text-green-700 border border-green-200'
       case 'development':
-        return 'bg-orange-100 text-orange-800'
+        return 'bg-orange-50 text-orange-700 border border-orange-200'
       case 'deprecated':
-        return 'bg-red-100 text-red-800'
+        return 'bg-red-50 text-red-700 border border-red-200'
       case 'beta':
-        return 'bg-blue-100 text-blue-800'
+        return 'bg-blue-50 text-blue-700 border border-blue-200'
       default:
-        return 'bg-gray-100 text-gray-800'
+        return 'bg-gray-50 text-gray-700 border border-gray-200'
     }
   }
 
@@ -45,6 +45,7 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
     try {
       const baseUrl = 'https://backend-integration-mauve.vercel.app'
       const fullUrl = `${baseUrl}${path}`
+      
       const response = await fetch(fullUrl, {
         method: method?.toUpperCase() || 'GET',
         headers: {
@@ -73,204 +74,182 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
       <div 
-        className="p-6 cursor-pointer hover:bg-slate-50 transition-colors"
+        className="p-6 cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getMethodColor(method)}`}>
+            <span className={`px-3 py-1 rounded-md text-sm font-medium ${getMethodColor(method)}`}>
               {method?.toUpperCase()}
             </span>
-            <div>
-              <h3 className="text-lg font-semibold text-slate-900">{path}</h3>
-              <p className="text-slate-600 text-sm">{description}</p>
+            <div className="flex-1">
+              <div className="flex items-center space-x-3">
+                <code className="text-gray-900 font-mono text-sm font-medium">{path}</code>
+                <span className={`px-2 py-1 rounded-md text-xs font-medium ${getStatusColor(status)}`}>
+                  {status === 'stable' ? 'Stable' : status === 'development' ? 'Dev' : status}
+                </span>
+              </div>
+              <p className="text-gray-600 text-sm mt-1">{description}</p>
             </div>
           </div>
-          <div className="flex items-center space-x-3">
-            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(status)}`}>
-              {status === 'stable' ? '✅ Stable' : status === 'development' ? '🔧 Geliştiriliyor' : status}
-            </span>
+          <div className="ml-4">
             {isExpanded ? (
-              <ChevronDown className="w-5 h-5 text-slate-400" />
+              <ChevronDown className="w-5 h-5 text-gray-400" />
             ) : (
-              <ChevronRight className="w-5 h-5 text-slate-400" />
+              <ChevronRight className="w-5 h-5 text-gray-400" />
             )}
           </div>
         </div>
       </div>
 
       {isExpanded && (
-        <div className="border-t border-slate-200">
-          <div className="flex border-b border-slate-200">
-            <button
-              className={`px-6 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'parameters'
-                  ? 'text-slate-900 border-b-2 border-slate-900 bg-white'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-              onClick={() => setActiveTab('parameters')}
-            >
-              📋 Parametreler
-            </button>
-            <button
-              className={`px-6 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'response'
-                  ? 'text-slate-900 border-b-2 border-slate-900 bg-white'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-              onClick={() => setActiveTab('response')}
-            >
-              📤 Response
-            </button>
-            <button
-              className={`px-6 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'example'
-                  ? 'text-slate-900 border-b-2 border-slate-900 bg-white'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-              onClick={() => setActiveTab('example')}
-            >
-              💻 Örnek Kod
-            </button>
-            <button
-              className={`px-6 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'test'
-                  ? 'text-slate-900 border-b-2 border-slate-900 bg-white'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-              onClick={() => setActiveTab('test')}
-            >
-              🧪 Canlı Test
-            </button>
+        <div className="border-t border-gray-100">
+          <div className="flex border-b border-gray-100 bg-gray-50">
+            {['parameters', 'response', 'example', 'test'].map((tab) => (
+              <button
+                key={tab}
+                className={`px-6 py-3 text-sm font-medium transition-colors ${
+                  activeTab === tab
+                    ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab === 'parameters' && 'Parameters'}
+                {tab === 'response' && 'Response'}
+                {tab === 'example' && 'Example'}
+                {tab === 'test' && 'Test'}
+              </button>
+            ))}
           </div>
 
           <div className="p-6">
             {activeTab === 'parameters' && (
               <div>
-                <h4 className="text-lg font-semibold text-slate-900 mb-4">Parametreler</h4>
                 {parameters && parameters.length > 0 ? (
                   <div className="space-y-4">
                     {parameters.map((param, index) => (
-                      <div key={index} className="border border-slate-200 rounded-lg p-4">
+                      <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
                         <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center space-x-2">
-                            <code className="text-sm font-mono bg-slate-100 px-2 py-1 rounded">
+                          <div className="flex items-center space-x-3">
+                            <code className="text-sm font-mono bg-white px-2 py-1 rounded border">
                               {param.name}
                             </code>
                             <span className={`px-2 py-1 rounded text-xs font-medium ${
                               param.required 
-                                ? 'bg-red-100 text-red-800' 
-                                : 'bg-gray-100 text-gray-800'
+                                ? 'bg-red-100 text-red-700 border border-red-200' 
+                                : 'bg-gray-100 text-gray-700 border border-gray-200'
                             }`}>
-                              {param.required ? 'Zorunlu' : 'Opsiyonel'}
+                              {param.required ? 'Required' : 'Optional'}
                             </span>
                           </div>
-                          <span className="text-sm text-slate-600">{param.type}</span>
+                          <span className="text-sm text-gray-500 font-mono">{param.type}</span>
                         </div>
-                        <p className="text-sm text-slate-600">{param.description}</p>
-                        {param.example && (
-                          <div className="mt-2">
-                            <span className="text-xs text-slate-500">Örnek: </span>
-                            <code className="text-xs bg-slate-100 px-1 py-0.5 rounded">
-                              {param.example}
-                            </code>
-                          </div>
-                        )}
+                        <p className="text-sm text-gray-600">{param.description}</p>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-slate-600">Bu endpoint için parametre bulunmuyor.</p>
+                  <div className="text-center py-8">
+                    <div className="text-gray-400 text-4xl mb-2">📝</div>
+                    <p className="text-gray-500">No parameters required</p>
+                  </div>
                 )}
               </div>
             )}
 
             {activeTab === 'response' && (
               <div>
-                <h4 className="text-lg font-semibold text-slate-900 mb-4">Response Formatı</h4>
                 {response ? (
                   <CodeBlock code={response} language="json" />
                 ) : (
-                  <p className="text-slate-600">Response örneği mevcut değil.</p>
+                  <div className="text-center py-8">
+                    <div className="text-gray-400 text-4xl mb-2">📄</div>
+                    <p className="text-gray-500">No response example available</p>
+                  </div>
                 )}
               </div>
             )}
 
             {activeTab === 'example' && (
               <div>
-                <h4 className="text-lg font-semibold text-slate-900 mb-4">Örnek Kullanım</h4>
                 {example ? (
                   <CodeBlock code={example} language="bash" />
                 ) : (
-                  <p className="text-slate-600">Örnek kod mevcut değil.</p>
+                  <div className="text-center py-8">
+                    <div className="text-gray-400 text-4xl mb-2">💻</div>
+                    <p className="text-gray-500">No code example available</p>
+                  </div>
                 )}
               </div>
             )}
 
             {activeTab === 'test' && (
-              <div>
-                <h4 className="text-lg font-semibold text-slate-900 mb-4">Canlı Test</h4>
-                <div className="bg-slate-50 rounded-lg p-4 mb-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-2">
-                      <span className={`px-2 py-1 rounded text-sm font-medium ${getMethodColor(method)}`}>
-                        {method?.toUpperCase()}
-                      </span>
-                      <code className="text-sm bg-white px-2 py-1 rounded border">
-                        https://backend-integration-mauve.vercel.app{path}
-                      </code>
-                    </div>
-                    <button
-                      onClick={handleLiveTest}
-                      disabled={isLoading}
-                      className="flex items-center space-x-2 bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors disabled:opacity-50"
-                    >
-                      {isLoading ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                          <span>Test Ediliyor...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Play className="w-4 h-4" />
-                          <span>Test Et</span>
-                        </>
-                      )}
-                    </button>
+              <div className="space-y-6">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h4 className="font-medium text-blue-900 mb-2">Live API Test</h4>
+                  <p className="text-blue-700 text-sm">
+                    Test this endpoint against the live API server.
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
+                  <div className="flex items-center space-x-3">
+                    <span className={`px-2 py-1 rounded text-sm font-medium ${getMethodColor(method)}`}>
+                      {method?.toUpperCase()}
+                    </span>
+                    <code className="text-sm font-mono text-gray-700">
+                      https://backend-integration-mauve.vercel.app{path}
+                    </code>
                   </div>
+                  <button
+                    onClick={handleLiveTest}
+                    disabled={isLoading}
+                    className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isLoading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <span>Testing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-4 h-4" />
+                        <span>Test</span>
+                      </>
+                    )}
+                  </button>
                 </div>
 
                 {testResult && (
-                  <div className="border border-slate-200 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h5 className="font-semibold text-slate-900">Test Sonucu</h5>
-                      <div className="flex items-center space-x-2 text-sm text-slate-600">
-                        <Clock className="w-4 h-4" />
-                        <span>{new Date(testResult.timestamp).toLocaleTimeString('tr-TR')}</span>
+                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                    <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                      <div className="flex items-center justify-between">
+                        <h5 className="font-medium text-gray-900">Test Result</h5>
+                        <div className="flex items-center space-x-3">
+                          <span className={`px-2 py-1 rounded text-sm font-medium ${
+                            testResult.status === 200 || testResult.status === 'error' 
+                              ? testResult.status === 200 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-red-100 text-red-800'
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {testResult.status} {testResult.statusText}
+                          </span>
+                          <div className="flex items-center space-x-1 text-sm text-gray-500">
+                            <Clock className="w-4 h-4" />
+                            <span>{new Date(testResult.timestamp).toLocaleTimeString()}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm text-slate-600">Status:</span>
-                        <span className={`px-2 py-1 rounded text-sm font-medium ${
-                          testResult.status === 200 || testResult.status === 'error' 
-                            ? testResult.status === 200 
-                              ? 'bg-green-100 text-green-800' 
-                              : 'bg-red-100 text-red-800'
-                            : 'bg-yellow-100 text-yellow-800'
-                        }`}>
-                          {testResult.status} {testResult.statusText}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-sm text-slate-600 block mb-2">Response:</span>
-                        <CodeBlock 
-                          code={JSON.stringify(testResult.data, null, 2)} 
-                          language="json" 
-                        />
-                      </div>
+                    <div className="p-4">
+                      <CodeBlock 
+                        code={JSON.stringify(testResult.data, null, 2)} 
+                        language="json" 
+                      />
                     </div>
                   </div>
                 )}
