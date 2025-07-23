@@ -1,47 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Activity, CheckCircle, XCircle, Clock, Zap, AlertTriangle, RefreshCw } from 'lucide-react'
 
-const EndpointCard = ({ method, path, description, parameters = [], response, example, status = 'development' }) => {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [activeTab, setActiveTab] = useState('parameters')
-  const [activeLanguage, setActiveLanguage] = useState('curl')
-  const [isTestMode, setIsTestMode] = useState(false)
-  const [testResult, setTestResult] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [testParams, setTestParams] = useState({})
-
-  // Endpoint güncelleme geçmişi
-  const updateHistory = [
-    {
-      version: 'v2.1.0',
-      date: '2024-01-15',
-      changes: [
-        'Response formatı güncellendi',
-        'Yeni pagination parametreleri eklendi',
-        'Error handling iyileştirildi'
-      ],
-      type: 'major'
-    },
-    {
-      version: 'v2.0.5',
-      date: '2024-01-10',
-      changes: [
-        'Performance optimizasyonu',
-        'Rate limiting kuralları güncellendi'
-      ],
-      type: 'minor'
-    },
-    {
-      version: 'v2.0.3',
-      date: '2024-01-05',
-      changes: [
-        'Bug fix: Null değer kontrolü',
-        'Documentation güncellendi'
-      ],
-      type: 'patch'
-    }
-  ]
-
 const HealthCheck = () => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [lastUpdated, setLastUpdated] = useState(new Date())
@@ -54,7 +13,7 @@ const HealthCheck = () => {
       setLoading(true)
       setError(null)
       
-      const response = await fetch('https://api.cozmopol.com/api/health')
+      const response = await fetch('https://backend-integration-mauve.vercel.app/api/health')
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
