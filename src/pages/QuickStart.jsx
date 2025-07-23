@@ -144,6 +144,18 @@ const QuickStart = () => {
               <span className="text-green-700 ml-2">Sistem sağlık durumunu kontrol eder</span>
             </div>
             <div>
+              <code className="bg-green-100 px-2 py-1 rounded">GET /api/products</code>
+              <span className="text-green-700 ml-2">Ürün listesini getirir</span>
+            </div>
+            <div>
+              <code className="bg-green-100 px-2 py-1 rounded">GET /api/categories</code>
+              <span className="text-green-700 ml-2">Kategori listesini getirir</span>
+            </div>
+            <div>
+              <code className="bg-green-100 px-2 py-1 rounded">GET /api/brands</code>
+              <span className="text-green-700 ml-2">Marka listesini getirir</span>
+            </div>
+            <div>
               <code className="bg-orange-100 px-2 py-1 rounded">POST /api/test/webhook</code>
               <span className="text-orange-700 ml-2">Webhook test tetikleyicisi (geliştiriliyor)</span>
             </div>
