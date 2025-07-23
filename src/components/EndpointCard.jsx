@@ -21,9 +21,16 @@ const EndpointCard = ({ method, path, description, parameters = [], response, ex
   const languages = [
     { id: 'curl', name: 'cURL', icon: '🌐' },
     { id: 'javascript', name: 'JavaScript', icon: '🟨' },
+    { id: 'typescript', name: 'TypeScript', icon: '🔷' },
     { id: 'php', name: 'PHP', icon: '🐘' },
     { id: 'python', name: 'Python', icon: '🐍' },
-    { id: 'node', name: 'Node.js', icon: '🟢' }
+    { id: 'node', name: 'Node.js', icon: '🟢' },
+    { id: 'java', name: 'Java', icon: '☕' },
+    { id: 'csharp', name: 'C#', icon: '🟣' },
+    { id: 'go', name: 'Go', icon: '🐹' },
+    { id: 'ruby', name: 'Ruby', icon: '💎' },
+    { id: 'swift', name: 'Swift', icon: '🦉' },
+    { id: 'kotlin', name: 'Kotlin', icon: '🎯' }
   ]
 
   const generateCodeExample = (lang) => {
@@ -122,6 +129,259 @@ axios(config)
   .catch(error => {
     console.error('Error:', error.response?.data || error.message);
   });`
+
+      case 'typescript':
+        return `// TypeScript with Fetch API
+interface ApiResponse {
+  // Define your response type here
+  [key: string]: any;
+}
+
+const fetchData = async (): Promise<ApiResponse> => {
+  try {
+    const response = await fetch('${fullUrl}', {
+      method: '${method}',
+      headers: {${hasAuth ? `
+        'Authorization': 'Bearer YOUR_API_KEY',` : ''}
+        'Content-Type': 'application/json'
+      }${method === 'POST' || method === 'PUT' ? `,
+      body: JSON.stringify({
+        // Request body here
+      })` : ''}
+    });
+
+    if (!response.ok) {
+      throw new Error(\`HTTP error! status: \${response.status}\`);
+    }
+
+    const data: ApiResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+// Usage
+fetchData().then(data => console.log(data));`
+
+      case 'java':
+        return `// Java with OkHttp
+import okhttp3.*;
+import java.io.IOException;
+
+public class ApiClient {
+    private static final OkHttpClient client = new OkHttpClient();
+    
+    public static void main(String[] args) throws IOException {
+        ${method === 'POST' || method === 'PUT' ? `
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(
+            "{\\"key\\": \\"value\\"}", JSON);
+        ` : ''}
+        Request request = new Request.Builder()
+            .url("${fullUrl}")
+            .${method.toLowerCase()}(${method === 'POST' || method === 'PUT' ? 'body' : ''})${hasAuth ? `
+            .addHeader("Authorization", "Bearer YOUR_API_KEY")` : ''}
+            .addHeader("Content-Type", "application/json")
+            .build();
+            
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            System.out.println(response.body().string());
+        }
+    }
+}`
+
+      case 'csharp':
+        return `// C# with HttpClient
+using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+
+class Program
+{
+    private static readonly HttpClient client = new HttpClient();
+    
+    static async Task Main(string[] args)
+    {
+        try
+        {${hasAuth ? `
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer YOUR_API_KEY");` : ''}
+            client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+            
+            ${method === 'POST' || method === 'PUT' ? `
+            var json = "{\\"key\\": \\"value\\"}";
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.${method === 'POST' ? 'PostAsync' : 'PutAsync'}("${fullUrl}", content);
+            ` : `
+            var response = await client.GetAsync("${fullUrl}");
+            `}
+            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(responseBody);
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+        }
+    }
+}`
+
+      case 'go':
+        return `// Go with net/http
+package main
+
+import (
+    "bytes"
+    "fmt"
+    "io"
+    "net/http"
+)
+
+func main() {
+    ${method === 'POST' || method === 'PUT' ? `
+    jsonData := []byte(\`{"key": "value"}\`)
+    req, err := http.NewRequest("${method}", "${fullUrl}", bytes.NewBuffer(jsonData))
+    ` : `
+    req, err := http.NewRequest("${method}", "${fullUrl}", nil)
+    `}
+    if err != nil {
+        fmt.Printf("Error creating request: %v\\n", err)
+        return
+    }
+    
+    ${hasAuth ? `req.Header.Set("Authorization", "Bearer YOUR_API_KEY")
+    ` : ''}req.Header.Set("Content-Type", "application/json")
+    
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    if err != nil {
+        fmt.Printf("Error making request: %v\\n", err)
+        return
+    }
+    defer resp.Body.Close()
+    
+    body, err := io.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Printf("Error reading response: %v\\n", err)
+        return
+    }
+    
+    fmt.Printf("Status: %s\\n", resp.Status)
+    fmt.Printf("Response: %s\\n", string(body))
+}`
+
+      case 'ruby':
+        return `# Ruby with Net::HTTP
+require 'net/http'
+require 'json'
+require 'uri'
+
+uri = URI('${fullUrl}')
+http = Net::HTTP.new(uri.host, uri.port)
+http.use_ssl = true
+
+request = Net::HTTP::${method === 'GET' ? 'Get' : method === 'POST' ? 'Post' : method === 'PUT' ? 'Put' : 'Delete'}.new(uri)
+${hasAuth ? `request['Authorization'] = 'Bearer YOUR_API_KEY'
+` : ''}request['Content-Type'] = 'application/json'
+
+${method === 'POST' || method === 'PUT' ? `
+request.body = {
+  # Request body here
+}.to_json
+` : ''}
+begin
+  response = http.request(request)
+  puts "Status: #{response.code}"
+  puts "Response: #{response.body}"
+rescue => e
+  puts "Error: #{e.message}"
+end`
+
+      case 'swift':
+        return `// Swift with URLSession
+import Foundation
+
+func makeAPICall() {
+    guard let url = URL(string: "${fullUrl}") else {
+        print("Invalid URL")
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "${method}"
+    ${hasAuth ? `request.setValue("Bearer YOUR_API_KEY", forHTTPHeaderField: "Authorization")
+    ` : ''}request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    ${method === 'POST' || method === 'PUT' ? `
+    let requestBody = ["key": "value"]
+    do {
+        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
+    } catch {
+        print("Error serializing JSON: \\(error)")
+        return
+    }
+    ` : ''}
+    URLSession.shared.dataTask(with: request) { data, response, error in
+        if let error = error {
+            print("Error: \\(error)")
+            return
+        }
+        
+        if let data = data {
+            do {
+                let json = try JSONSerialization.jsonObject(with: data)
+                print("Response: \\(json)")
+            } catch {
+                print("Error parsing JSON: \\(error)")
+            }
+        }
+    }.resume()
+}
+
+makeAPICall()`
+
+      case 'kotlin':
+        return `// Kotlin with OkHttp
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
+
+fun main() {
+    val client = OkHttpClient()
+    
+    ${method === 'POST' || method === 'PUT' ? `
+    val json = """{"key": "value"}"""
+    val body = json.toRequestBody("application/json; charset=utf-8".toMediaType())
+    ` : ''}
+    val request = Request.Builder()
+        .url("${fullUrl}")
+        .${method.toLowerCase()}(${method === 'POST' || method === 'PUT' ? 'body' : ''})${hasAuth ? `
+        .addHeader("Authorization", "Bearer YOUR_API_KEY")` : ''}
+        .addHeader("Content-Type", "application/json")
+        .build()
+    
+    client.newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            println("Error: \${e.message}")
+        }
+        
+        override fun onResponse(call: Call, response: Response) {
+            response.use {
+                if (!response.isSuccessful) {
+                    println("Unexpected code \$response")
+                    return
+                }
+                println("Response: \${response.body?.string()}")
+            }
+        }
+    })
+}`
 
       default:
         return example || `# ${lang} example not available`
