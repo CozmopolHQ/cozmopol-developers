@@ -45,7 +45,6 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
     try {
       const baseUrl = 'https://backend-integration-mauve.vercel.app'
       const fullUrl = `${baseUrl}${path}`
-      
       const response = await fetch(fullUrl, {
         method: method?.toUpperCase() || 'GET',
         headers: {

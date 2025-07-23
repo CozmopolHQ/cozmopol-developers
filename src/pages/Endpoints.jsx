@@ -607,12 +607,10 @@ const Endpoints = () => {
 
       {/* Base URL Info */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-blue-800 mb-4">Base URL</h3>
         <code className="text-blue-700 font-mono bg-blue-100 px-3 py-2 rounded">
           https://backend-integration-mauve.vercel.app
         </code>
         <p className="text-blue-700 mt-4 text-sm">
-          Tüm API endpoint'leri bu base URL ile başlar. Test ortamı için 
           <code className="bg-blue-100 px-2 py-1 rounded mx-1">https://backend-integration-mauve.vercel.app</code> 
           kullanabilirsiniz.
         </p>
