@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ChevronDown, ChevronRight, Play, Clock, History } from 'lucide-react'
+import { ChevronDown, ChevronRight, Play, Clock } from 'lucide-react'
 import CodeBlock from './CodeBlock'
 
 const EndpointCard = ({ method, path, description, status, parameters, response, example }) => {
@@ -70,52 +70,6 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
       })
     } finally {
       setIsLoading(false)
-    }
-  }
-
-  const updateHistory = [
-    {
-      version: 'v2.1.0',
-      date: '2024-01-15',
-      type: 'major',
-      changes: [
-        'Breaking: Response format değişti',
-        'Yeni pagination parametreleri eklendi',
-        'Error handling iyileştirildi'
-      ]
-    },
-    {
-      version: 'v2.0.5',
-      date: '2024-01-10',
-      type: 'minor',
-      changes: [
-        'Performance optimizasyonu',
-        'Rate limiting güncellendi',
-        'Yeni filter parametresi eklendi'
-      ]
-    },
-    {
-      version: 'v2.0.3',
-      date: '2024-01-05',
-      type: 'patch',
-      changes: [
-        'Bug fix: Null değer kontrolü',
-        'Documentation güncellendi',
-        'Response time iyileştirildi'
-      ]
-    }
-  ]
-
-  const getUpdateTypeColor = (type) => {
-    switch (type) {
-      case 'major':
-        return 'bg-red-100 text-red-800 border-red-200'
-      case 'minor':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-      case 'patch':
-        return 'bg-green-100 text-green-800 border-green-200'
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   }
 
@@ -190,16 +144,6 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
               onClick={() => setActiveTab('test')}
             >
               🧪 Canlı Test
-            </button>
-            <button
-              className={`px-6 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'history'
-                  ? 'text-slate-900 border-b-2 border-slate-900 bg-white'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-              onClick={() => setActiveTab('history')}
-            >
-              📋 Güncelleme Geçmişi
             </button>
           </div>
 
@@ -331,58 +275,6 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
                     </div>
                   </div>
                 )}
-              </div>
-            )}
-
-            {activeTab === 'history' && (
-              <div>
-                <h4 className="text-lg font-semibold text-slate-900 mb-4">Güncelleme Geçmişi</h4>
-                <div className="space-y-4">
-                  {updateHistory.map((update, index) => (
-                    <div key={index} className="border border-slate-200 rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center space-x-3">
-                          <code className="text-sm font-mono bg-slate-100 px-2 py-1 rounded">
-                            {update.version}
-                          </code>
-                          <span className={`px-2 py-1 rounded text-xs font-medium border ${getUpdateTypeColor(update.type)}`}>
-                            {update.type.toUpperCase()}
-                          </span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-sm text-slate-600">
-                          <History className="w-4 h-4" />
-                          <span>{new Date(update.date).toLocaleDateString('tr-TR')}</span>
-                        </div>
-                      </div>
-                      <ul className="space-y-1">
-                        {update.changes.map((change, changeIndex) => (
-                          <li key={changeIndex} className="text-sm text-slate-600 flex items-start space-x-2">
-                            <span className="text-slate-400 mt-1">•</span>
-                            <span>{change}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="mt-6 p-4 bg-slate-50 rounded-lg">
-                  <h5 className="font-semibold text-slate-900 mb-2">Güncelleme Türleri</h5>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center space-x-2">
-                      <span className="px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-800 border border-red-200">MAJOR</span>
-                      <span className="text-slate-600">Breaking changes, dikkat gerektirir</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-200">MINOR</span>
-                      <span className="text-slate-600">Yeni özellikler, backward compatible</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800 border border-green-200">PATCH</span>
-                      <span className="text-slate-600">Bug fixes, güvenli güncellemeler</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             )}
           </div>
