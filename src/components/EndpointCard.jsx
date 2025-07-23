@@ -460,12 +460,6 @@ axios(config)
                     </div>
                   )}
                 </div>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
 
                 {/* Test Sonucu */}
                 {testResult && (
@@ -496,4 +490,11 @@ axios(config)
                 )}
               </div>
             )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default EndpointCard
