@@ -149,110 +149,192 @@ const Endpoints = () => {
     },
     {
       method: 'GET',
-      path: '/v2/products',
-      description: 'Ürün listesini getir',
-      status: 'development',
+      path: '/api/products',
+      description: 'Tüm ürünleri listele',
+      status: 'stable',
       parameters: [
-        { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası (varsayılan: 1)' },
-        { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı (varsayılan: 20, maksimum: 100)' },
-        { name: 'category_id', type: 'integer', required: false, description: 'Kategoriye göre filtrele' },
-        { name: 'status', type: 'string', required: false, description: 'Duruma göre filtrele (active, inactive, draft)' },
-        { name: 'search', type: 'string', required: false, description: 'Ürün başlığında arama' }
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
       ],
       response: `{
-  "success": true,
-  "data": [
+  [
     {
-      "id": 12345,
-      "title": "Premium Kulaklık",
-      "price": 299.99,
-      "stock_quantity": 50,
-      "status": "active"
+      "id": "67c1bcbb3c56211e5c53289c",
+      "title": "Organik Keçiboynuzu Özü 315 gr BABY MG",
+      "description": "Keçiboynuzu özü, lif, potasyum, kalsiyum...",
+      "brand": "Yeni Marka Adı",
+      "currency": "TRY",
+      "basePrice": 140,
+      "status": true,
+      "category": {
+        "category": 1219,
+        "categoryName": "Süpermarket",
+        "subcategoryNames": ["Gıda & İçecek"]
+      },
+      "variations": [
+        {
+          "color": "Standart",
+          "size": "Standart",
+          "stock": 10,
+          "price": 150,
+          "currency": "TRY",
+          "sku": "24343432",
+          "barcode": "3432434"
+        }
+      ],
+      "images": [
+        {
+          "color": "Standart",
+          "variationImages": [
+            {
+              "imageUrl": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/..."
+            }
+          ]
+        }
+      ]
     }
-  ],
-  "pagination": {
-    "current_page": 1,
-    "total_pages": 10,
-    "total_items": 200,
-    "per_page": 20
-  }
+  ]
 }`,
       example: `curl -X GET \\
-  'https://api.cozmopol.com/v2/products?page=1&limit=20&category_id=15' \\
+  https://api.cozmopol.com/api/products \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/v2/products/{id}',
+      path: '/api/products/{id}',
       description: 'Ürün detayını getir',
-      status: 'development',
+      status: 'stable',
       parameters: [
-        { name: 'id', type: 'integer', required: true, description: 'Ürün ID\'si' }
+        { name: 'id', type: 'string', required: true, description: 'Ürün ID\'si (MongoDB ObjectId)' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
       ],
       response: `{
-  "success": true,
-  "data": {
-    "id": 12345,
-    "title": "Premium Kulaklık",
-    "description": "Yüksek kaliteli wireless kulaklık",
-    "price": 299.99,
-    "category_id": 15,
-    "stock_quantity": 50,
-    "images": ["https://example.com/image1.jpg"],
-    "status": "active",
-    "created_at": "2024-01-15T10:30:00Z",
-    "updated_at": "2024-01-15T10:30:00Z"
+  "id": "67c1bcbb3c56211e5c53289c",
+  "title": "Organik Keçiboynuzu Özü 315 gr BABY MG",
+  "description": "Keçiboynuzu özü, lif, potasyum, kalsiyum, magnezyum ve demir gibi mineraller açısından zengindir...",
+  "brand": "Yeni Marka Adı",
+  "currency": "TRY",
+  "basePrice": 140,
+  "status": true,
+  "category": {
+    "category": 1219,
+    "subcategories": [1385, 1408],
+    "categoryName": null,
+    "subcategoryNames": []
+  },
+  "availability": {
+    "twoDimension": true,
+    "threeDimension": false,
+    "isInternational": false
+  },
+  "storeUser": {
+    "_id": "67c1b95d3201a327160dbca2",
+    "storeUserInformationId": {
+      "_id": "67c1b95d3201a327160dbca4",
+      "companyName": "Memleket Gurmesi"
+    }
+  },
+  "isVariantProduct": false,
+  "variations": [
+    {
+      "color": "Standart",
+      "size": "Standart", 
+      "stock": 10,
+      "price": 150,
+      "discountPrice": null,
+      "currency": "TRY",
+      "taxRate": 1,
+      "sku": "24343432",
+      "barcode": "3432434",
+      "enabled": true
+    }
+  ],
+  "images": [
+    {
+      "color": "Standart",
+      "variationImages": [
+        {
+          "imageUrl": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/67c1bcbb3c56211e5c53289c/1740750012081-image0.jpg"
+        }
+      ]
+    }
+  ],
+  "metaData": {
+    "metaTitle": "Organik Keçiboynuzu Özü 315 gr BABY MG - calvinklein",
+    "metaDescription": "Keçiboynuzu özü, lif, potasyum, kalsiyum...",
+    "metaUrlSlug": "organik-keiboynuzu-z-315-gr-baby-mg"
   }
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/v2/products/12345 \\
+  https://api.cozmopol.com/api/products/67c1bcbb3c56211e5c53289c \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
-      method: 'PUT',
-      path: '/v2/products/{id}',
-      description: 'Ürün güncelle',
-      status: 'development',
+      method: 'GET',
+      path: '/api/categories',
+      description: 'Kategori listesini getir',
+      status: 'stable',
       parameters: [
-        { name: 'id', type: 'integer', required: true, description: 'Ürün ID\'si' },
-        { name: 'title', type: 'string', required: false, description: 'Ürün başlığı' },
-        { name: 'description', type: 'string', required: false, description: 'Ürün açıklaması' },
-        { name: 'price', type: 'number', required: false, description: 'Ürün fiyatı (TL)' },
-        { name: 'stock_quantity', type: 'integer', required: false, description: 'Stok miktarı' }
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
       ],
       response: `{
-  "success": true,
-  "data": {
-    "id": 12345,
-    "title": "Premium Kulaklık - Güncellenmiş",
-    "price": 279.99,
-    "updated_at": "2024-01-15T11:30:00Z"
-  }
+  [
+    {
+      "_id": "67ad9f2b37a30e14e93d7a6b",
+      "id": 368,
+      "name": "Aksesuar",
+      "parentId": null,
+      "subCategories": [
+        {
+          "_id": "6880a6a32113cecfb91c6089",
+          "id": 369,
+          "name": "Çanta",
+          "parentId": 368,
+          "subCategories": [
+            {
+              "id": 370,
+              "name": "Kadın Çanta",
+              "parentId": 369,
+              "subCategories": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }`,
       example: `curl -X PUT \\
-  https://api.cozmopol.com/v2/products/12345 \\
-  -H 'Authorization: Bearer YOUR_API_KEY' \\
-  -H 'Content-Type: application/json' \\
-  -d '{
-    "title": "Premium Kulaklık - Güncellenmiş",
-    "price": 279.99
-  }'`
+  https://api.cozmopol.com/api/categories \\
+  -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
-      method: 'DELETE',
-      path: '/v2/products/{id}',
-      description: 'Ürün sil',
-      status: 'development',
+      method: 'GET',
+      path: '/api/brands',
+      description: 'Marka listesini getir',
+      status: 'stable',
       parameters: [
-        { name: 'id', type: 'integer', required: true, description: 'Ürün ID\'si' }
+        { name: 'Authorization', type: 'string', required: false, description: 'Bearer token (Header) - Opsiyonel' }
       ],
       response: `{
-  "success": true,
-  "message": "Product deleted successfully"
+  [
+    {
+      "_id": "67c06206c03d6bf6a0fbeedb",
+      "value": "adidas",
+      "label": "Adidas"
+    },
+    {
+      "_id": "67c06206c03d6bf6a0fbeedc", 
+      "value": "apple",
+      "label": "Apple"
+    },
+    {
+      "_id": "67c06206c03d6bf6a0fbeedd",
+      "value": "armani", 
+      "label": "Armani"
+    }
+  ]
 }`,
       example: `curl -X DELETE \\
-  https://api.cozmopol.com/v2/products/12345 \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
+  https://api.cozmopol.com/api/brands`
     }
   ]
 
@@ -468,9 +550,9 @@ const Endpoints = () => {
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
           📦 Ürün Yönetimi
         </h2>
-        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
-          <p className="text-orange-800 text-sm">
-            <strong>🔧 Geliştiriliyor:</strong> Bu endpoint'ler aktif geliştirme aşamasındadır. Değişiklikler olabilir.
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <p className="text-green-800 text-sm">
+            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Güvenle kullanabilirsiniz.
           </p>
         </div>
         <div className="space-y-4">
