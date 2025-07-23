@@ -13,7 +13,7 @@ const HealthCheck = () => {
       setLoading(true)
       setError(null)
       
-      const response = await fetch('https://api.cozmopol.com/api/health')
+      const response = await fetch('https://backend-integration-mauve.vercel.app/api/health')
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
