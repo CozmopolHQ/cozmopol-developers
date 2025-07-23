@@ -420,7 +420,7 @@ fun main() {
     setTestResult(null)
     
     try {
-      const baseUrl = 'https://api.cozmopol.com'
+      const baseUrl = 'https://backend-integration-mauve.vercel.app'
       let url = `${baseUrl}${path}`
       
       // Query parametrelerini ekle
