@@ -27,10 +27,12 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'active':
+      case 'stable':
         return 'bg-green-100 text-green-800'
+      case 'development':
+        return 'bg-orange-100 text-orange-800'
       case 'deprecated':
-        return 'bg-yellow-100 text-yellow-800'
+        return 'bg-red-100 text-red-800'
       case 'beta':
         return 'bg-blue-100 text-blue-800'
       default:
@@ -135,7 +137,7 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
           </div>
           <div className="flex items-center space-x-3">
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(status)}`}>
-              {status}
+              {status === 'stable' ? '✅ Stable' : status === 'development' ? '🔧 Geliştiriliyor' : status}
             </span>
             {isExpanded ? (
               <ChevronDown className="w-5 h-5 text-slate-400" />
@@ -246,7 +248,7 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
               <div>
                 <h4 className="text-lg font-semibold text-slate-900 mb-4">Response Formatı</h4>
                 {response ? (
-                  <CodeBlock code={JSON.stringify(response, null, 2)} language="json" />
+                  <CodeBlock code={response} language="json" />
                 ) : (
                   <p className="text-slate-600">Response örneği mevcut değil.</p>
                 )}
@@ -257,7 +259,7 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
               <div>
                 <h4 className="text-lg font-semibold text-slate-900 mb-4">Örnek Kullanım</h4>
                 {example ? (
-                  <CodeBlock code={example} language="javascript" />
+                  <CodeBlock code={example} language="bash" />
                 ) : (
                   <p className="text-slate-600">Örnek kod mevcut değil.</p>
                 )}
