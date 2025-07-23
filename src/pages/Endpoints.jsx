@@ -153,7 +153,16 @@ const Endpoints = () => {
       description: 'Tüm ürünleri listele',
       status: 'stable',
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'search', type: 'string', required: false, description: 'Ürün başlığında arama yapar' },
+        { name: 'brand', type: 'string', required: false, description: 'Marka adına göre filtreler' },
+        { name: 'category', type: 'integer', required: false, description: 'Ana kategori ID\'sine göre filtreler' },
+        { name: 'subcategory', type: 'integer', required: false, description: 'Alt kategori ID\'sine göre filtreler' },
+        { name: 'currency', type: 'string', required: false, description: 'Para birimi (TRY, USD, EUR)' },
+        { name: 'status', type: 'boolean', required: false, description: 'Ürün durumu (true: aktif, false: pasif)' },
+        { name: 'isVariantProduct', type: 'boolean', required: false, description: 'Varyasyonlu ürün filtresi' },
+        { name: 'minPrice', type: 'number', required: false, description: 'Minimum fiyat filtresi' },
+        { name: 'maxPrice', type: 'number', required: false, description: 'Maksimum fiyat filtresi' }
       ],
       response: `{
   [
@@ -195,7 +204,7 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/api/products \\
+  'https://api.cozmopol.com/api/products?search=keçiboynuzu&brand=Yeni Marka Adı&category=1219&subcategory=1385&currency=TRY&status=true&isVariantProduct=false&minPrice=140&maxPrice=150' \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
