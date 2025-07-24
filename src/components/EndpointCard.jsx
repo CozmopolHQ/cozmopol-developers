@@ -8,14 +8,6 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
   const [activeLanguage, setActiveLanguage] = useState('curl')
   const [testResult, setTestResult] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [testParams, setTestParams] = useState({})
-
-  const handleParamChange = (key, value) => {
-    setTestParams(prev => ({
-      ...prev,
-      [key]: value
-    }))
-  }
 
   const getMethodColor = (method) => {
     switch (method?.toUpperCase()) {
@@ -200,90 +192,29 @@ public class ApiClient {
 
   const handleLiveTest = async () => {
     setIsLoading(true)
-    setTestResult(null)
-
     try {
       const baseUrl = 'https://backend-integration-mauve.vercel.app'
-      let url = `${baseUrl}${path}`
+      const fullUrl = `${baseUrl}${path}`
       
-      // Path parametrelerini değiştir (örn: /api/products/{id} -> /api/products/123)
-      if (path.includes('{') && path.includes('}')) {
-        const pathParams = path.match(/\{([^}]+)\}/g)
-        if (pathParams) {
-          pathParams.forEach(param => {
-            const paramName = param.slice(1, -1) // Remove { }
-            const paramValue = testParams[paramName]
-            if (paramValue) {
-              url = url.replace(param, paramValue)
-            }
-          })
-        }
-      }
-
-      // Query parametrelerini ekle
-      if (method === 'GET' && Object.keys(testParams).length > 0) {
-        const queryParams = new URLSearchParams()
-        Object.entries(testParams).forEach(([key, value]) => {
-          if (value && value.trim() !== '' && key !== 'authorization' && key !== 'body' && !path.includes(`{${key}}`)) {
-            queryParams.append(key, value.trim())
-          }
-        })
-        if (queryParams.toString()) {
-          url += `?${queryParams.toString()}`
-        }
-      }
-
-      const headers = {
-        'Content-Type': 'application/json'
-      }
-
-      // Authorization token ekle
-      if (testParams.authorization && testParams.authorization.trim()) {
-        headers['Authorization'] = `Bearer ${testParams.authorization}`
-      }
-
-      let requestOptions = {
+      const response = await fetch(fullUrl, {
         method: method?.toUpperCase() || 'GET',
-        headers: headers
-      }
-
-      // Request body ekle (POST/PUT için)
-      if ((method === 'POST' || method === 'PUT') && testParams.body) {
-        try {
-          JSON.parse(testParams.body) // JSON geçerliliğini kontrol et
-          requestOptions.body = testParams.body
-        } catch (e) {
-          throw new Error('Geçersiz JSON formatı')
-        }
-      }
-
-      const response = await fetch(url, requestOptions)
-      const responseHeaders = {}
-      response.headers.forEach((value, key) => {
-        responseHeaders[key] = value
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
 
-      let data
-      try {
-        data = await response.json()
-      } catch (e) {
-        data = await response.text()
-      }
+      const data = await response.json()
       
       setTestResult({
-        success: response.ok,
         status: response.status,
         statusText: response.statusText,
-        headers: responseHeaders,
         data: data,
         timestamp: new Date().toISOString()
       })
     } catch (error) {
       setTestResult({
-        success: false,
         status: 'error',
         statusText: 'Network Error',
-        headers: {},
         data: { error: error.message },
         timestamp: new Date().toISOString()
       })
@@ -292,8 +223,81 @@ public class ApiClient {
     }
   }
 
-  // Tüm endpoint'ler için test özelliği aktif
-  const isTestEndpoint = true
+  // Helper functions
+  function getBodyPlaceholder() {
+    if (path.includes('/products')) {
+      return `{
+  "title": "Premium Kulaklık",
+  "description": "Yüksek kaliteli wireless kulaklık",
+  "price": 299.99,
+  "category_id": 15,
+  "stock_quantity": 50,
+  "images": [
+    "https://example.com/image1.jpg"
+  ]
+}`
+    } else if (path.includes('/auth/token')) {
+      return `{
+  "storeUserId": "67c1b95d3201a327160dbca2",
+  "apiKey": "259aa5b375e08fb26e6e0ebf3f0949ca",
+  "apiSecretKey": "720f5664ee414a5047bb130144f1a29cba65130d4e7585f18992421a02e6f065"
+}`
+    } else if (path.includes('/orders')) {
+      return `{
+  "status": "shipped",
+  "tracking_number": "TRK123456789",
+  "notes": "Kargo MNG ile gönderildi"
+}`
+    } else if (path.includes('/inventory')) {
+      return `{
+  "quantity": 75,
+  "operation": "set"
+}`
+    } else if (path.includes('/webhook')) {
+      return `{
+  "event": "order.created",
+  "data": {
+    "order_id": 12345,
+    "test": true
+  }
+}`
+    }
+    return `{
+  "key": "value"
+}`
+  }
+
+  function generateTestUrl() {
+    const baseUrl = 'https://backend-integration-mauve.vercel.app'
+    let url = `${baseUrl}${path}`
+    
+    // Path parametrelerini değiştir
+    if (path.includes('{') && path.includes('}')) {
+      const pathParams = path.match(/\{([^}]+)\}/g)
+      if (pathParams) {
+        pathParams.forEach(param => {
+          const paramName = param.slice(1, -1)
+          const paramValue = testParams[paramName] || `{${paramName}}`
+          url = url.replace(param, paramValue)
+        })
+      }
+    }
+
+    // Query parametrelerini ekle
+    if (method === 'GET' && Object.keys(testParams).length > 0) {
+      const queryParams = new URLSearchParams()
+      Object.entries(testParams).forEach(([key, value]) => {
+        if (value && value.trim() !== '' && key !== 'authorization' && key !== 'body' && !path.includes(`{${key}}`)) {
+          queryParams.append(key, value.trim())
+        }
+      })
+      if (queryParams.toString()) {
+        url += `?${queryParams.toString()}`
+      }
+    }
+
+    return url
+  }
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
@@ -395,4 +399,120 @@ public class ApiClient {
               </div>
             )}
 
-            {
+            {activeTab === 'example' && (
+              <div>
+                {example ? (
+                  <div>
+                    {/* Language Selector */}
+                    <div className="flex flex-wrap gap-2 mb-6 p-3 bg-slate-50 rounded-lg">
+                      {languages.map((lang) => (
+                        <button
+                          key={lang.id}
+                          onClick={() => setActiveLanguage(lang.id)}
+                          className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                            activeLanguage === lang.id
+                              ? 'bg-blue-600 text-white shadow-sm'
+                              : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                          }`}
+                        >
+                          <span>{lang.icon}</span>
+                          <span>{lang.name}</span>
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Code Example */}
+                    <CodeBlock 
+                      code={generateCodeExample(activeLanguage)} 
+                      language={activeLanguage === 'curl' ? 'bash' : activeLanguage === 'nodejs' ? 'javascript' : activeLanguage} 
+                    />
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <div className="text-gray-400 text-4xl mb-2">💻</div>
+                    <p className="text-gray-500">No code example available</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === 'test' && (
+              <div className="space-y-6">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h4 className="font-medium text-blue-900 mb-2">Live API Test</h4>
+                  <p className="text-blue-700 text-sm">
+                    Test this endpoint against the live API server.
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
+                  <div className="flex items-center space-x-3">
+                    <span className={`px-2 py-1 rounded text-sm font-medium ${getMethodColor(method)}`}>
+                      {method?.toUpperCase()}
+                    </span>
+                    <code className="text-sm font-mono text-gray-700">
+                      https://backend-integration-mauve.vercel.app{path}
+                    </code>
+                  </div>
+                  <button
+                    onClick={handleLiveTest}
+                    disabled={isLoading}
+                    className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isLoading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <span>Testing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-4 h-4" />
+                        <span>Test</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {testResult && (
+                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                    <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                      <div className="flex items-center justify-between">
+                        <h5 className="font-medium text-gray-900">Test Result</h5>
+                        <div className="flex items-center space-x-3">
+                          <span className={`px-2 py-1 rounded text-sm font-medium ${
+                            testResult.status === 200 || testResult.status === 'error' 
+                              ? testResult.status === 200 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-red-100 text-red-800'
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {testResult.status} {testResult.statusText}
+                          </span>
+                          <div className="flex items-center space-x-1 text-sm text-gray-500">
+                            <Clock className="w-4 h-4" />
+                            <span>{new Date(testResult.timestamp).toLocaleTimeString()}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Response Body */}
+                    <div>
+                      <h5 className="text-sm font-medium text-slate-700 mb-2">Response Body</h5>
+                      <CodeBlock 
+                        code={JSON.stringify(testResult.data, null, 2)} 
+                        language="json" 
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default EndpointCard
