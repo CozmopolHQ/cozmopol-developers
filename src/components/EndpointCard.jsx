@@ -201,106 +201,63 @@ public class ApiClient {
   const handleLiveTest = async () => {
     setIsLoading(true)
     setTestResult(null)
-    
+
     try {
       const baseUrl = 'https://backend-integration-mauve.vercel.app'
-      let fullUrl = `${baseUrl}${path}`
+      let url = `${baseUrl}${path}`
       
-      // Path parametrelerini değiştir
+      // Path parametrelerini değiştir (örn: /api/products/{id} -> /api/products/123)
       if (path.includes('{') && path.includes('}')) {
         const pathParams = path.match(/\{([^}]+)\}/g)
         if (pathParams) {
           pathParams.forEach(param => {
-            const paramName = param.slice(1, -1)
+            const paramName = param.slice(1, -1) // Remove { }
             const paramValue = testParams[paramName]
-            if (paramValue && paramValue.trim() !== '') {
-              fullUrl = fullUrl.replace(param, paramValue.trim())
-            } else {
-              throw new Error(`Path parametresi gerekli: ${paramName}`)
+            if (paramValue) {
+              url = url.replace(param, paramValue)
             }
           })
         }
       }
 
-      // Query parametrelerini ekle (GET istekleri için)
-      if (method === 'GET' && parameters && parameters.length > 0) {
+      // Query parametrelerini ekle
+      if (method === 'GET' && Object.keys(testParams).length > 0) {
         const queryParams = new URLSearchParams()
-        parameters.forEach(param => {
-          if (param.name !== 'Authorization' && !param.description?.includes('Header')) {
-            const value = testParams[param.name]
-            if (value && value.trim() !== '') {
-              queryParams.append(param.name, value.trim())
-            } else if (param.required) {
-              throw new Error(`Gerekli parametre eksik: ${param.name}`)
-            }
+        Object.entries(testParams).forEach(([key, value]) => {
+          if (value && value.trim() !== '' && key !== 'authorization' && key !== 'body' && !path.includes(`{${key}}`)) {
+            queryParams.append(key, value.trim())
           }
         })
         if (queryParams.toString()) {
-          fullUrl += `?${queryParams.toString()}`
+          url += `?${queryParams.toString()}`
         }
       }
 
-      // Headers oluştur
       const headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       }
 
       // Authorization token ekle
-      if (testParams.authorization && testParams.authorization.trim() !== '') {
-        const token = testParams.authorization.trim()
-        headers['Authorization'] = token.startsWith('Bearer ') ? token : `Bearer ${token}`
-      } else if (!path.includes('/test/') || path.includes('/auth/')) {
-        // Test endpoint'leri dışında token gerekli
-        throw new Error('Authorization token gerekli')
+      if (testParams.authorization && testParams.authorization.trim()) {
+        headers['Authorization'] = `Bearer ${testParams.authorization}`
       }
 
-      // Diğer header parametrelerini ekle
-      if (parameters) {
-        parameters.forEach(param => {
-          if (param.name !== 'Authorization' && param.description?.includes('Header')) {
-            const value = testParams[param.name]
-            if (value && value.trim() !== '') {
-              headers[param.name] = value.trim()
-            } else if (param.required) {
-              throw new Error(`Gerekli header eksik: ${param.name}`)
-            }
-          }
-        })
-      }
-
-      // Request options oluştur
-      const requestOptions = {
+      let requestOptions = {
         method: method?.toUpperCase() || 'GET',
-        headers: headers,
+        headers: headers
       }
 
       // Request body ekle (POST/PUT için)
       if ((method === 'POST' || method === 'PUT') && testParams.body) {
         try {
-          // JSON validation
-          const parsedBody = JSON.parse(testParams.body)
-          requestOptions.body = JSON.stringify(parsedBody)
-        } catch (jsonError) {
-          throw new Error('Geçersiz JSON formatı: ' + jsonError.message)
-        }
-      } else if ((method === 'POST' || method === 'PUT') && parameters && parameters.some(p => p.required && !p.description?.includes('Header'))) {
-        // POST/PUT için body gerekli mi kontrol et
-        const requiredBodyParams = parameters.filter(p => p.required && !p.description?.includes('Header') && p.name !== 'Authorization')
-        if (requiredBodyParams.length > 0) {
-          throw new Error('Request body gerekli')
+          JSON.parse(testParams.body) // JSON geçerliliğini kontrol et
+          requestOptions.body = testParams.body
+        } catch (e) {
+          throw new Error('Geçersiz JSON formatı')
         }
       }
-      
-      console.log('Test isteği gönderiliyor:', {
-        url: fullUrl,
-        method: requestOptions.method,
-        headers: requestOptions.headers,
-        body: requestOptions.body
-      })
 
-      const response = await fetch(fullUrl, requestOptions)
-      
-      // Response headers'ı al
+      const response = await fetch(url, requestOptions)
       const responseHeaders = {}
       response.headers.forEach((value, key) => {
         responseHeaders[key] = value
@@ -310,7 +267,6 @@ public class ApiClient {
       try {
         data = await response.json()
       } catch (e) {
-        // JSON parse edilemezse text olarak al
         data = await response.text()
       }
       
@@ -320,22 +276,16 @@ public class ApiClient {
         statusText: response.statusText,
         headers: responseHeaders,
         data: data,
-        timestamp: new Date().toISOString(),
-        url: fullUrl
+        timestamp: new Date().toISOString()
       })
     } catch (error) {
-      console.error('Test hatası:', error)
       setTestResult({
         success: false,
         status: 'error',
-        statusText: 'Test Hatası',
+        statusText: 'Network Error',
         headers: {},
-        data: { 
-          error: error.message,
-          type: 'client_error'
-        },
-        timestamp: new Date().toISOString(),
-        url: fullUrl || 'URL oluşturulamadı'
+        data: { error: error.message },
+        timestamp: new Date().toISOString()
       })
     } finally {
       setIsLoading(false)
@@ -447,162 +397,149 @@ public class ApiClient {
 
             {activeTab === 'example' && (
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Code Examples</h3>
-                  <div className="flex space-x-2">
-                    {languages.map((lang) => (
-                      <button
-                        key={lang.id}
-                        className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                          activeLanguage === lang.id
-                            ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                        onClick={() => setActiveLanguage(lang.id)}
-                      >
-                        <span className="mr-1">{lang.icon}</span>
-                        {lang.name}
-                      </button>
-                    ))}
-                  </div>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.id}
+                      className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                        activeLanguage === lang.id
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                      onClick={() => setActiveLanguage(lang.id)}
+                    >
+                      <span className="mr-2">{lang.icon}</span>
+                      {lang.name}
+                    </button>
+                  ))}
                 </div>
                 <CodeBlock 
                   code={generateCodeExample(activeLanguage)} 
-                  language={activeLanguage === 'curl' ? 'bash' : activeLanguage} 
+                  language={activeLanguage === 'nodejs' ? 'javascript' : activeLanguage} 
                 />
               </div>
             )}
 
             {activeTab === 'test' && (
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-slate-900">Live API Test</h3>
-                  <div className="text-sm text-slate-500">
-                    Test this endpoint with real parameters
-                  </div>
-                </div>
+              <div>
+                <div className="space-y-4 mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900">Live API Test</h3>
+                  
+                  {/* Authorization Token */}
+                  {(!path.includes('/test/') || path.includes('/auth/')) && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Authorization Token
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Bearer token (optional for test endpoints)"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={testParams.authorization || ''}
+                        onChange={(e) => handleParamChange('authorization', e.target.value)}
+                      />
+                    </div>
+                  )}
 
-                {/* Parametre Input'ları */}
-                {parameters && parameters.length > 0 && (
-                  <div className="space-y-4">
-                    <h4 className="font-semibold text-slate-900">Parameters</h4>
-                    {parameters.map((param, index) => (
-                      <div key={index} className="space-y-2">
-                        <label className="flex items-center space-x-2">
-                          <code className="text-sm font-mono bg-slate-100 px-2 py-1 rounded">
-                            {param.name}
-                          </code>
-                          <span className={`px-2 py-1 rounded text-xs font-medium ${
-                            param.required 
-                              ? 'bg-red-100 text-red-700' 
-                              : 'bg-slate-100 text-slate-700'
-                          }`}>
-                            {param.required ? 'Required' : 'Optional'}
-                          </span>
-                          <span className="text-sm text-slate-500">({param.type})</span>
-                        </label>
-                        <input
-                          type="text"
-                          placeholder={param.description}
-                          value={testParams[param.name] || ''}
-                          onChange={(e) => handleParamChange(param.name, e.target.value)}
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
+                  {/* Path Parameters */}
+                  {path.includes('{') && path.includes('}') && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Path Parameters
+                      </label>
+                      {path.match(/\{([^}]+)\}/g)?.map((param) => {
+                        const paramName = param.slice(1, -1)
+                        return (
+                          <div key={paramName} className="mb-2">
+                            <input
+                              type="text"
+                              placeholder={`${paramName} (required)`}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              value={testParams[paramName] || ''}
+                              onChange={(e) => handleParamChange(paramName, e.target.value)}
+                            />
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
 
-                {/* Authorization Token */}
-                <div className="space-y-2">
-                  <label className="flex items-center space-x-2">
-                    <code className="text-sm font-mono bg-slate-100 px-2 py-1 rounded">
-                      Authorization
-                    </code>
-                    <span className="px-2 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700">
-                      Optional
-                    </span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Bearer token or just the token"
-                    value={testParams.authorization || ''}
-                    onChange={(e) => handleParamChange('authorization', e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
+                  {/* Query Parameters for GET requests */}
+                  {method === 'GET' && parameters && parameters.length > 0 && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Query Parameters
+                      </label>
+                      {parameters.filter(p => p.in === 'query').map((param) => (
+                        <div key={param.name} className="mb-2">
+                          <input
+                            type="text"
+                            placeholder={`${param.name} ${param.required ? '(required)' : '(optional)'}`}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value={testParams[param.name] || ''}
+                            onChange={(e) => handleParamChange(param.name, e.target.value)}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
-                {/* Request Body (POST/PUT için) */}
-                {(method === 'POST' || method === 'PUT') && (
-                  <div className="space-y-2">
-                    <label className="flex items-center space-x-2">
-                      <code className="text-sm font-mono bg-slate-100 px-2 py-1 rounded">
-                        Request Body
-                      </code>
-                      <span className="px-2 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700">
-                        JSON
-                      </span>
-                    </label>
-                    <textarea
-                      rows={6}
-                      placeholder='{"key": "value"}'
-                      value={testParams.body || ''}
-                      onChange={(e) => handleParamChange('body', e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
-                    />
-                  </div>
-                )}
+                  {/* Request Body for POST/PUT */}
+                  {(method === 'POST' || method === 'PUT') && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Request Body (JSON)
+                      </label>
+                      <textarea
+                        rows={6}
+                        placeholder='{"key": "value"}'
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                        value={testParams.body || ''}
+                        onChange={(e) => handleParamChange('body', e.target.value)}
+                      />
+                    </div>
+                  )}
 
-                {/* Test Butonu */}
-                <div className="flex items-center space-x-4">
                   <button
                     onClick={handleLiveTest}
                     disabled={isLoading}
-                    className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-                      isLoading
-                        ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                        : 'bg-blue-600 text-white hover:bg-blue-700'
-                    }`}
+                    className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isLoading ? '⏳ Test Ediliyor...' : '🚀 Test Et'}
+                    {isLoading ? (
+                      <Clock className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Play className="w-4 h-4" />
+                    )}
+                    <span>{isLoading ? 'Testing...' : 'Send Request'}</span>
                   </button>
-
-                  {testResult && (
-                    <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      testResult.success
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {testResult.status} {testResult.statusText}
-                    </div>
-                  )}
                 </div>
 
-                {/* Test Sonucu */}
+                {/* Test Results */}
                 {testResult && (
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-semibold text-slate-900">Test Sonucu</h4>
-                      <div className="text-xs text-slate-500">
-                        {new Date(testResult.timestamp).toLocaleString('tr-TR')}
+                  <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="text-lg font-semibold text-gray-900">Response</h4>
+                      <div className="flex items-center space-x-2">
+                        <span className={`px-2 py-1 rounded text-sm font-medium ${
+                          testResult.success 
+                            ? 'bg-green-100 text-green-700' 
+                            : 'bg-red-100 text-red-700'
+                        }`}>
+                          {testResult.status} {testResult.statusText}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {new Date(testResult.timestamp).toLocaleTimeString()}
+                        </span>
                       </div>
                     </div>
-
-                    {/* Test URL */}
-                    <div>
-                      <h5 className="text-sm font-medium text-slate-700 mb-2">Test URL</h5>
-                      <code className="text-xs bg-slate-100 px-2 py-1 rounded block break-all">
-                        {testResult.url}
-                      </code>
-                    </div>
-
+                    
                     {/* Response Headers */}
                     {Object.keys(testResult.headers).length > 0 && (
-                      <div>
-                        <h5 className="text-sm font-medium text-slate-700 mb-2">Response Headers</h5>
-                        <div className="bg-slate-50 rounded-lg p-3 text-xs font-mono max-h-32 overflow-y-auto">
+                      <div className="mb-4">
+                        <h5 className="text-sm font-medium text-gray-700 mb-2">Headers</h5>
+                        <div className="bg-white border rounded p-2 text-xs font-mono">
                           {Object.entries(testResult.headers).map(([key, value]) => (
-                            <div key={key} className="text-slate-600">
+                            <div key={key} className="text-gray-600">
                               <span className="text-blue-600">{key}:</span> {value}
                             </div>
                           ))}
@@ -612,10 +549,10 @@ public class ApiClient {
 
                     {/* Response Body */}
                     <div>
-                      <h5 className="text-sm font-medium text-slate-700 mb-2">Response Body</h5>
+                      <h5 className="text-sm font-medium text-gray-700 mb-2">Body</h5>
                       <CodeBlock 
                         code={typeof testResult.data === 'string' ? testResult.data : JSON.stringify(testResult.data, null, 2)} 
-                        language={typeof testResult.data === 'string' ? 'text' : 'json'} 
+                        language="json" 
                       />
                     </div>
                   </div>
