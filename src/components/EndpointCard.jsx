@@ -326,30 +326,38 @@ public class ApiClient {
             {activeTab === 'example' && (
               <div>
                 {example ? (
-                
-                {/* Language Selector */}
-                <div className="flex flex-wrap gap-2 mb-6 p-3 bg-slate-50 rounded-lg">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.id}
-                      onClick={() => setActiveLanguage(lang.id)}
-                      className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                        activeLanguage === lang.id
-                          ? 'bg-blue-600 text-white shadow-sm'
-                          : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-                      }`}
-                    >
-                      <span>{lang.icon}</span>
-                      <span>{lang.name}</span>
-                    </button>
-                  ))}
-                </div>
+                  <div>
+                    {/* Language Selector */}
+                    <div className="flex flex-wrap gap-2 mb-6 p-3 bg-slate-50 rounded-lg">
+                      {languages.map((lang) => (
+                        <button
+                          key={lang.id}
+                          onClick={() => setActiveLanguage(lang.id)}
+                          className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                            activeLanguage === lang.id
+                              ? 'bg-blue-600 text-white shadow-sm'
+                              : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                          }`}
+                        >
+                          <span>{lang.icon}</span>
+                          <span>{lang.name}</span>
+                        </button>
+                      ))}
+                    </div>
 
-                {/* Code Example */}
-                <CodeBlock 
-                  code={generateCodeExample(activeLanguage)} 
-                  language={activeLanguage === 'curl' ? 'bash' : activeLanguage === 'nodejs' ? 'javascript' : activeLanguage} 
-                />
+                    {/* Code Example */}
+                    <CodeBlock 
+                      code={generateCodeExample(activeLanguage)} 
+                      language={activeLanguage === 'curl' ? 'bash' : activeLanguage === 'nodejs' ? 'javascript' : activeLanguage} 
+                    />
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <div className="text-gray-400 text-4xl mb-2">💻</div>
+                    <p className="text-gray-500">No code example available</p>
+                  </div>
+                )}
+              </div>
             )}
 
             {activeTab === 'test' && (
