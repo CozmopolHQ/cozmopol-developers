@@ -8,6 +8,14 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
   const [activeLanguage, setActiveLanguage] = useState('curl')
   const [testResult, setTestResult] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [testParams, setTestParams] = useState({})
+
+  const handleParamChange = (key, value) => {
+    setTestParams(prev => ({
+      ...prev,
+      [key]: value
+    }))
+  }
 
   const getMethodColor = (method) => {
     switch (method?.toUpperCase()) {
@@ -192,112 +200,150 @@ public class ApiClient {
 
   const handleLiveTest = async () => {
     setIsLoading(true)
+    setTestResult(null)
+    
     try {
       const baseUrl = 'https://backend-integration-mauve.vercel.app'
-      const fullUrl = `${baseUrl}${path}`
+      let fullUrl = `${baseUrl}${path}`
       
-      const response = await fetch(fullUrl, {
+      // Path parametrelerini değiştir
+      if (path.includes('{') && path.includes('}')) {
+        const pathParams = path.match(/\{([^}]+)\}/g)
+        if (pathParams) {
+          pathParams.forEach(param => {
+            const paramName = param.slice(1, -1)
+            const paramValue = testParams[paramName]
+            if (paramValue && paramValue.trim() !== '') {
+              fullUrl = fullUrl.replace(param, paramValue.trim())
+            } else {
+              throw new Error(`Path parametresi gerekli: ${paramName}`)
+            }
+          })
+        }
+      }
+
+      // Query parametrelerini ekle (GET istekleri için)
+      if (method === 'GET' && parameters && parameters.length > 0) {
+        const queryParams = new URLSearchParams()
+        parameters.forEach(param => {
+          if (param.name !== 'Authorization' && !param.description?.includes('Header')) {
+            const value = testParams[param.name]
+            if (value && value.trim() !== '') {
+              queryParams.append(param.name, value.trim())
+            } else if (param.required) {
+              throw new Error(`Gerekli parametre eksik: ${param.name}`)
+            }
+          }
+        })
+        if (queryParams.toString()) {
+          fullUrl += `?${queryParams.toString()}`
+        }
+      }
+
+      // Headers oluştur
+      const headers = {
+        'Content-Type': 'application/json',
+      }
+
+      // Authorization token ekle
+      if (testParams.authorization && testParams.authorization.trim() !== '') {
+        const token = testParams.authorization.trim()
+        headers['Authorization'] = token.startsWith('Bearer ') ? token : `Bearer ${token}`
+      } else if (!path.includes('/test/') || path.includes('/auth/')) {
+        // Test endpoint'leri dışında token gerekli
+        throw new Error('Authorization token gerekli')
+      }
+
+      // Diğer header parametrelerini ekle
+      if (parameters) {
+        parameters.forEach(param => {
+          if (param.name !== 'Authorization' && param.description?.includes('Header')) {
+            const value = testParams[param.name]
+            if (value && value.trim() !== '') {
+              headers[param.name] = value.trim()
+            } else if (param.required) {
+              throw new Error(`Gerekli header eksik: ${param.name}`)
+            }
+          }
+        })
+      }
+
+      // Request options oluştur
+      const requestOptions = {
         method: method?.toUpperCase() || 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: headers,
+      }
+
+      // Request body ekle (POST/PUT için)
+      if ((method === 'POST' || method === 'PUT') && testParams.body) {
+        try {
+          // JSON validation
+          const parsedBody = JSON.parse(testParams.body)
+          requestOptions.body = JSON.stringify(parsedBody)
+        } catch (jsonError) {
+          throw new Error('Geçersiz JSON formatı: ' + jsonError.message)
+        }
+      } else if ((method === 'POST' || method === 'PUT') && parameters && parameters.some(p => p.required && !p.description?.includes('Header'))) {
+        // POST/PUT için body gerekli mi kontrol et
+        const requiredBodyParams = parameters.filter(p => p.required && !p.description?.includes('Header') && p.name !== 'Authorization')
+        if (requiredBodyParams.length > 0) {
+          throw new Error('Request body gerekli')
+        }
+      }
+      
+      console.log('Test isteği gönderiliyor:', {
+        url: fullUrl,
+        method: requestOptions.method,
+        headers: requestOptions.headers,
+        body: requestOptions.body
       })
 
-      const data = await response.json()
+      const response = await fetch(fullUrl, requestOptions)
+      
+      // Response headers'ı al
+      const responseHeaders = {}
+      response.headers.forEach((value, key) => {
+        responseHeaders[key] = value
+      })
+
+      let data
+      try {
+        data = await response.json()
+      } catch (e) {
+        // JSON parse edilemezse text olarak al
+        data = await response.text()
+      }
       
       setTestResult({
+        success: response.ok,
         status: response.status,
         statusText: response.statusText,
+        headers: responseHeaders,
         data: data,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        url: fullUrl
       })
     } catch (error) {
+      console.error('Test hatası:', error)
       setTestResult({
+        success: false,
         status: 'error',
-        statusText: 'Network Error',
-        data: { error: error.message },
-        timestamp: new Date().toISOString()
+        statusText: 'Test Hatası',
+        headers: {},
+        data: { 
+          error: error.message,
+          type: 'client_error'
+        },
+        timestamp: new Date().toISOString(),
+        url: fullUrl || 'URL oluşturulamadı'
       })
     } finally {
       setIsLoading(false)
     }
   }
 
-  // Helper functions
-  function getBodyPlaceholder() {
-    if (path.includes('/products')) {
-      return `{
-  "title": "Premium Kulaklık",
-  "description": "Yüksek kaliteli wireless kulaklık",
-  "price": 299.99,
-  "category_id": 15,
-  "stock_quantity": 50,
-  "images": [
-    "https://example.com/image1.jpg"
-  ]
-}`
-    } else if (path.includes('/auth/token')) {
-      return `{
-  "storeUserId": "67c1b95d3201a327160dbca2",
-  "apiKey": "259aa5b375e08fb26e6e0ebf3f0949ca",
-  "apiSecretKey": "720f5664ee414a5047bb130144f1a29cba65130d4e7585f18992421a02e6f065"
-}`
-    } else if (path.includes('/orders')) {
-      return `{
-  "status": "shipped",
-  "tracking_number": "TRK123456789",
-  "notes": "Kargo MNG ile gönderildi"
-}`
-    } else if (path.includes('/inventory')) {
-      return `{
-  "quantity": 75,
-  "operation": "set"
-}`
-    } else if (path.includes('/webhook')) {
-      return `{
-  "event": "order.created",
-  "data": {
-    "order_id": 12345,
-    "test": true
-  }
-}`
-    }
-    return `{
-  "key": "value"
-}`
-  }
-
-  function generateTestUrl() {
-    const baseUrl = 'https://backend-integration-mauve.vercel.app'
-    let url = `${baseUrl}${path}`
-    
-    // Path parametrelerini değiştir
-    if (path.includes('{') && path.includes('}')) {
-      const pathParams = path.match(/\{([^}]+)\}/g)
-      if (pathParams) {
-        pathParams.forEach(param => {
-          const paramName = param.slice(1, -1)
-          const paramValue = testParams[paramName] || `{${paramName}}`
-          url = url.replace(param, paramValue)
-        })
-      }
-    }
-
-    // Query parametrelerini ekle
-    if (method === 'GET' && Object.keys(testParams).length > 0) {
-      const queryParams = new URLSearchParams()
-      Object.entries(testParams).forEach(([key, value]) => {
-        if (value && value.trim() !== '' && key !== 'authorization' && key !== 'body' && !path.includes(`{${key}}`)) {
-          queryParams.append(key, value.trim())
-        }
-      })
-      if (queryParams.toString()) {
-        url += `?${queryParams.toString()}`
-      }
-    }
-
-    return url
-  }
+  // Tüm endpoint'ler için test özelliği aktif
+  const isTestEndpoint = true
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
@@ -401,107 +447,175 @@ public class ApiClient {
 
             {activeTab === 'example' && (
               <div>
-                {example ? (
-                  <div>
-                    {/* Language Selector */}
-                    <div className="flex flex-wrap gap-2 mb-6 p-3 bg-slate-50 rounded-lg">
-                      {languages.map((lang) => (
-                        <button
-                          key={lang.id}
-                          onClick={() => setActiveLanguage(lang.id)}
-                          className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                            activeLanguage === lang.id
-                              ? 'bg-blue-600 text-white shadow-sm'
-                              : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-                          }`}
-                        >
-                          <span>{lang.icon}</span>
-                          <span>{lang.name}</span>
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Code Example */}
-                    <CodeBlock 
-                      code={generateCodeExample(activeLanguage)} 
-                      language={activeLanguage === 'curl' ? 'bash' : activeLanguage === 'nodejs' ? 'javascript' : activeLanguage} 
-                    />
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Code Examples</h3>
+                  <div className="flex space-x-2">
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.id}
+                        className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                          activeLanguage === lang.id
+                            ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                        onClick={() => setActiveLanguage(lang.id)}
+                      >
+                        <span className="mr-1">{lang.icon}</span>
+                        {lang.name}
+                      </button>
+                    ))}
                   </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <div className="text-gray-400 text-4xl mb-2">💻</div>
-                    <p className="text-gray-500">No code example available</p>
-                  </div>
-                )}
+                </div>
+                <CodeBlock 
+                  code={generateCodeExample(activeLanguage)} 
+                  language={activeLanguage === 'curl' ? 'bash' : activeLanguage} 
+                />
               </div>
             )}
 
             {activeTab === 'test' && (
               <div className="space-y-6">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <h4 className="font-medium text-blue-900 mb-2">Live API Test</h4>
-                  <p className="text-blue-700 text-sm">
-                    Test this endpoint against the live API server.
-                  </p>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-slate-900">Live API Test</h3>
+                  <div className="text-sm text-slate-500">
+                    Test this endpoint with real parameters
+                  </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
-                  <div className="flex items-center space-x-3">
-                    <span className={`px-2 py-1 rounded text-sm font-medium ${getMethodColor(method)}`}>
-                      {method?.toUpperCase()}
-                    </span>
-                    <code className="text-sm font-mono text-gray-700">
-                      https://backend-integration-mauve.vercel.app{path}
-                    </code>
+                {/* Parametre Input'ları */}
+                {parameters && parameters.length > 0 && (
+                  <div className="space-y-4">
+                    <h4 className="font-semibold text-slate-900">Parameters</h4>
+                    {parameters.map((param, index) => (
+                      <div key={index} className="space-y-2">
+                        <label className="flex items-center space-x-2">
+                          <code className="text-sm font-mono bg-slate-100 px-2 py-1 rounded">
+                            {param.name}
+                          </code>
+                          <span className={`px-2 py-1 rounded text-xs font-medium ${
+                            param.required 
+                              ? 'bg-red-100 text-red-700' 
+                              : 'bg-slate-100 text-slate-700'
+                          }`}>
+                            {param.required ? 'Required' : 'Optional'}
+                          </span>
+                          <span className="text-sm text-slate-500">({param.type})</span>
+                        </label>
+                        <input
+                          type="text"
+                          placeholder={param.description}
+                          value={testParams[param.name] || ''}
+                          onChange={(e) => handleParamChange(param.name, e.target.value)}
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                    ))}
                   </div>
+                )}
+
+                {/* Authorization Token */}
+                <div className="space-y-2">
+                  <label className="flex items-center space-x-2">
+                    <code className="text-sm font-mono bg-slate-100 px-2 py-1 rounded">
+                      Authorization
+                    </code>
+                    <span className="px-2 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700">
+                      Optional
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Bearer token or just the token"
+                    value={testParams.authorization || ''}
+                    onChange={(e) => handleParamChange('authorization', e.target.value)}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                {/* Request Body (POST/PUT için) */}
+                {(method === 'POST' || method === 'PUT') && (
+                  <div className="space-y-2">
+                    <label className="flex items-center space-x-2">
+                      <code className="text-sm font-mono bg-slate-100 px-2 py-1 rounded">
+                        Request Body
+                      </code>
+                      <span className="px-2 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700">
+                        JSON
+                      </span>
+                    </label>
+                    <textarea
+                      rows={6}
+                      placeholder='{"key": "value"}'
+                      value={testParams.body || ''}
+                      onChange={(e) => handleParamChange('body', e.target.value)}
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
+                    />
+                  </div>
+                )}
+
+                {/* Test Butonu */}
+                <div className="flex items-center space-x-4">
                   <button
                     onClick={handleLiveTest}
                     disabled={isLoading}
-                    className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                      isLoading
+                        ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                    }`}
                   >
-                    {isLoading ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                        <span>Testing...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-4 h-4" />
-                        <span>Test</span>
-                      </>
-                    )}
+                    {isLoading ? '⏳ Test Ediliyor...' : '🚀 Test Et'}
                   </button>
+
+                  {testResult && (
+                    <div className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      testResult.success
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {testResult.status} {testResult.statusText}
+                    </div>
+                  )}
                 </div>
 
+                {/* Test Sonucu */}
                 {testResult && (
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-                      <div className="flex items-center justify-between">
-                        <h5 className="font-medium text-gray-900">Test Result</h5>
-                        <div className="flex items-center space-x-3">
-                          <span className={`px-2 py-1 rounded text-sm font-medium ${
-                            testResult.status === 200 || testResult.status === 'error' 
-                              ? testResult.status === 200 
-                                ? 'bg-green-100 text-green-800' 
-                                : 'bg-red-100 text-red-800'
-                              : 'bg-yellow-100 text-yellow-800'
-                          }`}>
-                            {testResult.status} {testResult.statusText}
-                          </span>
-                          <div className="flex items-center space-x-1 text-sm text-gray-500">
-                            <Clock className="w-4 h-4" />
-                            <span>{new Date(testResult.timestamp).toLocaleTimeString()}</span>
-                          </div>
-                        </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-semibold text-slate-900">Test Sonucu</h4>
+                      <div className="text-xs text-slate-500">
+                        {new Date(testResult.timestamp).toLocaleString('tr-TR')}
                       </div>
                     </div>
+
+                    {/* Test URL */}
+                    <div>
+                      <h5 className="text-sm font-medium text-slate-700 mb-2">Test URL</h5>
+                      <code className="text-xs bg-slate-100 px-2 py-1 rounded block break-all">
+                        {testResult.url}
+                      </code>
+                    </div>
+
+                    {/* Response Headers */}
+                    {Object.keys(testResult.headers).length > 0 && (
+                      <div>
+                        <h5 className="text-sm font-medium text-slate-700 mb-2">Response Headers</h5>
+                        <div className="bg-slate-50 rounded-lg p-3 text-xs font-mono max-h-32 overflow-y-auto">
+                          {Object.entries(testResult.headers).map(([key, value]) => (
+                            <div key={key} className="text-slate-600">
+                              <span className="text-blue-600">{key}:</span> {value}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     {/* Response Body */}
                     <div>
                       <h5 className="text-sm font-medium text-slate-700 mb-2">Response Body</h5>
                       <CodeBlock 
-                        code={JSON.stringify(testResult.data, null, 2)} 
-                        language="json" 
+                        code={typeof testResult.data === 'string' ? testResult.data : JSON.stringify(testResult.data, null, 2)} 
+                        language={typeof testResult.data === 'string' ? 'text' : 'json'} 
                       />
                     </div>
                   </div>
