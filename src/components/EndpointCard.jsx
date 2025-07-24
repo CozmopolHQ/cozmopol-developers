@@ -5,6 +5,7 @@ import CodeBlock from './CodeBlock'
 const EndpointCard = ({ method, path, description, status, parameters, response, example }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [activeTab, setActiveTab] = useState('parameters')
+  const [activeLanguage, setActiveLanguage] = useState('curl')
   const [testResult, setTestResult] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -37,6 +38,155 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
         return 'bg-blue-50 text-blue-700 border border-blue-200'
       default:
         return 'bg-gray-50 text-gray-700 border border-gray-200'
+    }
+  }
+
+  const languages = [
+    { id: 'curl', name: 'cURL', icon: '🌐' },
+    { id: 'javascript', name: 'JavaScript', icon: '🟨' },
+    { id: 'nodejs', name: 'Node.js', icon: '🟢' },
+    { id: 'php', name: 'PHP', icon: '🐘' },
+    { id: 'python', name: 'Python', icon: '🐍' },
+    { id: 'java', name: 'Java', icon: '☕' }
+  ]
+
+  const generateCodeExample = (lang) => {
+    const baseUrl = 'https://backend-integration-mauve.vercel.app'
+    const fullUrl = `${baseUrl}${path}`
+    const hasAuth = !path.includes('/test/') || path.includes('/auth/')
+    const hasBody = method === 'POST' || method === 'PUT'
+
+    switch (lang) {
+      case 'curl':
+        return example || `curl -X ${method} \\
+  ${fullUrl} \\${hasAuth ? `
+  -H 'Authorization: Bearer YOUR_API_KEY' \\` : ''}
+  -H 'Content-Type: application/json'${hasBody ? ` \\
+  -d '{
+    "key": "value"
+  }'` : ''}`
+
+      case 'javascript':
+        return `// Fetch API
+const response = await fetch('${fullUrl}', {
+  method: '${method}',
+  headers: {${hasAuth ? `
+    'Authorization': 'Bearer YOUR_API_KEY',` : ''}
+    'Content-Type': 'application/json'
+  }${hasBody ? `,
+  body: JSON.stringify({
+    // Request body
+    key: 'value'
+  })` : ''}
+});
+
+const data = await response.json();
+console.log(data);`
+
+      case 'nodejs':
+        return `// Node.js with axios
+const axios = require('axios');
+
+const config = {
+  method: '${method.toLowerCase()}',
+  url: '${fullUrl}',
+  headers: {${hasAuth ? `
+    'Authorization': 'Bearer YOUR_API_KEY',` : ''}
+    'Content-Type': 'application/json'
+  }${hasBody ? `,
+  data: {
+    // Request body
+    key: 'value'
+  }` : ''}
+};
+
+axios(config)
+  .then(response => {
+    console.log(JSON.stringify(response.data, null, 2));
+  })
+  .catch(error => {
+    console.error('Error:', error.response?.data || error.message);
+  });`
+
+      case 'php':
+        return `<?php
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => '${fullUrl}',
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_CUSTOMREQUEST => '${method}',
+  CURLOPT_HTTPHEADER => array(${hasAuth ? `
+    'Authorization: Bearer YOUR_API_KEY',` : ''}
+    'Content-Type: application/json'
+  ),${hasBody ? `
+  CURLOPT_POSTFIELDS => json_encode(array(
+    // Request body
+    'key' => 'value'
+  ))` : ''}
+));
+
+$response = curl_exec($curl);
+curl_close($curl);
+
+$data = json_decode($response, true);
+print_r($data);
+?>`
+
+      case 'python':
+        return `import requests
+import json
+
+url = '${fullUrl}'
+headers = {${hasAuth ? `
+    'Authorization': 'Bearer YOUR_API_KEY',` : ''}
+    'Content-Type': 'application/json'
+}
+
+${hasBody ? `data = {
+    # Request body
+    'key': 'value'
+}
+
+response = requests.${method.toLowerCase()}(url, headers=headers, json=data)` : `response = requests.${method.toLowerCase()}(url, headers=headers)`}
+
+if response.status_code == 200:
+    data = response.json()
+    print(json.dumps(data, indent=2))
+else:
+    print(f'Error: {response.status_code} - {response.text}')`
+
+      case 'java':
+        return `// Java with OkHttp
+import okhttp3.*;
+import java.io.IOException;
+
+public class ApiClient {
+    private static final OkHttpClient client = new OkHttpClient();
+    
+    public static void main(String[] args) throws IOException {
+        ${hasBody ? `MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(
+            "{\\"key\\": \\"value\\"}", JSON);
+        ` : ''}
+        Request request = new Request.Builder()
+            .url("${fullUrl}")
+            .${method.toLowerCase()}(${hasBody ? 'body' : ''})${hasAuth ? `
+            .addHeader("Authorization", "Bearer YOUR_API_KEY")` : ''}
+            .addHeader("Content-Type", "application/json")
+            .build();
+            
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            System.out.println(response.body().string());
+        }
+    }
+}`
+
+      default:
+        return example || `# ${lang} example not available`
     }
   }
 
@@ -176,14 +326,30 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
             {activeTab === 'example' && (
               <div>
                 {example ? (
-                  <CodeBlock code={example} language="bash" />
-                ) : (
-                  <div className="text-center py-8">
-                    <div className="text-gray-400 text-4xl mb-2">💻</div>
-                    <p className="text-gray-500">No code example available</p>
-                  </div>
-                )}
-              </div>
+                
+                {/* Language Selector */}
+                <div className="flex flex-wrap gap-2 mb-6 p-3 bg-slate-50 rounded-lg">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.id}
+                      onClick={() => setActiveLanguage(lang.id)}
+                      className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                        activeLanguage === lang.id
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                      }`}
+                    >
+                      <span>{lang.icon}</span>
+                      <span>{lang.name}</span>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Code Example */}
+                <CodeBlock 
+                  code={generateCodeExample(activeLanguage)} 
+                  language={activeLanguage === 'curl' ? 'bash' : activeLanguage === 'nodejs' ? 'javascript' : activeLanguage} 
+                />
             )}
 
             {activeTab === 'test' && (
