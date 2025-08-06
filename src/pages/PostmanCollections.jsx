@@ -4,33 +4,83 @@ import { Download, ExternalLink, Play, FileText, Zap } from 'lucide-react'
 const PostmanCollections = () => {
   const collections = [
     {
-      id: 'test-tools',
-      name: '🧪 Test & Araçlar',
-      description: 'API bağlantı testleri, sağlık kontrolleri ve geliştirici araçları',
-      icon: '🧪',
-      color: 'bg-green-50 border-green-200',
-      textColor: 'text-green-800',
+      id: 'qa',
+      name: '💬 Q&A',
+      description: 'Müşteri sorularını yönetme ve cevaplama işlemleri',
+      icon: '💬',
+      color: 'bg-indigo-50 border-indigo-200',
+      textColor: 'text-indigo-800',
       endpoints: [
-        'GET /api/test/ping - API bağlantı testi',
-        'GET /api/test/version - API versiyon bilgisi',
-        'GET /api/health - Sistem sağlık durumu',
-        'POST /api/auth/token - Token alma',
-        'POST /api/test/webhook - Webhook test (geliştiriliyor)'
+        'GET /api/questions - Soru listesi',
+        'PATCH /api/questions/{id}/answer - Soruya cevap ver'
       ],
-      postmanId: 'test-tools-collection',
+      postmanId: '89962312-201d-47d0-8ab6-1673324804e9',
+      link: 'https://www.postman.com/cozmopol/cozmopol-integration/collection/31351468-89962312-201d-47d0-8ab6-1673324804e9?action=share&source=collection_link&creator=31351468'
+    },
+    {
+      id: 'orders',
+      name: '📋 Orders',
+      description: 'Sipariş listeleme, detay görüntüleme ve durum takibi',
+      icon: '📋',
+      color: 'bg-purple-50 border-purple-200',
+      textColor: 'text-purple-800',
+      endpoints: [
+        'GET /api/orders - Tüm siparişleri getir',
+        'GET /api/orders/{id} - Sipariş detayını getir'
+      ],
+      postmanId: 'orders-collection',
+      link: '#'
+    },
+    {
+      id: 'inventory',
+      name: '📊 Inventory',
+      description: 'Stok takibi, güncelleme ve ürün stok yönetimi',
+      icon: '📊',
+      color: 'bg-yellow-50 border-yellow-200',
+      textColor: 'text-yellow-800',
+      endpoints: [
+        'GET /v2/inventory/{product_id} - Ürün stok güncelle'
+      ],
+      postmanId: 'inventory-collection',
+      link: '#'
+    },
+    {
+      id: 'shipments',
+      name: '🚚 Shipments',
+      description: 'Kargo şirketleri, gönderi oluşturma ve takip işlemleri',
+      icon: '🚚',
+      color: 'bg-orange-50 border-orange-200',
+      textColor: 'text-orange-800',
+      endpoints: [
+        'GET /api/shipping - Kargo şirketlerini getir'
+      ],
+      postmanId: 'f3f970d2-ac54-4a3f-9618-128137613086',
+      link: 'https://www.postman.com/cozmopol/workspace/cozmopol-integration/collection/31351468-f3f970d2-ac54-4a3f-9618-128137613086?action=share&source=collection_link&creator=31351468'
+    },
+    {
+      id: 'auth',
+      name: '🔐 Auth',
+      description: 'Kimlik doğrulama ve vendor giriş işlemleri',
+      icon: '🔐',
+      color: 'bg-red-50 border-red-200',
+      textColor: 'text-red-800',
+      endpoints: [
+        'POST /api/auth/token - Vendor olarak giriş yap'
+      ],
+      postmanId: 'auth-collection',
       link: '#'
     },
     {
       id: 'products',
-      name: '📦 Ürün Yönetimi',
+      name: '📦 Products',
       description: 'Ürün oluşturma, listeleme, güncelleme ve kategori yönetimi',
       icon: '📦',
       color: 'bg-blue-50 border-blue-200',
       textColor: 'text-blue-800',
       endpoints: [
-        'GET /api/products - Ürün listesi',
-        'GET /api/products/{id} - Ürün detayı',
+        'GET /api/products/{id} - Ürün detayı getir',
         'POST /v2/products - Yeni ürün oluştur',
+        'GET /api/products - Tüm ürünleri getir',
         'GET /api/categories - Kategori listesi',
         'GET /api/brands - Marka listesi'
       ],
@@ -38,67 +88,19 @@ const PostmanCollections = () => {
       link: '#'
     },
     {
-      id: 'orders',
-      name: '📋 Sipariş Yönetimi',
-      description: 'Sipariş listeleme, detay görüntüleme ve durum takibi',
-      icon: '📋',
-      color: 'bg-purple-50 border-purple-200',
-      textColor: 'text-purple-800',
+      id: 'test-tools',
+      name: '🧪 Test & Tools',
+      description: 'API bağlantı testleri, sağlık kontrolleri ve geliştirici araçları',
+      icon: '🧪',
+      color: 'bg-green-50 border-green-200',
+      textColor: 'text-green-800',
       endpoints: [
-        'GET /api/orders - Sipariş listesi',
-        'GET /api/orders/{id} - Sipariş detayı',
-        'PATCH /api/orders/{id}/status - Sipariş durumu güncelle',
-        'GET /api/orders/stats - Sipariş istatistikleri'
+        'GET /api/test/ping - API bağlantı testi',
+        'GET /api/test/version - API versiyon bilgisi',
+        'GET /api/health - Sistem sağlık kontrolü',
+        'POST /api/test/webhook - Webhook test tetikleyicisi'
       ],
-      postmanId: 'orders-collection',
-      link: '#'
-    },
-    {
-      id: 'shipments',
-      name: '🚚 Kargo Yönetimi',
-      description: 'Kargo şirketleri, gönderi oluşturma ve takip işlemleri',
-      icon: '🚚',
-      color: 'bg-orange-50 border-orange-200',
-      textColor: 'text-orange-800',
-      endpoints: [
-        'GET /api/shipping - Kargo şirketleri listesi',
-        'POST /api/shipments - Yeni gönderi oluştur',
-        'GET /api/shipments/{id}/track - Kargo takibi',
-        'PATCH /api/shipments/{id} - Gönderi güncelle'
-      ],
-      postmanId: 'f3f970d2-ac54-4a3f-9618-128137613086',
-      link: 'https://www.postman.com/cozmopol/workspace/cozmopol-integration/collection/31351468-f3f970d2-ac54-4a3f-9618-128137613086?action=share&source=collection_link&creator=31351468'
-    },
-    {
-      id: 'qa',
-      name: '💬 Soru & Cevap',
-      description: 'Müşteri sorularını yönetme ve cevaplama işlemleri',
-      icon: '💬',
-      color: 'bg-indigo-50 border-indigo-200',
-      textColor: 'text-indigo-800',
-      endpoints: [
-        'GET /api/questions - Soru listesi',
-        'PATCH /api/questions/{id}/answer - Soruya cevap ver',
-        'GET /api/questions/unanswered - Cevaplanmamış sorular',
-        'DELETE /api/questions/{id} - Soru sil'
-      ],
-      postmanId: '89962312-201d-47d0-8ab6-1673324804e9',
-      link: 'https://www.postman.com/cozmopol/workspace/cozmopol-integration/collection/31351468-89962312-201d-47d0-8ab6-1673324804e9?action=share&source=collection_link&creator=31351468'
-    },
-    {
-      id: 'inventory',
-      name: '📊 Stok Yönetimi',
-      description: 'Stok takibi, güncelleme ve düşük stok uyarıları',
-      icon: '📊',
-      color: 'bg-yellow-50 border-yellow-200',
-      textColor: 'text-yellow-800',
-      endpoints: [
-        'PUT /v2/inventory/{product_id} - Stok güncelle',
-        'GET /v2/inventory/low-stock - Düşük stoklu ürünler',
-        'GET /v2/inventory/reports - Stok raporları',
-        'POST /v2/inventory/bulk-update - Toplu stok güncelle'
-      ],
-      postmanId: 'inventory-collection',
+      postmanId: 'test-tools-collection',
       link: '#'
     }
   ]
@@ -268,7 +270,7 @@ const PostmanCollections = () => {
         
         <div className="flex items-center space-x-4">
           <a
-            href="https://www.postman.com/cozmopol/workspace/cozmopol-integration"
+            href="https://www.postman.com/cozmopol/cozmopol-integration"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center space-x-2 bg-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors"
@@ -278,7 +280,7 @@ const PostmanCollections = () => {
           </a>
           
           <div className="text-sm text-purple-700">
-            <p><strong>Workspace:</strong> cozmopol-integration</p>
+            <p><strong>Workspace:</strong> Cozmopol Integration</p>
             <p><strong>Organizasyon:</strong> Cozmopol</p>
           </div>
         </div>
