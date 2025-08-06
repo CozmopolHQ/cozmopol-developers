@@ -487,6 +487,49 @@ const Endpoints = () => {
     }
   ]
 
+  const shippingEndpoints = [
+    {
+      method: 'GET',
+      path: '/api/shipping',
+      description: 'Kargo şirketlerini listele',
+      status: 'stable',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `{
+  "data": [
+    {
+      "id": "67bc84d61c46630458270fdf",
+      "name": "Aras Kargo",
+      "slug": "aras",
+      "kargonomiId": 4
+    },
+    {
+      "id": "67bc84d61c46630458270fe0",
+      "name": "Sürat Kargo",
+      "slug": "surat",
+      "kargonomiId": 5
+    },
+    {
+      "id": "67bc84d61c46630458270fde",
+      "name": "Kolay Gelsin",
+      "slug": "sendeo",
+      "kargonomiId": 3
+    },
+    {
+      "id": "67bc84d61c46630458270fe1",
+      "name": "PTT Kargo",
+      "slug": "ptt",
+      "kargonomiId": 7
+    }
+  ]
+}`,
+      example: `curl -X GET \\
+  https://api.cozmopol.com/api/shipping \\
+  -H 'Authorization: Bearer YOUR_API_KEY'`
+    }
+  ]
+
   const inventoryEndpoints = [
     {
       method: 'PUT',
