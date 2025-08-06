@@ -686,6 +686,93 @@ const Endpoints = () => {
     }
   ]
 
+  const qaEndpoints = [
+    {
+      method: 'GET',
+      path: '/api/questions',
+      description: 'Ürünlere gelen soruları listele',
+      status: 'stable',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `{
+  "data": [
+    {
+      "id": "686295d1c5948b00b525bbd7",
+      "question": "selamlar 5 kuruş kaç kuruş",
+      "answer": "Thank you for your question! This product comes with a 2-year warranty.",
+      "askedAt": "2025-06-30T13:49:05.875Z",
+      "answeredAt": "2025-07-22T11:52:02.779Z",
+      "isAnswered": true,
+      "user": {
+        "id": "67c01eef9d1c025922091bc2",
+        "name": "Sinan Karataş",
+        "username": "stone",
+        "profilePicture": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/profile-pictures/67c01eef9d1c025922091bc2/1750163700328_67c01eef9d1c025922091bc2"
+      },
+      "product": {
+        "id": "67c1bcbb3c56211e5c53289c",
+        "title": "Organik Keçiboynuzu Özü 315 gr BABY MG",
+        "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/67c1bcbb3c56211e5c53289c/1740750012081-image0.jpg"
+      }
+    },
+    {
+      "id": "685ef564c5948b00b525bbd7",
+      "question": "asdasfsdgdfhdfh",
+      "answer": null,
+      "askedAt": "2025-06-27T19:47:48.769Z",
+      "answeredAt": null,
+      "isAnswered": false,
+      "user": {
+        "id": "67c01eef9d1c025922091bc2",
+        "name": "Sinan Karataş",
+        "username": "stone",
+        "profilePicture": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/profile-pictures/67c01eef9d1c025922091bc2/1750163700328_67c01eef9d1c025922091bc2"
+      },
+      "product": {
+        "id": "67c1bcbb3c56211e5c53289c",
+        "title": "Organik Keçiboynuzu Özü 315 gr BABY MG",
+        "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/67c1bcbb3c56211e5c53289c/1740750012081-image0.jpg"
+      }
+    }
+  ],
+  "meta": {
+    "totalCount": 9
+  }
+}`,
+      example: `curl -X GET \\
+  https://api.cozmopol.com/api/questions \\
+  -H 'Authorization: Bearer YOUR_API_KEY'`
+    },
+    {
+      method: 'PATCH',
+      path: '/api/questions/{id}/answer',
+      description: 'Soruya cevap ver',
+      status: 'stable',
+      parameters: [
+        { name: 'id', type: 'string', required: true, description: 'Soru ID\'si (MongoDB ObjectId)' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'answer', type: 'string', required: true, description: 'Cevap metni' }
+      ],
+      response: `{
+  "message": "Answer saved successfully",
+  "data": {
+    "id": "686295d1c5948b00b525bbd7",
+    "answer": "Evet, ürünün içeriğinde katkı maddesi bulunmamaktadır.",
+    "answeredAt": "2025-08-06T15:06:31.777Z",
+    "isAnswered": true
+  }
+}`,
+      example: `curl -X PATCH \\
+  https://api.cozmopol.com/api/questions/686295d1c5948b00b525bbd7/answer \\
+  -H 'Authorization: Bearer YOUR_API_KEY' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "answer": "Evet, ürünün içeriğinde katkı maddesi bulunmamaktadır."
+  }'`
+    }
+  ]
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
       <div className="text-center mb-12">
@@ -775,6 +862,23 @@ const Endpoints = () => {
         </div>
         <div className="space-y-4">
           {inventoryEndpoints.map((endpoint, index) => (
+            <EndpointCard key={index} {...endpoint} />
+          ))}
+        </div>
+      </section>
+
+      {/* Q&A Management Section */}
+      <section className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
+          💬 Soru & Cevap Yönetimi
+        </h2>
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <p className="text-green-800 text-sm">
+            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Güvenle kullanabilirsiniz.
+          </p>
+        </div>
+        <div className="space-y-4">
+          {qaEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>
