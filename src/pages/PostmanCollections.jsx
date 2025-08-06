@@ -14,8 +14,8 @@ const PostmanCollections = () => {
         'GET /api/questions - Soru listesi',
         'PATCH /api/questions/{id}/answer - Soruya cevap ver'
       ],
-      postmanId: '89962312-201d-47d0-8ab6-1673324804e9',
-      link: 'https://www.postman.com/cozmopol/cozmopol-integration/collection/31351468-89962312-201d-47d0-8ab6-1673324804e9?action=share&source=collection_link&creator=31351468'
+      postmanId: 'qa-collection',
+      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
     },
     {
       id: 'orders',
@@ -29,7 +29,7 @@ const PostmanCollections = () => {
         'GET /api/orders/{id} - Sipariş detayını getir'
       ],
       postmanId: 'orders-collection',
-      link: '#'
+      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
     },
     {
       id: 'inventory',
@@ -42,7 +42,7 @@ const PostmanCollections = () => {
         'GET /v2/inventory/{product_id} - Ürün stok güncelle'
       ],
       postmanId: 'inventory-collection',
-      link: '#'
+      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
     },
     {
       id: 'shipments',
@@ -54,8 +54,8 @@ const PostmanCollections = () => {
       endpoints: [
         'GET /api/shipping - Kargo şirketlerini getir'
       ],
-      postmanId: 'f3f970d2-ac54-4a3f-9618-128137613086',
-      link: 'https://www.postman.com/cozmopol/workspace/cozmopol-integration/collection/31351468-f3f970d2-ac54-4a3f-9618-128137613086?action=share&source=collection_link&creator=31351468'
+      postmanId: 'shipments-collection',
+      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
     },
     {
       id: 'auth',
@@ -68,7 +68,7 @@ const PostmanCollections = () => {
         'POST /api/auth/token - Vendor olarak giriş yap'
       ],
       postmanId: 'auth-collection',
-      link: '#'
+      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
     },
     {
       id: 'products',
@@ -85,7 +85,7 @@ const PostmanCollections = () => {
         'GET /api/brands - Marka listesi'
       ],
       postmanId: 'products-collection',
-      link: '#'
+      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
     },
     {
       id: 'test-tools',
@@ -101,7 +101,7 @@ const PostmanCollections = () => {
         'POST /api/test/webhook - Webhook test tetikleyicisi'
       ],
       postmanId: 'test-tools-collection',
-      link: '#'
+      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
     }
   ]
 
@@ -111,9 +111,7 @@ const PostmanCollections = () => {
   }
 
   const handleRunInPostman = (collection) => {
-    if (collection.link !== '#') {
-      window.open(collection.link, '_blank')
-    }
+    window.open(collection.link, '_blank')
   }
 
   return (
@@ -189,16 +187,11 @@ const PostmanCollections = () => {
             <div className="flex space-x-3">
               <button
                 onClick={() => handleRunInPostman(collection)}
-                disabled={collection.link === '#'}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-                  collection.link !== '#'
-                    ? 'bg-orange-600 text-white hover:bg-orange-700'
-                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                }`}
+                className="flex items-center space-x-2 px-4 py-2 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-colors"
               >
                 <Play className="w-4 h-4" />
                 <span>Postman'de Aç</span>
-                {collection.link !== '#' && <ExternalLink className="w-3 h-3" />}
+                <ExternalLink className="w-3 h-3" />
               </button>
               
               <button
@@ -209,12 +202,6 @@ const PostmanCollections = () => {
                 <span>İndir</span>
               </button>
             </div>
-
-            {collection.link === '#' && (
-              <p className="text-xs text-gray-500 mt-3">
-                * Bu collection yakında yayınlanacak
-              </p>
-            )}
           </div>
         ))}
       </div>
