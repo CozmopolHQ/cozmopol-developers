@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, ExternalLink, Github, MessageCircle, ChevronDown } from 'lucide-react'
+import ThemeToggle from './ThemeToggle'
 
 const Layout = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -147,6 +148,7 @@ const Layout = ({ children }) => {
 
             {/* Action Buttons */}
             <div className="hidden md:flex items-center space-x-3">
+              <ThemeToggle />
               <a
                 href="#"
                 className="text-slate-500 hover:text-slate-700 transition-colors p-2"
@@ -254,6 +256,10 @@ const Layout = ({ children }) => {
               </div>
 
               <div className="pt-4 border-t border-slate-200">
+                <div className="px-3 py-2 flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-700">Tema</span>
+                  <ThemeToggle />
+                </div>
                 <a
                   href="#"
                   className="block w-full text-center btn-primary"
