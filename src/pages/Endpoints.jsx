@@ -350,112 +350,140 @@ const Endpoints = () => {
   const orderEndpoints = [
     {
       method: 'GET',
-      path: '/v2/orders',
-      description: 'Sipariş listesini getir',
-      status: 'development',
+      path: '/api/orders',
+      description: 'Tüm siparişleri listele',
+      status: 'stable',
       parameters: [
-        { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası' },
-        { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı' },
-        { name: 'status', type: 'string', required: false, description: 'Sipariş durumu (pending, confirmed, shipped, delivered, cancelled)' },
-        { name: 'date_from', type: 'string', required: false, description: 'Başlangıç tarihi (YYYY-MM-DD)' },
-        { name: 'date_to', type: 'string', required: false, description: 'Bitiş tarihi (YYYY-MM-DD)' }
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
       ],
       response: `{
-  "success": true,
   "data": [
     {
-      "id": 67890,
-      "order_number": "ORD-2024-001",
-      "status": "confirmed",
-      "total_amount": 599.98,
+      "id": "67d9250b98a026849af11ea5",
+      "status": "webservice_shipment_delivered",
+      "createdAt": "2025-03-18T07:47:23.564Z",
+      "totalAmount": 170,
+      "currency": "TRY",
       "customer": {
-        "name": "Ahmet Yılmaz",
-        "email": "ahmet@example.com"
+        "name": "Sinem Gül Bildik",
+        "email": "sinemglbldk54@gmail.com"
       },
-      "created_at": "2024-01-15T09:00:00Z"
+      "payment": {
+        "paidPrice": 244.99,
+        "currency": "TRY",
+        "status": "SUCCESS"
+      },
+      "shipping": {
+        "status": "awaiting_shipment",
+        "provider": "Kargonomi",
+        "trackingNumber": null
+      },
+      "items": [
+        {
+          "title": "Gül Reçeli 400 gr MG",
+          "brand": "beymen",
+          "quantity": 1,
+          "price": 170,
+          "total": 170,
+          "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/67c4be986714469751c60332/1740947096467-image0.jpg",
+          "variation": "Standart"
+        }
+      ]
+    },
+    {
+      "id": "67d89e927ce36855bce105ce",
+      "status": "cancelled",
+      "createdAt": "2025-03-17T22:13:38.852Z",
+      "totalAmount": 60,
+      "currency": "TRY",
+      "customer": {
+        "name": "Bilal Burnaz",
+        "email": "burnaz.bilal42@gmail.com"
+      },
+      "payment": {
+        "paidPrice": 134.99,
+        "currency": "TRY",
+        "status": "SUCCESS"
+      },
+      "shipping": {
+        "status": "awaiting_shipment",
+        "provider": "Kargonomi",
+        "trackingNumber": null
+      },
+      "items": [
+        {
+          "title": "Buğra Peynir Helvası 200 gr",
+          "brand": "beymen",
+          "quantity": 1,
+          "price": 60,
+          "total": 60,
+          "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/67c4c1386714469751c6036b/1740947769110-image0.jpg",
+          "variation": "Standart"
+        }
+      ]
     }
-  ],
-  "pagination": {
-    "current_page": 1,
-    "total_pages": 5,
-    "total_items": 100
-  }
+  ]
 }`,
       example: `curl -X GET \\
-  'https://api.cozmopol.com/v2/orders?status=confirmed&page=1' \\
+  https://api.cozmopol.com/api/orders \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/v2/orders/{id}',
+      path: '/api/orders/{id}',
       description: 'Sipariş detayını getir',
-      status: 'development',
+      status: 'stable',
       parameters: [
-        { name: 'id', type: 'integer', required: true, description: 'Sipariş ID\'si' }
+        { name: 'id', type: 'string', required: true, description: 'Sipariş ID\'si (MongoDB ObjectId)' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
       ],
       response: `{
-  "success": true,
   "data": {
-    "id": 67890,
-    "order_number": "ORD-2024-001",
-    "status": "confirmed",
-    "total_amount": 599.98,
+    "id": "67d89c727ce36855bce10598",
+    "status": "cancelled",
+    "createdAt": "2025-03-17T22:04:34.223Z",
+    "totalAmount": 60,
+    "currency": "TRY",
     "customer": {
-      "name": "Ahmet Yılmaz",
-      "email": "ahmet@example.com",
-      "phone": "+90 555 123 4567"
+      "name": "Muhammed Enes Kurt",
+      "email": "eneskurt5469@gmail.com",
+      "phone": ""
     },
-    "shipping_address": {
-      "street": "Atatürk Cad. No:123",
-      "city": "İstanbul",
-      "postal_code": "34000",
-      "country": "TR"
+    "payment": {
+      "paidPrice": 134.99,
+      "currency": "TRY",
+      "status": "SUCCESS"
+    },
+    "shipping": {
+      "status": "awaiting_shipment",
+      "provider": "Kargonomi",
+      "trackingNumber": null,
+      "deliveryAddressId": {
+        "_id": "67d89a3f7ce36855bce10546",
+        "firstname": "enes",
+        "surname": "kurt",
+        "addressTitle": "sakarya arifiye",
+        "phoneNumber": "5539488719",
+        "addressDetails": "neviye mah melek sk no 4A arifiye sakarya",
+        "postalCode": "54540"
+      }
     },
     "items": [
       {
-        "product_id": 12345,
-        "title": "Premium Kulaklık",
-        "quantity": 2,
-        "unit_price": 299.99,
-        "total_price": 599.98
+        "title": "Buğra Peynir Helvası 200 gr",
+        "brand": "beymen",
+        "quantity": 1,
+        "price": 60,
+        "total": 60,
+        "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/67c4c1386714469751c6036b/1740947769110-image0.jpg",
+        "variation": "Standart"
       }
-    ],
-    "created_at": "2024-01-15T09:00:00Z"
+    ]
   }
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/v2/orders/67890 \\
+  https://api.cozmopol.com/api/orders/67d89c727ce36855bce10598 \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
-    },
-    {
-      method: 'PUT',
-      path: '/v2/orders/{id}/status',
-      description: 'Sipariş durumunu güncelle',
-      status: 'development',
-      parameters: [
-        { name: 'id', type: 'integer', required: true, description: 'Sipariş ID\'si' },
-        { name: 'status', type: 'string', required: true, description: 'Yeni durum (confirmed, shipped, delivered, cancelled)' },
-        { name: 'tracking_number', type: 'string', required: false, description: 'Kargo takip numarası (shipped durumu için)' },
-        { name: 'notes', type: 'string', required: false, description: 'Durum değişikliği notları' }
-      ],
-      response: `{
-  "success": true,
-  "data": {
-    "id": 67890,
-    "status": "shipped",
-    "tracking_number": "TRK123456789",
-    "updated_at": "2024-01-15T14:30:00Z"
-  }
-}`,
-      example: `curl -X PUT \\
-  https://api.cozmopol.com/v2/orders/67890/status \\
-  -H 'Authorization: Bearer YOUR_API_KEY' \\
-  -H 'Content-Type: application/json' \\
-  -d '{
-    "status": "shipped",
-    "tracking_number": "TRK123456789",
-    "notes": "Kargo MNG ile gönderildi"
-  }'`
     }
   ]
 
@@ -576,9 +604,9 @@ const Endpoints = () => {
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
           📋 Sipariş Yönetimi
         </h2>
-        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
-          <p className="text-orange-800 text-sm">
-            <strong>🔧 Geliştiriliyor:</strong> Bu endpoint'ler aktif geliştirme aşamasındadır. Değişiklikler olabilir.
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <p className="text-green-800 text-sm">
+            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Güvenle kullanabilirsiniz.
           </p>
         </div>
         <div className="space-y-4">
