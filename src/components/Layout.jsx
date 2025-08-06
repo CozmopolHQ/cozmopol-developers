@@ -19,6 +19,7 @@ const Layout = ({ children }) => {
     { name: 'Nasıl Entegrasyon Yaparım?', href: '/integration-guide', current: location.pathname === '/integration-guide' },
     { name: 'Hata Kodları', href: '/error-codes', current: location.pathname === '/error-codes' },
     { name: 'Webhooks', href: '/webhooks', current: location.pathname === '/webhooks' },
+    { name: 'Postman Collections', href: '/postman', current: location.pathname === '/postman' },
     { name: 'SDK\'lar (Yakında)', href: '/sdks', current: location.pathname === '/sdks' },
   ]
 

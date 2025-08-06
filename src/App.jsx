@@ -12,6 +12,7 @@ import HealthCheck from './pages/HealthCheck'
 import Status from './pages/Status'
 import IntegrationGuide from './pages/IntegrationGuide'
 import ErrorCodes from './pages/ErrorCodes'
+import PostmanCollections from './pages/PostmanCollections'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/status" element={<DocLayout><Status /></DocLayout>} />
         <Route path="/integration-guide" element={<DocLayout><IntegrationGuide /></DocLayout>} />
         <Route path="/error-codes" element={<DocLayout><ErrorCodes /></DocLayout>} />
+        <Route path="/postman" element={<DocLayout><PostmanCollections /></DocLayout>} />
       </Routes>
     </Layout>
   )
