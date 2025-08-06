@@ -696,7 +696,7 @@ const Endpoints = () => {
       </div>
 
       {/* Test & Tools Section */}
-      <section className="mb-16">
+      <section id="test-tools" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-blue-600 pb-2">
           🧪 Test & Araçlar
         </h2>
@@ -713,7 +713,7 @@ const Endpoints = () => {
       </section>
 
       {/* Products Section */}
-      <section className="mb-16">
+      <section id="products" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
           📦 Ürün Yönetimi
         </h2>
@@ -730,7 +730,7 @@ const Endpoints = () => {
       </section>
 
       {/* Orders Section */}
-      <section className="mb-16">
+      <section id="orders" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
           📋 Sipariş Yönetimi
         </h2>
@@ -747,7 +747,7 @@ const Endpoints = () => {
       </section>
 
       {/* Shipping Management Section */}
-      <section className="mb-16">
+      <section id="shipping" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
           🚚 Kargo Yönetimi
         </h2>
@@ -764,7 +764,7 @@ const Endpoints = () => {
       </section>
 
       {/* Inventory Section */}
-      <section className="mb-16">
+      <section id="inventory" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
           📊 Stok Yönetimi
         </h2>
@@ -781,7 +781,7 @@ const Endpoints = () => {
       </section>
 
       {/* Q&A Management Section */}
-      <section className="mb-16">
+      <section id="qa" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
           💬 Soru & Cevap Yönetimi
         </h2>

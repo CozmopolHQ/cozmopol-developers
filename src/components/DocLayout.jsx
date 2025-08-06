@@ -27,7 +27,19 @@ const DocLayout = ({ children }) => {
       id: 'api-reference',
       title: 'API Referansı',
       items: [
-        { name: 'Endpoints', href: '/endpoints', icon: '📚' },
+        { 
+          name: 'Endpoints', 
+          href: '/endpoints', 
+          icon: '📚',
+          subItems: [
+            { name: 'Test & Araçlar', href: '/endpoints#test-tools', icon: '🧪' },
+            { name: 'Ürün Yönetimi', href: '/endpoints#products', icon: '📦' },
+            { name: 'Sipariş Yönetimi', href: '/endpoints#orders', icon: '📋' },
+            { name: 'Kargo Yönetimi', href: '/endpoints#shipping', icon: '🚚' },
+            { name: 'Stok Yönetimi', href: '/endpoints#inventory', icon: '📊' },
+            { name: 'Soru & Cevap', href: '/endpoints#qa', icon: '💬' }
+          ]
+        },
         { name: 'Webhooks', href: '/webhooks', icon: '🔗' },
         { name: 'SDK\'lar (Yakında)', href: '/sdks', icon: '📦' },
       ]
@@ -94,19 +106,45 @@ const DocLayout = ({ children }) => {
                 {expandedSections[section.id] && (
                   <div className="mt-2 space-y-1">
                     {section.items.map((item) => (
-                      <Link
-                        key={item.href}
-                        to={item.href}
-                        onClick={() => setIsSidebarOpen(false)}
-                        className={`flex items-center space-x-3 px-4 py-2 text-sm rounded-md transition-colors ${
-                          isCurrentPage(item.href)
-                            ? 'bg-slate-900 text-white'
-                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                        }`}
-                      >
-                        <span className="text-base">{item.icon}</span>
-                        <span>{item.name}</span>
-                      </Link>
+                      <div key={item.href}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setIsSidebarOpen(false)}
+                          className={`flex items-center space-x-3 px-4 py-2 text-sm rounded-md transition-colors ${
+                            isCurrentPage(item.href)
+                              ? 'bg-slate-900 text-white'
+                              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                          }`}
+                        >
+                          <span className="text-base">{item.icon}</span>
+                          <span>{item.name}</span>
+                        </Link>
+                        
+                        {/* Sub items for Endpoints */}
+                        {item.subItems && isCurrentPage(item.href) && (
+                          <div className="ml-6 mt-2 space-y-1">
+                            {item.subItems.map((subItem) => (
+                              <a
+                                key={subItem.href}
+                                href={subItem.href}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  const elementId = subItem.href.split('#')[1];
+                                  const element = document.getElementById(elementId);
+                                  if (element) {
+                                    element.scrollIntoView({ behavior: 'smooth' });
+                                  }
+                                  setIsSidebarOpen(false);
+                                }}
+                                className="flex items-center space-x-3 px-4 py-2 text-sm rounded-md transition-colors text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                              >
+                                <span className="text-sm">{subItem.icon}</span>
+                                <span>{subItem.name}</span>
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     ))}
                   </div>
                 )}
