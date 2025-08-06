@@ -2,125 +2,40 @@ import React from 'react'
 import { Download, ExternalLink, Play, FileText, Zap } from 'lucide-react'
 
 const PostmanCollections = () => {
-  const collections = [
-    {
-      id: 'qa',
-      name: '💬 Q&A',
-      description: 'Müşteri sorularını yönetme ve cevaplama işlemleri',
-      icon: '💬',
-      color: 'bg-indigo-50 border-indigo-200',
-      textColor: 'text-indigo-800',
-      endpoints: [
-        'GET /api/questions - Soru listesi',
-        'PATCH /api/questions/{id}/answer - Soruya cevap ver'
-      ],
-      postmanId: 'qa-collection',
-      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
-    },
-    {
-      id: 'orders',
-      name: '📋 Orders',
-      description: 'Sipariş listeleme, detay görüntüleme ve durum takibi',
-      icon: '📋',
-      color: 'bg-purple-50 border-purple-200',
-      textColor: 'text-purple-800',
-      endpoints: [
-        'GET /api/orders - Tüm siparişleri getir',
-        'GET /api/orders/{id} - Sipariş detayını getir'
-      ],
-      postmanId: 'orders-collection',
-      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
-    },
-    {
-      id: 'inventory',
-      name: '📊 Inventory',
-      description: 'Stok takibi, güncelleme ve ürün stok yönetimi',
-      icon: '📊',
-      color: 'bg-yellow-50 border-yellow-200',
-      textColor: 'text-yellow-800',
-      endpoints: [
-        'GET /v2/inventory/{product_id} - Ürün stok güncelle'
-      ],
-      postmanId: 'inventory-collection',
-      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
-    },
-    {
-      id: 'shipments',
-      name: '🚚 Shipments',
-      description: 'Kargo şirketleri, gönderi oluşturma ve takip işlemleri',
-      icon: '🚚',
-      color: 'bg-orange-50 border-orange-200',
-      textColor: 'text-orange-800',
-      endpoints: [
-        'GET /api/shipping - Kargo şirketlerini getir'
-      ],
-      postmanId: 'shipments-collection',
-      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
-    },
-    {
-      id: 'auth',
-      name: '🔐 Auth',
-      description: 'Kimlik doğrulama ve vendor giriş işlemleri',
-      icon: '🔐',
-      color: 'bg-red-50 border-red-200',
-      textColor: 'text-red-800',
-      endpoints: [
-        'POST /api/auth/token - Vendor olarak giriş yap'
-      ],
-      postmanId: 'auth-collection',
-      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
-    },
-    {
-      id: 'products',
-      name: '📦 Products',
-      description: 'Ürün oluşturma, listeleme, güncelleme ve kategori yönetimi',
-      icon: '📦',
-      color: 'bg-blue-50 border-blue-200',
-      textColor: 'text-blue-800',
-      endpoints: [
-        'GET /api/products/{id} - Ürün detayı getir',
-        'POST /v2/products - Yeni ürün oluştur',
-        'GET /api/products - Tüm ürünleri getir',
-        'GET /api/categories - Kategori listesi',
-        'GET /api/brands - Marka listesi'
-      ],
-      postmanId: 'products-collection',
-      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
-    },
-    {
-      id: 'test-tools',
-      name: '🧪 Test & Tools',
-      description: 'API bağlantı testleri, sağlık kontrolleri ve geliştirici araçları',
-      icon: '🧪',
-      color: 'bg-green-50 border-green-200',
-      textColor: 'text-green-800',
-      endpoints: [
-        'GET /api/test/ping - API bağlantı testi',
-        'GET /api/test/version - API versiyon bilgisi',
-        'GET /api/health - Sistem sağlık kontrolü',
-        'POST /api/test/webhook - Webhook test tetikleyicisi'
-      ],
-      postmanId: 'test-tools-collection',
-      link: 'https://www.postman.com/cozmopol/cozmopol-integration'
-    }
+  const allEndpoints = [
+    'GET /api/test/ping - API bağlantı testi',
+    'GET /api/test/version - API versiyon bilgisi',
+    'GET /api/health - Sistem sağlık kontrolü',
+    'POST /api/test/webhook - Webhook test tetikleyicisi',
+    'POST /api/auth/token - Vendor olarak giriş yap',
+    'GET /api/products - Tüm ürünleri getir',
+    'GET /api/products/{id} - Ürün detayı getir',
+    'POST /v2/products - Yeni ürün oluştur',
+    'GET /api/categories - Kategori listesi',
+    'GET /api/brands - Marka listesi',
+    'GET /api/orders - Tüm siparişleri getir',
+    'GET /api/orders/{id} - Sipariş detayını getir',
+    'GET /api/shipping - Kargo şirketlerini getir',
+    'PUT /v2/inventory/{product_id} - Ürün stok güncelle',
+    'GET /api/questions - Soru listesi',
+    'PATCH /api/questions/{id}/answer - Soruya cevap ver'
   ]
 
-  const handleDownload = (collection) => {
-    // Postman collection download logic
-    console.log(`Downloading collection: ${collection.name}`)
+  const handleRunInPostman = () => {
+    window.open('https://www.postman.com/cozmopol/cozmopol-integration', '_blank')
   }
 
-  const handleRunInPostman = (collection) => {
-    window.open(collection.link, '_blank')
+  const handleDownload = () => {
+    console.log('Downloading Cozmopol Integration collection...')
   }
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Postman Collections</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">Postman Collection</h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Cozmopol API'sini test etmek için hazırlanmış Postman collection'ları. 
-          Her collection, ilgili endpoint'leri ve örnek istekleri içerir.
+          Cozmopol API'sini test etmek için hazırlanmış kapsamlı Postman collection'ı. 
+          Tüm endpoint'leri ve örnek istekleri tek collection'da bulabilirsiniz.
         </p>
       </div>
 
@@ -131,13 +46,13 @@ const PostmanCollections = () => {
           <h2 className="text-2xl font-bold text-blue-900">Hızlı Başlangıç</h2>
         </div>
         <p className="text-blue-800 mb-6">
-          Postman collection'larını kullanmaya başlamak için aşağıdaki adımları takip edin:
+          Postman collection'ını kullanmaya başlamak için aşağıdaki adımları takip edin:
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white rounded-lg p-4 border border-blue-200">
             <div className="text-2xl font-bold text-blue-600 mb-2">1</div>
-            <h3 className="font-semibold text-blue-900 mb-2">Collection'ı İndir</h3>
-            <p className="text-blue-700 text-sm">İstediğiniz collection'ı indirin veya Postman'de açın</p>
+            <h3 className="font-semibold text-blue-900 mb-2">Collection'ı Aç</h3>
+            <p className="text-blue-700 text-sm">Postman workspace'inde collection'ı açın</p>
           </div>
           <div className="bg-white rounded-lg p-4 border border-blue-200">
             <div className="text-2xl font-bold text-blue-600 mb-2">2</div>
@@ -152,58 +67,58 @@ const PostmanCollections = () => {
         </div>
       </div>
 
-      {/* Collections Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        {collections.map((collection) => (
-          <div key={collection.id} className="bg-white border border-gray-200 rounded-lg p-8 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center space-x-3">
-                <div className="text-3xl">{collection.icon}</div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900">{collection.name}</h3>
-                  <span className={`inline-block px-2 py-1 rounded text-xs font-medium border ${collection.color} ${collection.textColor}`}>
-                    {collection.endpoints.length} endpoint
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <p className="text-gray-600 mb-6">{collection.description}</p>
-
-            {/* Endpoints List */}
-            <div className="mb-6">
-              <h4 className="font-semibold text-gray-900 mb-3">İçerdiği Endpoint'ler:</h4>
-              <ul className="space-y-2">
-                {collection.endpoints.map((endpoint, index) => (
-                  <li key={index} className="flex items-start space-x-2 text-sm">
-                    <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-gray-700">{endpoint}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex space-x-3">
-              <button
-                onClick={() => handleRunInPostman(collection)}
-                className="flex items-center space-x-2 px-4 py-2 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-colors"
-              >
-                <Play className="w-4 h-4" />
-                <span>Postman'de Aç</span>
-                <ExternalLink className="w-3 h-3" />
-              </button>
-              
-              <button
-                onClick={() => handleDownload(collection)}
-                className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
-              >
-                <Download className="w-4 h-4" />
-                <span>İndir</span>
-              </button>
+      {/* Main Collection Card */}
+      <div className="bg-white border border-gray-200 rounded-lg p-8 hover:shadow-lg transition-shadow mb-12">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <div className="text-4xl">🚀</div>
+            <div>
+              <h3 className="text-2xl font-semibold text-gray-900">Cozmopol Integration</h3>
+              <p className="text-gray-600">Tüm API endpoint'lerini içeren kapsamlı collection</p>
+              <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mt-2 border border-blue-200">
+                {allEndpoints.length} endpoint
+              </span>
             </div>
           </div>
-        ))}
+        </div>
+
+        <p className="text-gray-600 mb-6">
+          Bu collection, Cozmopol API'sinin tüm endpoint'lerini içerir. Test araçlarından ürün yönetimine, 
+          sipariş takibinden stok kontrolüne kadar tüm işlemleri tek yerden gerçekleştirebilirsiniz.
+        </p>
+
+        {/* Endpoints List */}
+        <div className="mb-8">
+          <h4 className="font-semibold text-gray-900 mb-4">İçerdiği Endpoint'ler:</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {allEndpoints.map((endpoint, index) => (
+              <div key={index} className="flex items-start space-x-2 text-sm">
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                <span className="text-gray-700">{endpoint}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex space-x-4">
+          <button
+            onClick={handleRunInPostman}
+            className="flex items-center space-x-2 px-6 py-3 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-colors"
+          >
+            <Play className="w-5 h-5" />
+            <span>Postman'de Aç</span>
+            <ExternalLink className="w-4 h-4" />
+          </button>
+          
+          <button
+            onClick={handleDownload}
+            className="flex items-center space-x-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+          >
+            <Download className="w-5 h-5" />
+            <span>Collection İndir</span>
+          </button>
+        </div>
       </div>
 
       {/* Environment Setup */}
@@ -214,7 +129,7 @@ const PostmanCollections = () => {
         </div>
         
         <p className="text-gray-600 mb-6">
-          Postman collection'larını kullanmak için aşağıdaki environment değişkenlerini ayarlamanız gerekir:
+          Postman collection'ını kullanmak için aşağıdaki environment değişkenlerini ayarlamanız gerekir:
         </p>
 
         <div className="bg-gray-50 rounded-lg p-6">
@@ -251,8 +166,8 @@ const PostmanCollections = () => {
       <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-8">
         <h2 className="text-2xl font-semibold text-purple-900 mb-4">Cozmopol Integration Workspace</h2>
         <p className="text-purple-800 mb-6">
-          Tüm collection'lar Cozmopol Integration workspace'inde organize edilmiştir. 
-          Workspace'e katılarak en güncel collection'lara erişebilirsiniz.
+          Collection, Cozmopol Integration workspace'inde organize edilmiştir. 
+          Workspace'e katılarak en güncel collection'a erişebilirsiniz.
         </p>
         
         <div className="flex items-center space-x-4">
