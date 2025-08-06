@@ -16,6 +16,8 @@ const Layout = ({ children }) => {
   const docsNavigation = [
     { name: 'Kimlik Doğrulama', href: '/authentication', current: location.pathname === '/authentication' },
     { name: 'API Endpoints', href: '/endpoints', current: location.pathname === '/endpoints' },
+    { name: 'Nasıl Entegrasyon Yaparım?', href: '/integration-guide', current: location.pathname === '/integration-guide' },
+    { name: 'Hata Kodları', href: '/error-codes', current: location.pathname === '/error-codes' },
     { name: 'Webhooks', href: '/webhooks', current: location.pathname === '/webhooks' },
     { name: 'SDK\'lar (Yakında)', href: '/sdks', current: location.pathname === '/sdks' },
   ]

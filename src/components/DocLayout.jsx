@@ -18,6 +18,8 @@ const DocLayout = ({ children }) => {
       items: [
         { name: 'Hızlı Başlangıç', href: '/quickstart', icon: '🚀' },
         { name: 'Kimlik Doğrulama', href: '/authentication', icon: '🔐' },
+        { name: 'Nasıl Entegrasyon Yaparım?', href: '/integration-guide', icon: '🔧' },
+        { name: 'Hata Kodları', href: '/error-codes', icon: '⚠️' },
       ]
     },
     {

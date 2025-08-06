@@ -10,6 +10,8 @@ import Webhooks from './pages/Webhooks'
 import SDKs from './pages/SDKs'
 import HealthCheck from './pages/HealthCheck'
 import Status from './pages/Status'
+import IntegrationGuide from './pages/IntegrationGuide'
+import ErrorCodes from './pages/ErrorCodes'
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path="/sdks" element={<DocLayout><SDKs /></DocLayout>} />
         <Route path="/health" element={<DocLayout><HealthCheck /></DocLayout>} />
         <Route path="/status" element={<DocLayout><Status /></DocLayout>} />
+        <Route path="/integration-guide" element={<DocLayout><IntegrationGuide /></DocLayout>} />
+        <Route path="/error-codes" element={<DocLayout><ErrorCodes /></DocLayout>} />
       </Routes>
     </Layout>
   )
