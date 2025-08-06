@@ -491,46 +491,6 @@ const Endpoints = () => {
     {
       method: 'GET',
       path: '/api/shipping',
-      description: 'Kargo şirketlerini listele',
-      status: 'stable',
-      parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
-      ],
-      response: `{
-  "data": [
-    {
-      "id": "67bc84d61c46630458270fdf",
-      "name": "Aras Kargo",
-      "slug": "aras",
-      "kargonomiId": 4
-    },
-    {
-      "id": "67bc84d61c46630458270fe0",
-      "name": "Sürat Kargo",
-      "slug": "surat",
-      "kargonomiId": 5
-    },
-    {
-      "id": "67bc84d61c46630458270fde",
-      "name": "Kolay Gelsin",
-      "slug": "sendeo",
-      "kargonomiId": 3
-    },
-    {
-      "id": "67bc84d61c46630458270fe1",
-      "name": "PTT Kargo",
-      "slug": "ptt",
-      "kargonomiId": 7
-    }
-  ]
-}`,
-      example: `curl -X GET \\
-  https://api.cozmopol.com/api/shipping \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
-    },
-    {
-      method: 'GET',
-      path: '/api/shipping',
       description: 'Kargo şirketlerini listele (Güncellenmiş)',
       status: 'stable',
       parameters: [
@@ -694,6 +654,23 @@ const Endpoints = () => {
         </div>
         <div className="space-y-4">
           {orderEndpoints.map((endpoint, index) => (
+            <EndpointCard key={index} {...endpoint} />
+          ))}
+        </div>
+      </section>
+
+      {/* Shipping Management Section */}
+      <section className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
+          🚚 Kargo Yönetimi
+        </h2>
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <p className="text-green-800 text-sm">
+            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Güvenle kullanabilirsiniz.
+          </p>
+        </div>
+        <div className="space-y-4">
+          {shippingEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>
