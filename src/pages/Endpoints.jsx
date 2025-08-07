@@ -359,65 +359,65 @@ const Endpoints = () => {
       response: `{
   "data": [
     {
-      "id": "67d9250b98a026849af11ea5",
-      "status": "webservice_shipment_delivered",
-      "createdAt": "2025-03-18T07:47:23.564Z",
-      "totalAmount": 170,
+      "id": "67d9250b98a026849af11ea5", 
+      "status": "confirmed",
+      "createdAt": "2024-01-15T10:30:00Z",
+      "totalAmount": 299.99,
       "currency": "TRY",
       "customer": {
-        "name": "Sinem Gül Bildik",
-        "email": "sinemglbldk54@gmail.com"
+        "name": "John Doe",
+        "email": "john.doe@example.com"
       },
       "payment": {
-        "paidPrice": 244.99,
+        "paidPrice": 299.99,
         "currency": "TRY",
         "status": "SUCCESS"
       },
       "shipping": {
-        "status": "awaiting_shipment",
-        "provider": "Kargonomi",
+        "status": "shipped",
+        "provider": "Aras Kargo",
         "trackingNumber": null
       },
       "items": [
         {
-          "title": "Gül Reçeli 400 gr MG",
-          "brand": "beymen",
+          "title": "Premium Kulaklık",
+          "brand": "TechBrand",
           "quantity": 1,
-          "price": 170,
-          "total": 170,
-          "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/67c4be986714469751c60332/1740947096467-image0.jpg",
+          "price": 299.99,
+          "total": 299.99,
+          "image": "https://example.com/headphones.jpg",
           "variation": "Standart"
         }
       ]
     },
     {
-      "id": "67d89e927ce36855bce105ce",
-      "status": "cancelled",
-      "createdAt": "2025-03-17T22:13:38.852Z",
-      "totalAmount": 60,
+      "id": "67d89e927ce36855bce105ce", 
+      "status": "pending",
+      "createdAt": "2024-01-14T15:20:00Z",
+      "totalAmount": 149.99,
       "currency": "TRY",
       "customer": {
-        "name": "Bilal Burnaz",
-        "email": "burnaz.bilal42@gmail.com"
+        "name": "Jane Smith",
+        "email": "jane.smith@example.com"
       },
       "payment": {
-        "paidPrice": 134.99,
+        "paidPrice": 149.99,
         "currency": "TRY",
         "status": "SUCCESS"
       },
       "shipping": {
         "status": "awaiting_shipment",
-        "provider": "Kargonomi",
+        "provider": "Sürat Kargo",
         "trackingNumber": null
       },
       "items": [
         {
-          "title": "Buğra Peynir Helvası 200 gr",
-          "brand": "beymen",
+          "title": "Wireless Mouse",
+          "brand": "TechBrand",
           "quantity": 1,
-          "price": 60,
-          "total": 60,
-          "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/67c4c1386714469751c6036b/1740947769110-image0.jpg",
+          "price": 149.99,
+          "total": 149.99,
+          "image": "https://example.com/mouse.jpg",
           "variation": "Standart"
         }
       ]
@@ -439,43 +439,43 @@ const Endpoints = () => {
       ],
       response: `{
   "data": {
-    "id": "67d89c727ce36855bce10598",
-    "status": "cancelled",
-    "createdAt": "2025-03-17T22:04:34.223Z",
-    "totalAmount": 60,
+    "id": "67d89c727ce36855bce10598", 
+    "status": "confirmed",
+    "createdAt": "2024-01-15T14:30:00Z",
+    "totalAmount": 199.99,
     "currency": "TRY",
     "customer": {
-      "name": "Muhammed Enes Kurt",
-      "email": "eneskurt5469@gmail.com",
-      "phone": ""
+      "name": "Michael Johnson",
+      "email": "michael.johnson@example.com",
+      "phone": "+90 555 123 4567"
     },
     "payment": {
-      "paidPrice": 134.99,
+      "paidPrice": 199.99,
       "currency": "TRY",
       "status": "SUCCESS"
     },
     "shipping": {
-      "status": "awaiting_shipment",
-      "provider": "Kargonomi",
+      "status": "shipped",
+      "provider": "Aras Kargo",
       "trackingNumber": null,
       "deliveryAddressId": {
-        "_id": "67d89a3f7ce36855bce10546",
-        "firstname": "enes",
-        "surname": "kurt",
-        "addressTitle": "sakarya arifiye",
-        "phoneNumber": "5539488719",
-        "addressDetails": "neviye mah melek sk no 4A arifiye sakarya",
-        "postalCode": "54540"
+        "_id": "67d89a3f7ce36855bce10546", 
+        "firstname": "Michael",
+        "surname": "Johnson",
+        "addressTitle": "Ev Adresi",
+        "phoneNumber": "5551234567",
+        "addressDetails": "Örnek Mahallesi, Örnek Sokak No:123 Kadıköy/İstanbul",
+        "postalCode": "34710"
       }
     },
     "items": [
       {
-        "title": "Buğra Peynir Helvası 200 gr",
-        "brand": "beymen",
+        "title": "Gaming Keyboard",
+        "brand": "TechBrand",
         "quantity": 1,
-        "price": 60,
-        "total": 60,
-        "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/67c4c1386714469751c6036b/1740947769110-image0.jpg",
+        "price": 199.99,
+        "total": 199.99,
+        "image": "https://example.com/keyboard.jpg",
         "variation": "Standart"
       }
     ]
@@ -611,41 +611,41 @@ const Endpoints = () => {
       response: `{
   "data": [
     {
-      "id": "686295d1c5948b00b525bbd7",
-      "question": "selamlar 5 kuruş kaç kuruş",
-      "answer": "Thank you for your question! This product comes with a 2-year warranty.",
-      "askedAt": "2025-06-30T13:49:05.875Z",
-      "answeredAt": "2025-07-22T11:52:02.779Z",
+      "id": "686295d1c5948b00b525bbd7", 
+      "question": "Bu ürünün garantisi var mı?",
+      "answer": "Evet, bu ürün 2 yıl garantili olarak satılmaktadır.",
+      "askedAt": "2024-01-10T10:30:00Z",
+      "answeredAt": "2024-01-10T14:15:00Z",
       "isAnswered": true,
       "user": {
-        "id": "67c01eef9d1c025922091bc2",
-        "name": "Sinan Karataş",
-        "username": "stone",
-        "profilePicture": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/profile-pictures/67c01eef9d1c025922091bc2/1750163700328_67c01eef9d1c025922091bc2"
+        "id": "67c01eef9d1c025922091bc2", 
+        "name": "Alex Wilson",
+        "username": "alexw",
+        "profilePicture": "https://example.com/avatar1.jpg"
       },
       "product": {
-        "id": "67c1bcbb3c56211e5c53289c",
-        "title": "Organik Keçiboynuzu Özü 315 gr BABY MG",
-        "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/67c1bcbb3c56211e5c53289c/1740750012081-image0.jpg"
+        "id": "67c1bcbb3c56211e5c53289c", 
+        "title": "Premium Kulaklık",
+        "image": "https://example.com/headphones.jpg"
       }
     },
     {
-      "id": "685ef564c5948b00b525bbd7",
-      "question": "asdasfsdgdfhdfh",
+      "id": "685ef564c5948b00b525bbd7", 
+      "question": "Kargo ücreti ne kadar?",
       "answer": null,
-      "askedAt": "2025-06-27T19:47:48.769Z",
+      "askedAt": "2024-01-12T16:20:00Z",
       "answeredAt": null,
       "isAnswered": false,
       "user": {
-        "id": "67c01eef9d1c025922091bc2",
-        "name": "Sinan Karataş",
-        "username": "stone",
-        "profilePicture": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/profile-pictures/67c01eef9d1c025922091bc2/1750163700328_67c01eef9d1c025922091bc2"
+        "id": "67c01eef9d1c025922091bc2", 
+        "name": "Sarah Davis",
+        "username": "sarahd",
+        "profilePicture": "https://example.com/avatar2.jpg"
       },
       "product": {
-        "id": "67c1bcbb3c56211e5c53289c",
-        "title": "Organik Keçiboynuzu Özü 315 gr BABY MG",
-        "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/67c1bcbb3c56211e5c53289c/1740750012081-image0.jpg"
+        "id": "67c1bcbb3c56211e5c53289c", 
+        "title": "Premium Kulaklık",
+        "image": "https://example.com/headphones.jpg"
       }
     }
   ],
@@ -670,9 +670,9 @@ const Endpoints = () => {
       response: `{
   "message": "Answer saved successfully",
   "data": {
-    "id": "686295d1c5948b00b525bbd7",
-    "answer": "Evet, ürünün içeriğinde katkı maddesi bulunmamaktadır.",
-    "answeredAt": "2025-08-06T15:06:31.777Z",
+    "id": "686295d1c5948b00b525bbd7", 
+    "answer": "Ürün tamamen doğal içeriklerden üretilmiştir.",
+    "answeredAt": "2024-01-15T09:30:00Z",
     "isAnswered": true
   }
 }`,
@@ -681,7 +681,7 @@ const Endpoints = () => {
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
-    "answer": "Evet, ürünün içeriğinde katkı maddesi bulunmamaktadır."
+    "answer": "Ürün tamamen doğal içeriklerden üretilmiştir."
   }'`
     }
   ]
