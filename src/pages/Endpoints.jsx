@@ -686,6 +686,336 @@ const Endpoints = () => {
     }
   ]
 
+  const returnEndpoints = [
+    {
+      method: 'GET',
+      path: '/v2/returns',
+      description: 'İade taleplerini listele',
+      status: 'development',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'status', type: 'string', required: false, description: 'İade durumu (pending, approved, rejected, completed)' },
+        { name: 'order_id', type: 'string', required: false, description: 'Sipariş ID\'sine göre filtrele' },
+        { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası' },
+        { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı' }
+      ],
+      response: `{
+  "data": [
+    {
+      "id": "67e1234567890abcdef12345",
+      "order_id": "67d9250b98a026849af11ea5",
+      "order_number": "ORD-2024-001",
+      "status": "pending",
+      "reason": "Ürün hasarlı geldi",
+      "description": "Kutu açıldığında ürünün ekranında çizik vardı",
+      "return_type": "refund",
+      "requested_amount": 299.99,
+      "approved_amount": null,
+      "customer": {
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "phone": "+90 555 123 4567"
+      },
+      "items": [
+        {
+          "product_id": "67c1bcbb3c56211e5c53289c",
+          "title": "Premium Kulaklık",
+          "quantity": 1,
+          "unit_price": 299.99,
+          "total_price": 299.99,
+          "return_quantity": 1
+        }
+      ],
+      "images": [
+        "https://example.com/return-image1.jpg",
+        "https://example.com/return-image2.jpg"
+      ],
+      "created_at": "2024-01-20T14:30:00Z",
+      "updated_at": "2024-01-20T14:30:00Z"
+    }
+  ],
+  "pagination": {
+    "current_page": 1,
+    "total_pages": 3,
+    "total_items": 25,
+    "per_page": 10
+  }
+}`,
+      example: `curl -X GET \\
+  'https://api.cozmopol.com/v2/returns?status=pending&page=1&limit=10' \\
+  -H 'Authorization: Bearer YOUR_API_KEY'`
+    },
+    {
+      method: 'GET',
+      path: '/v2/returns/{id}',
+      description: 'İade talebi detayını getir',
+      status: 'development',
+      parameters: [
+        { name: 'id', type: 'string', required: true, description: 'İade talebi ID\'si (MongoDB ObjectId)' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `{
+  "data": {
+    "id": "67e1234567890abcdef12345",
+    "order_id": "67d9250b98a026849af11ea5",
+    "order_number": "ORD-2024-001",
+    "status": "approved",
+    "reason": "Ürün hasarlı geldi",
+    "description": "Kutu açıldığında ürünün ekranında çizik vardı",
+    "return_type": "refund",
+    "requested_amount": 299.99,
+    "approved_amount": 299.99,
+    "refund_method": "original_payment",
+    "tracking_number": "TR123456789",
+    "customer": {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "phone": "+90 555 123 4567"
+    },
+    "items": [
+      {
+        "product_id": "67c1bcbb3c56211e5c53289c",
+        "title": "Premium Kulaklık",
+        "quantity": 1,
+        "unit_price": 299.99,
+        "total_price": 299.99,
+        "return_quantity": 1,
+        "condition": "damaged"
+      }
+    ],
+    "images": [
+      "https://example.com/return-image1.jpg",
+      "https://example.com/return-image2.jpg"
+    ],
+    "timeline": [
+      {
+        "status": "pending",
+        "timestamp": "2024-01-20T14:30:00Z",
+        "note": "İade talebi oluşturuldu"
+      },
+      {
+        "status": "approved",
+        "timestamp": "2024-01-21T09:15:00Z",
+        "note": "İade talebi onaylandı"
+      }
+    ],
+    "created_at": "2024-01-20T14:30:00Z",
+    "updated_at": "2024-01-21T09:15:00Z"
+  }
+}`,
+      example: `curl -X GET \\
+  https://api.cozmopol.com/v2/returns/67e1234567890abcdef12345 \\
+  -H 'Authorization: Bearer YOUR_API_KEY'`
+    },
+    {
+      method: 'PATCH',
+      path: '/v2/returns/{id}/status',
+      description: 'İade talebi durumunu güncelle',
+      status: 'development',
+      parameters: [
+        { name: 'id', type: 'string', required: true, description: 'İade talebi ID\'si (MongoDB ObjectId)' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'status', type: 'string', required: true, description: 'Yeni durum (approved, rejected, completed)' },
+        { name: 'approved_amount', type: 'number', required: false, description: 'Onaylanan iade tutarı' },
+        { name: 'rejection_reason', type: 'string', required: false, description: 'Red nedeni (status=rejected ise zorunlu)' },
+        { name: 'admin_note', type: 'string', required: false, description: 'Yönetici notu' }
+      ],
+      response: `{
+  "success": true,
+  "message": "Return status updated successfully",
+  "data": {
+    "id": "67e1234567890abcdef12345",
+    "status": "approved",
+    "approved_amount": 299.99,
+    "admin_note": "Ürün hasarı doğrulandı, iade onaylandı",
+    "updated_at": "2024-01-21T09:15:00Z"
+  }
+}`,
+      example: `curl -X PATCH \\
+  https://api.cozmopol.com/v2/returns/67e1234567890abcdef12345/status \\
+  -H 'Authorization: Bearer YOUR_API_KEY' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "status": "approved",
+    "approved_amount": 299.99,
+    "admin_note": "Ürün hasarı doğrulandı, iade onaylandı"
+  }'`
+    }
+  ]
+
+  const invoiceEndpoints = [
+    {
+      method: 'GET',
+      path: '/v2/invoices',
+      description: 'Fatura listesini getir',
+      status: 'development',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'order_id', type: 'string', required: false, description: 'Sipariş ID\'sine göre filtrele' },
+        { name: 'status', type: 'string', required: false, description: 'Fatura durumu (draft, sent, paid, overdue, cancelled)' },
+        { name: 'start_date', type: 'string', required: false, description: 'Başlangıç tarihi (YYYY-MM-DD)' },
+        { name: 'end_date', type: 'string', required: false, description: 'Bitiş tarihi (YYYY-MM-DD)' },
+        { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası' },
+        { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı' }
+      ],
+      response: `{
+  "data": [
+    {
+      "id": "67f1234567890abcdef12345",
+      "invoice_number": "INV-2024-001",
+      "order_id": "67d9250b98a026849af11ea5",
+      "order_number": "ORD-2024-001",
+      "status": "paid",
+      "invoice_type": "sales",
+      "issue_date": "2024-01-15T00:00:00Z",
+      "due_date": "2024-01-30T00:00:00Z",
+      "paid_date": "2024-01-18T14:30:00Z",
+      "currency": "TRY",
+      "subtotal": 254.23,
+      "tax_amount": 45.76,
+      "total_amount": 299.99,
+      "customer": {
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "tax_number": "1234567890",
+        "address": {
+          "street": "Örnek Mahallesi, Örnek Sokak No:123",
+          "city": "İstanbul",
+          "postal_code": "34710",
+          "country": "Turkey"
+        }
+      },
+      "items": [
+        {
+          "product_id": "67c1bcbb3c56211e5c53289c",
+          "title": "Premium Kulaklık",
+          "quantity": 1,
+          "unit_price": 254.23,
+          "tax_rate": 18,
+          "tax_amount": 45.76,
+          "total": 299.99
+        }
+      ],
+      "payment_info": {
+        "method": "credit_card",
+        "transaction_id": "TXN123456789",
+        "paid_amount": 299.99
+      },
+      "pdf_url": "https://api.cozmopol.com/invoices/67f1234567890abcdef12345/pdf",
+      "created_at": "2024-01-15T10:30:00Z",
+      "updated_at": "2024-01-18T14:30:00Z"
+    }
+  ],
+  "pagination": {
+    "current_page": 1,
+    "total_pages": 5,
+    "total_items": 48,
+    "per_page": 10
+  }
+}`,
+      example: `curl -X GET \\
+  'https://api.cozmopol.com/v2/invoices?status=paid&start_date=2024-01-01&end_date=2024-01-31' \\
+  -H 'Authorization: Bearer YOUR_API_KEY'`
+    },
+    {
+      method: 'GET',
+      path: '/v2/invoices/{id}',
+      description: 'Fatura detayını getir',
+      status: 'development',
+      parameters: [
+        { name: 'id', type: 'string', required: true, description: 'Fatura ID\'si (MongoDB ObjectId)' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `{
+  "data": {
+    "id": "67f1234567890abcdef12345",
+    "invoice_number": "INV-2024-001",
+    "order_id": "67d9250b98a026849af11ea5",
+    "order_number": "ORD-2024-001",
+    "status": "paid",
+    "invoice_type": "sales",
+    "issue_date": "2024-01-15T00:00:00Z",
+    "due_date": "2024-01-30T00:00:00Z",
+    "paid_date": "2024-01-18T14:30:00Z",
+    "currency": "TRY",
+    "subtotal": 254.23,
+    "tax_amount": 45.76,
+    "discount_amount": 0,
+    "shipping_amount": 0,
+    "total_amount": 299.99,
+    "customer": {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "phone": "+90 555 123 4567",
+      "tax_number": "1234567890",
+      "tax_office": "Kadıköy Vergi Dairesi",
+      "address": {
+        "street": "Örnek Mahallesi, Örnek Sokak No:123",
+        "district": "Kadıköy",
+        "city": "İstanbul",
+        "postal_code": "34710",
+        "country": "Turkey"
+      }
+    },
+    "vendor": {
+      "company_name": "Cozmopol Pazaryeri",
+      "tax_number": "9876543210",
+      "tax_office": "Beşiktaş Vergi Dairesi",
+      "address": {
+        "street": "Vendor Mahallesi, Vendor Sokak No:456",
+        "district": "Beşiktaş",
+        "city": "İstanbul",
+        "postal_code": "34349",
+        "country": "Turkey"
+      }
+    },
+    "items": [
+      {
+        "product_id": "67c1bcbb3c56211e5c53289c",
+        "title": "Premium Kulaklık",
+        "description": "Yüksek kaliteli wireless kulaklık",
+        "quantity": 1,
+        "unit_price": 254.23,
+        "tax_rate": 18,
+        "tax_amount": 45.76,
+        "line_total": 299.99
+      }
+    ],
+    "payment_info": {
+      "method": "credit_card",
+      "transaction_id": "TXN123456789",
+      "paid_amount": 299.99,
+      "payment_date": "2024-01-18T14:30:00Z"
+    },
+    "pdf_url": "https://api.cozmopol.com/invoices/67f1234567890abcdef12345/pdf",
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-01-18T14:30:00Z"
+  }
+}`,
+      example: `curl -X GET \\
+  https://api.cozmopol.com/v2/invoices/67f1234567890abcdef12345 \\
+  -H 'Authorization: Bearer YOUR_API_KEY'`
+    },
+    {
+      method: 'GET',
+      path: '/v2/invoices/{id}/pdf',
+      description: 'Fatura PDF\'ini indir',
+      status: 'development',
+      parameters: [
+        { name: 'id', type: 'string', required: true, description: 'Fatura ID\'si (MongoDB ObjectId)' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `Content-Type: application/pdf
+Content-Disposition: attachment; filename="INV-2024-001.pdf"
+
+[PDF Binary Content]`,
+      example: `curl -X GET \\
+  https://api.cozmopol.com/v2/invoices/67f1234567890abcdef12345/pdf \\
+  -H 'Authorization: Bearer YOUR_API_KEY' \\
+  -o invoice.pdf`
+    }
+  ]
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
       <div className="text-center mb-12">
@@ -792,6 +1122,40 @@ const Endpoints = () => {
         </div>
         <div className="space-y-4">
           {qaEndpoints.map((endpoint, index) => (
+            <EndpointCard key={index} {...endpoint} />
+          ))}
+        </div>
+      </section>
+
+      {/* Returns Management Section */}
+      <section id="returns" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
+          🔄 İade Talepleri
+        </h2>
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+          <p className="text-orange-800 text-sm">
+            <strong>🔧 Geliştiriliyor:</strong> Bu endpoint'ler aktif geliştirme aşamasındadır. Değişiklikler olabilir.
+          </p>
+        </div>
+        <div className="space-y-4">
+          {returnEndpoints.map((endpoint, index) => (
+            <EndpointCard key={index} {...endpoint} />
+          ))}
+        </div>
+      </section>
+
+      {/* Invoice Management Section */}
+      <section id="invoices" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
+          🧾 Fatura Yönetimi
+        </h2>
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+          <p className="text-orange-800 text-sm">
+            <strong>🔧 Geliştiriliyor:</strong> Bu endpoint'ler aktif geliştirme aşamasındadır. Değişiklikler olabilir.
+          </p>
+        </div>
+        <div className="space-y-4">
+          {invoiceEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>

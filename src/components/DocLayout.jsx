@@ -37,7 +37,9 @@ const DocLayout = ({ children }) => {
             { name: 'Sipariş Yönetimi', href: '/endpoints#orders', icon: '📋' },
             { name: 'Kargo Yönetimi', href: '/endpoints#shipping', icon: '🚚' },
             { name: 'Stok Yönetimi', href: '/endpoints#inventory', icon: '📊' },
-            { name: 'Soru & Cevap', href: '/endpoints#qa', icon: '💬' }
+            { name: 'Soru & Cevap', href: '/endpoints#qa', icon: '💬' },
+            { name: 'İade Talepleri', href: '/endpoints#returns', icon: '🔄' },
+            { name: 'Fatura Yönetimi', href: '/endpoints#invoices', icon: '🧾' }
           ]
         },
         { name: 'Webhooks', href: '/webhooks', icon: '🔗' },
