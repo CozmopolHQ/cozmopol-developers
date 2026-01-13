@@ -140,7 +140,7 @@ const PostmanCollections = () => {
                 <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono">BASE_URL</code>
                 <p className="text-sm text-gray-600 mt-1">API'nin base URL'i</p>
               </div>
-              <code className="text-sm text-gray-700">https://api.cozmopol.net/api/v2</code>
+              <code className="text-sm text-gray-700">{BASE_URL}</code>
             </div>
 
             <div className="flex items-center justify-between py-2 border-b border-gray-200">

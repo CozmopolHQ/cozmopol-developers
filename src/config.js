@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://api.cozmopol.net/api/v2';
+export const BASE_URL = 'https://entegrasyon.cozmopol.net/api/v2';
