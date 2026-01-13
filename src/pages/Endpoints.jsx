@@ -843,6 +843,460 @@ const Endpoints = () => {
     }
   ]
 
+  const integrationAuthEndpoints = [
+    {
+      method: 'POST',
+      path: '/integration/create-api-key',
+      description: 'Yeni API kimlik bilgileri oluştur',
+      status: 'stable',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `{
+  "success": true,
+  "data": {
+    "apiKey": "259aa5b375e08fb26e6e0ebf3f0949ca",
+    "apiSecretKey": "720f5664ee414a5047bb130144f1a29cba65130d4e7585f18992421a02e6f065",
+    "storeUserId": "67c1b95d3201a327160dbca2"
+  }
+}`,
+      example: `curl -X POST \\
+  https://backend-integration-mauve.vercel.app/integration/create-api-key \\
+  -H 'Authorization: Bearer YOUR_TOKEN'`
+    },
+    {
+      method: 'GET',
+      path: '/integration/retrieve-api-key',
+      description: 'Mevcut API kimlik bilgilerini getir',
+      status: 'stable',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `{
+  "success": true,
+  "data": {
+    "apiKey": "259aa5b375e08fb26e6e0ebf3f0949ca",
+    "apiSecretKey": "720f5664ee414a5047bb130144f1a29cba65130d4e7585f18992421a02e6f065",
+    "storeUserId": "67c1b95d3201a327160dbca2"
+  }
+}`,
+      example: `curl -X GET \\
+  https://backend-integration-mauve.vercel.app/integration/retrieve-api-key \\
+  -H 'Authorization: Bearer YOUR_TOKEN'`
+    }
+  ]
+
+  const integrationProductEndpoints = [
+    {
+      method: 'GET',
+      path: '/store/brands',
+      description: 'Tüm markaları listele (Integration API)',
+      status: 'stable',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `[
+  {
+    "_id": "0000000000000000000f4315",
+    "value": "akg",
+    "label": "AKG"
+  },
+  {
+    "_id": "0000000000000000000f424c",
+    "value": "amd",
+    "label": "AMD"
+  },
+  {
+    "_id": "6943bbfd7c5c681734bec174",
+    "value": "apple",
+    "label": "Apple"
+  }
+]`,
+      example: `curl -X GET \\
+  https://backend-integration-mauve.vercel.app/store/brands \\
+  -H 'Authorization: Bearer YOUR_TOKEN'`
+    },
+    {
+      method: 'GET',
+      path: '/common/product-categories',
+      description: 'Ürün kategorilerini listele',
+      status: 'stable',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `{
+  "success": true,
+  "count": 15,
+  "data": [
+    {
+      "_id": 368,
+      "name": "Aksesuar",
+      "parentId": null,
+      "isLeaf": false,
+      "path": [368],
+      "fullPathName": "Aksesuar",
+      "isActive": true,
+      "commission": 0,
+      "vatRate": 0,
+      "isReturnable": true
+    }
+  ]
+}`,
+      example: `curl -X GET \\
+  https://backend-integration-mauve.vercel.app/common/product-categories \\
+  -H 'Authorization: Bearer YOUR_TOKEN'`
+    },
+    {
+      method: 'GET',
+      path: '/common/product-categories/:categoryId/attributes',
+      description: 'Kategori özelliklerini getir',
+      status: 'stable',
+      parameters: [
+        { name: 'categoryId', type: 'integer', required: true, description: 'Kategori ID\'si' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `{
+  "success": true,
+  "data": {
+    "slicerAttributes": [
+      {
+        "attributeId": 249,
+        "attributeName": "SSD Kapasitesi",
+        "required": true,
+        "allowCustom": false,
+        "values": [
+          {
+            "id": 3379,
+            "name": "512 GB"
+          }
+        ]
+      }
+    ],
+    "commonAttributes": [
+      {
+        "attributeId": 131,
+        "attributeName": "Ekran Kartı Hafızası",
+        "required": false,
+        "allowCustom": false,
+        "values": [
+          {
+            "id": 10576991,
+            "name": "48 GB"
+          }
+        ]
+      }
+    ]
+  }
+}`,
+      example: `curl -X GET \\
+  https://backend-integration-mauve.vercel.app/common/product-categories/1583/attributes \\
+  -H 'Authorization: Bearer YOUR_TOKEN'`
+    },
+    {
+      method: 'POST',
+      path: '/store/productsV2/product/bulk',
+      description: 'Toplu ürün oluştur',
+      status: 'stable',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'products', type: 'array', required: true, description: 'Ürün listesi' }
+      ],
+      response: `{
+  "success": true,
+  "data": {
+    "success": true,
+    "batchRequestId": "695e36946adf481137a31805",
+    "message": "Batch processing started"
+  }
+}`,
+      example: `curl -X POST \\
+  https://backend-integration-mauve.vercel.app/store/productsV2/product/bulk \\
+  -H 'Authorization: Bearer YOUR_TOKEN' \\
+  -H 'Content-Type: application/json' \\
+  -d '[
+    {
+      "categoryId": 1583,
+      "brandId": "6943bbfd7c5c681734bec174",
+      "brandName": "Apple",
+      "description": "MBA 15 SKY/10C GPU/16GB/256GB-TUR",
+      "productCode": "test-product-code-123",
+      "commonAttributes": [...],
+      "varianterAttribute": null,
+      "variants": [...]
+    }
+  ]'`
+    },
+    {
+      method: 'GET',
+      path: '/store/productsV2/product/v2',
+      description: 'Ürünleri listele (V2)',
+      status: 'stable',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası' },
+        { name: 'size', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı' }
+      ],
+      response: `{
+  "success": true,
+  "data": {
+    "data": [
+      {
+        "barcode": "8682458451244",
+        "modelCode": "test-model-3456",
+        "slicerAttribute": [
+          {
+            "attributeId": 249,
+            "attributeName": "SSD Kapasitesi",
+            "valueId": 3379,
+            "valueName": "512 GB"
+          }
+        ],
+        "price": 1500,
+        "quantity": 50
+      }
+    ],
+    "totalPages": 1,
+    "currentPage": 1,
+    "totalItems": 1
+  }
+}`,
+      example: `curl -X GET \\
+  'https://backend-integration-mauve.vercel.app/store/productsV2/product/v2?page=1&size=20' \\
+  -H 'Authorization: Bearer YOUR_TOKEN'`
+    },
+    {
+      method: 'PUT',
+      path: '/store/productsV2/product/:barcode',
+      description: 'Ürün güncelle',
+      status: 'stable',
+      parameters: [
+        { name: 'barcode', type: 'string', required: true, description: 'Ürün barkodu' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'description', type: 'string', required: false, description: 'Ürün açıklaması' },
+        { name: 'price', type: 'number', required: false, description: 'Ürün fiyatı' },
+        { name: 'quantity', type: 'integer', required: false, description: 'Stok miktarı' }
+      ],
+      response: `{
+  "success": true,
+  "message": "Product updated successfully",
+  "data": {
+    "barcode": "8682458451243",
+    "updated": true
+  }
+}`,
+      example: `curl -X PUT \\
+  https://backend-integration-mauve.vercel.app/store/productsV2/product/8682458451243 \\
+  -H 'Authorization: Bearer YOUR_TOKEN' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "description": "Updated description",
+    "price": 1600,
+    "quantity": 100
+  }'`
+    },
+    {
+      method: 'DELETE',
+      path: '/store/productsV2/product/:barcode',
+      description: 'Ürün sil',
+      status: 'stable',
+      parameters: [
+        { name: 'barcode', type: 'string', required: true, description: 'Ürün barkodu' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `{
+  "success": true,
+  "message": "Product deleted successfully",
+  "data": {
+    "barcode": "8682458451243",
+    "deleted": true
+  }
+}`,
+      example: `curl -X DELETE \\
+  https://backend-integration-mauve.vercel.app/store/productsV2/product/8682458451243 \\
+  -H 'Authorization: Bearer YOUR_TOKEN'`
+    }
+  ]
+
+  const integrationListingEndpoints = [
+    {
+      method: 'PUT',
+      path: '/store/productsV2/listing',
+      description: 'Ürün listesini toplu güncelle (fiyat ve stok)',
+      status: 'stable',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'listings', type: 'array', required: true, description: 'Güncellenecek ürün listesi' }
+      ],
+      response: `{
+  "success": true,
+  "batchRequestId": "09b3ff84-5993-4946-b1ec-2a4a9d8820f5"
+}`,
+      example: `curl -X PUT \\
+  https://backend-integration-mauve.vercel.app/store/productsV2/listing \\
+  -H 'Authorization: Bearer YOUR_TOKEN' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "listings": [
+      {
+        "barcode": "8682458451243",
+        "price": 1500,
+        "quantity": 50
+      }
+    ]
+  }'`
+    }
+  ]
+
+  const integrationOrderEndpoints = [
+    {
+      method: 'GET',
+      path: '/store/ordersV2',
+      description: 'Siparişleri listele (Integration V2)',
+      status: 'stable',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası' },
+        { name: 'size', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı' },
+        { name: 'status', type: 'string', required: false, description: 'Sipariş durumu filtresi' }
+      ],
+      response: `{
+  "success": true,
+  "data": {
+    "orders": [
+      {
+        "orderId": "3580169126",
+        "orderNumber": "ORD-2024-001",
+        "status": "confirmed",
+        "createdAt": "2024-01-15T10:30:00Z",
+        "totalAmount": 299.99,
+        "currency": "TRY",
+        "customer": {
+          "name": "John Doe",
+          "email": "john@example.com"
+        },
+        "items": [
+          {
+            "barcode": "8682458451243",
+            "title": "Premium Kulaklık",
+            "quantity": 1,
+            "price": 299.99
+          }
+        ]
+      }
+    ],
+    "totalPages": 5,
+    "currentPage": 1
+  }
+}`,
+      example: `curl -X GET \\
+  'https://backend-integration-mauve.vercel.app/store/ordersV2?page=1&size=20' \\
+  -H 'Authorization: Bearer YOUR_TOKEN'`
+    },
+    {
+      method: 'PUT',
+      path: '/store/ordersV2/splitOrder/:orderId',
+      description: 'Siparişi böl',
+      status: 'stable',
+      parameters: [
+        { name: 'orderId', type: 'string', required: true, description: 'Sipariş ID\'si' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'items', type: 'array', required: true, description: 'Bölünecek ürünler' }
+      ],
+      response: `{
+  "success": true,
+  "message": "Order split successfully",
+  "data": {
+    "originalOrderId": "5892398542",
+    "newOrderIds": ["5892398543", "5892398544"]
+  }
+}`,
+      example: `curl -X PUT \\
+  https://backend-integration-mauve.vercel.app/store/ordersV2/splitOrder/5892398542 \\
+  -H 'Authorization: Bearer YOUR_TOKEN' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "items": [
+      {
+        "barcode": "8682458451243",
+        "quantity": 1
+      }
+    ]
+  }'`
+    },
+    {
+      method: 'PUT',
+      path: '/store/ordersV2/status/:orderId',
+      description: 'Sipariş durumunu güncelle',
+      status: 'stable',
+      parameters: [
+        { name: 'orderId', type: 'string', required: true, description: 'Sipariş ID\'si' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'status', type: 'string', required: true, description: 'Yeni sipariş durumu' }
+      ],
+      response: `{
+  "success": true,
+  "message": "Order status updated successfully",
+  "data": {
+    "orderId": "3580169126",
+    "status": "shipped",
+    "updatedAt": "2024-01-15T14:30:00Z"
+  }
+}`,
+      example: `curl -X PUT \\
+  https://backend-integration-mauve.vercel.app/store/ordersV2/status/3580169126 \\
+  -H 'Authorization: Bearer YOUR_TOKEN' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "status": "shipped"
+  }'`
+    }
+  ]
+
+  const integrationBatchEndpoints = [
+    {
+      method: 'GET',
+      path: '/store/batch-request/:batchId',
+      description: 'Toplu işlem durumunu sorgula',
+      status: 'stable',
+      parameters: [
+        { name: 'batchId', type: 'string', required: true, description: 'Batch request ID\'si' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `{
+  "success": true,
+  "data": {
+    "id": "09b3ff84-5993-4946-b1ec-2a4a9d8820f5",
+    "type": "update_listing",
+    "status": "completed",
+    "data": {
+      "listingsCount": 1,
+      "listings": [
+        {
+          "barcode": "8682458451243",
+          "quantity": 55,
+          "price": 220
+        }
+      ]
+    },
+    "result": {
+      "message": "Batch listing update completed",
+      "processedAt": "2026-01-12T09:29:24.224Z",
+      "results": [
+        {
+          "success": true,
+          "barcode": "8682458451243",
+          "message": "Listing updated successfully"
+        }
+      ]
+    }
+  }
+}`,
+      example: `curl -X GET \\
+  https://backend-integration-mauve.vercel.app/store/batch-request/09b3ff84-5993-4946-b1ec-2a4a9d8820f5 \\
+  -H 'Authorization: Bearer YOUR_TOKEN'`
+    }
+  ]
+
   const invoiceEndpoints = [
     {
       method: 'GET',
@@ -1025,137 +1479,86 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
         </p>
       </div>
 
-      {/* Test & Tools Section */}
-      <section id="test-tools" className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-blue-600 pb-2">
-          🧪 Test & Araçlar
-        </h2>
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-          <p className="text-blue-800 text-sm">
-            <strong>✅ Stable:</strong> Bu endpoint'ler tamamen geliştirilmiş ve production'da kullanıma hazırdır. Kimlik doğrulama gerektirmez.
-          </p>
-        </div>
-        <div className="space-y-4">
-          {testEndpoints.map((endpoint, index) => (
-            <EndpointCard key={index} {...endpoint} />
-          ))}
-        </div>
-      </section>
-
-      {/* Products Section */}
-      <section id="products" className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
-          📦 Ürün Yönetimi
+      {/* Integration Authorization Section */}
+      <section id="integration-auth" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
+          🔐 Integration API - Kimlik Doğrulama
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Güvenle kullanabilirsiniz.
+            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Integration API için kimlik bilgileri yönetimi.
           </p>
         </div>
         <div className="space-y-4">
-          {productEndpoints.map((endpoint, index) => (
+          {integrationAuthEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>
       </section>
 
-      {/* Orders Section */}
-      <section id="orders" className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
-          📋 Sipariş Yönetimi
+      {/* Integration Product Management Section */}
+      <section id="integration-products" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
+          📦 Integration API - Ürün Yönetimi
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Güvenle kullanabilirsiniz.
+            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Toplu ürün işlemleri ve kategori yönetimi için kullanın.
           </p>
         </div>
         <div className="space-y-4">
-          {orderEndpoints.map((endpoint, index) => (
+          {integrationProductEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>
       </section>
 
-      {/* Shipping Management Section */}
-      <section id="shipping" className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
-          🚚 Kargo Yönetimi
+      {/* Integration Listing Management Section */}
+      <section id="integration-listing" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
+          💰 Integration API - Listeleme Yönetimi
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Güvenle kullanabilirsiniz.
+            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Toplu fiyat ve stok güncellemeleri için kullanın.
           </p>
         </div>
         <div className="space-y-4">
-          {shippingEndpoints.map((endpoint, index) => (
+          {integrationListingEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>
       </section>
 
-      {/* Inventory Section */}
-      <section id="inventory" className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
-          📊 Stok Yönetimi
-        </h2>
-        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
-          <p className="text-orange-800 text-sm">
-            <strong>🔧 Geliştiriliyor:</strong> Bu endpoint'ler aktif geliştirme aşamasındadır. Değişiklikler olabilir.
-          </p>
-        </div>
-        <div className="space-y-4">
-          {inventoryEndpoints.map((endpoint, index) => (
-            <EndpointCard key={index} {...endpoint} />
-          ))}
-        </div>
-      </section>
-
-      {/* Q&A Management Section */}
-      <section id="qa" className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
-          💬 Soru & Cevap Yönetimi
+      {/* Integration Order Management Section */}
+      <section id="integration-orders" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
+          📋 Integration API - Sipariş Yönetimi
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Güvenle kullanabilirsiniz.
+            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Sipariş sorgulama ve durum güncelleme için kullanın.
           </p>
         </div>
         <div className="space-y-4">
-          {qaEndpoints.map((endpoint, index) => (
+          {integrationOrderEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>
       </section>
 
-      {/* Returns Management Section */}
-      <section id="returns" className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
-          🔄 İade Talepleri
+      {/* Integration Batch Request Section */}
+      <section id="integration-batch" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
+          ⚙️ Integration API - Toplu İşlem Takibi
         </h2>
-        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
-          <p className="text-orange-800 text-sm">
-            <strong>🔧 Geliştiriliyor:</strong> Bu endpoint'ler aktif geliştirme aşamasındadır. Değişiklikler olabilir.
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <p className="text-green-800 text-sm">
+            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Toplu işlemlerin durumunu sorgulamak için kullanın.
           </p>
         </div>
         <div className="space-y-4">
-          {returnEndpoints.map((endpoint, index) => (
-            <EndpointCard key={index} {...endpoint} />
-          ))}
-        </div>
-      </section>
-
-      {/* Invoice Management Section */}
-      <section id="invoices" className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-cozmopol-600 pb-2">
-          🧾 Fatura Yönetimi
-        </h2>
-        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
-          <p className="text-orange-800 text-sm">
-            <strong>🔧 Geliştiriliyor:</strong> Bu endpoint'ler aktif geliştirme aşamasındadır. Değişiklikler olabilir.
-          </p>
-        </div>
-        <div className="space-y-4">
-          {invoiceEndpoints.map((endpoint, index) => (
+          {integrationBatchEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>
@@ -1167,7 +1570,7 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
           https://backend-integration-mauve.vercel.app
         </code>
         <p className="text-blue-700 mt-4 text-sm">
-          <code className="bg-blue-100 px-2 py-1 rounded mx-1">https://backend-integration-mauve.vercel.app</code> 
+          <code className="bg-blue-100 px-2 py-1 rounded mx-1">https://backend-integration-mauve.vercel.app</code>
           kullanabilirsiniz.
         </p>
       </div>
