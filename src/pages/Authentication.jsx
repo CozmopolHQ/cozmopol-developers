@@ -48,7 +48,7 @@ const Authentication = () => {
             <CodeBlock
               code={`# Token alma
 curl -X POST \\
-  ${BASE_URL}/api/auth/token \\
+  ${BASE_URL}/auth/token \\
   -H 'Content-Type: application/json' \\
   -d '{
     "storeUserId": "67c1b95d3201a327160dbca2",
@@ -63,7 +63,7 @@ curl -X POST \\
 
 # Token ile API kullanımı
 curl -X GET \\
-  ${BASE_URL}/v2/products \\
+  ${BASE_URL}/products \\
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' \\
   -H 'Content-Type: application/json'`}
               language="bash"
@@ -80,7 +80,7 @@ curl -X GET \\
             <CodeBlock
               code={`# Doğrudan API anahtarı ile
 curl -X GET \\
-  ${BASE_URL}/v2/products \\
+  ${BASE_URL}/products \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json'`}
               language="bash"

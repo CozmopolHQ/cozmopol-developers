@@ -15,7 +15,7 @@ const QuickStart = () => {
       title: 'Token Alın (Opsiyonel)',
       description: 'Vendor bilgileriniz ile authentication token alın',
       code: `curl -X POST \\
-  ${BASE_URL}/api/auth/token \\
+  ${BASE_URL}/auth/token \\
   -H 'Content-Type: application/json' \\
   -d '{
     "storeUserId": "YOUR_STORE_USER_ID",
@@ -27,7 +27,7 @@ const QuickStart = () => {
       title: 'İlk API Çağrısı',
       description: 'Test endpoint\'i kullanarak bağlantınızı doğrulayın',
       code: `curl -X GET \\
-  ${BASE_URL}/api/test/ping \\
+  ${BASE_URL}/test/ping \\
   -H 'Authorization: Bearer YOUR_TOKEN_OR_API_KEY' \\
   -H 'Content-Type: application/json'`
     },
@@ -35,7 +35,7 @@ const QuickStart = () => {
       title: 'Ürün Yükleme',
       description: 'İlk ürünlerinizi API üzerinden yükleyin',
       code: `curl -X POST \\
-  ${BASE_URL}/v2/products \\
+  ${BASE_URL}/products \\
   -H 'Authorization: Bearer YOUR_TOKEN_OR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{

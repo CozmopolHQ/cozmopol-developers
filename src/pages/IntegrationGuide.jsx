@@ -32,7 +32,7 @@ const STORE_USER_ID = "67c1b95d3201a327160dbca2"`
       ],
       code: `// Token alma
 const getAuthToken = async () => {
-  const response = await fetch(\`\${BASE_URL}/api/auth/token\`, {
+  const response = await fetch(\`${BASE_URL}/auth/token\`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -60,7 +60,7 @@ const getAuthToken = async () => {
       ],
       code: `// Bağlantı testi
 const testConnection = async (token) => {
-  const response = await fetch(\`\${BASE_URL}/api/test/ping\`, {
+  const response = await fetch(\`${BASE_URL}/test/ping\`, {
     method: 'GET',
     headers: {
       'Authorization': \`Bearer \${token}\`,
@@ -84,14 +84,14 @@ const testConnection = async (token) => {
       ],
       code: `// Kategori ve marka bilgilerini alma
 const getCategories = async (token) => {
-  const response = await fetch(\`\${BASE_URL}/api/categories\`, {
+  const response = await fetch(\`${BASE_URL}/categories\`, {
     headers: { 'Authorization': \`Bearer \${token}\` }
   });
   return await response.json();
 };
 
 const getBrands = async (token) => {
-  const response = await fetch(\`\${BASE_URL}/api/brands\`, {
+  const response = await fetch(\`${BASE_URL}/brands\`, {
     headers: { 'Authorization': \`Bearer \${token}\` }
   });
   return await response.json();
@@ -123,7 +123,7 @@ const createProduct = async (token) => {
     weight: 250
   };
 
-  const response = await fetch(\`\${BASE_URL}/v2/products\`, {
+  const response = await fetch(\`${BASE_URL}/products\`, {
     method: 'POST',
     headers: {
       'Authorization': \`Bearer \${token}\`,
@@ -242,7 +242,7 @@ class CozmopolAPI {
   // 1. Token alma
   async authenticate() {
     try {
-      const response = await fetch(\`\${this.baseURL}/api/auth/token\`, {
+      const response = await fetch(\`${this.baseURL}/auth/token\`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -279,7 +279,7 @@ class CozmopolAPI {
       options.body = JSON.stringify(body);
     }
 
-    const response = await fetch(\`\${this.baseURL}\${endpoint}\`, options);
+    const response = await fetch(\`${this.baseURL}\${endpoint}\`, options);
     
     if (!response.ok) {
       throw new Error(\`API Error: \${response.status} - \${response.statusText}\`);
@@ -290,34 +290,34 @@ class CozmopolAPI {
 
   // 3. Bağlantı testi
   async testConnection() {
-    return await this.apiCall('/api/test/ping');
+    return await this.apiCall('/test/ping');
   }
 
   // 4. Kategorileri getir
   async getCategories() {
-    return await this.apiCall('/api/categories');
+    return await this.apiCall('/categories');
   }
 
   // 5. Markaları getir
   async getBrands() {
-    return await this.apiCall('/api/brands');
+    return await this.apiCall('/brands');
   }
 
   // 6. Ürün oluştur
   async createProduct(productData) {
-    return await this.apiCall('/v2/products', 'POST', productData);
+    return await this.apiCall('/products', 'POST', productData);
   }
 
   // 7. Ürünleri listele
   async getProducts(filters = {}) {
     const queryString = new URLSearchParams(filters).toString();
-    const endpoint = queryString ? \`/api/products?\${queryString}\` : '/api/products';
+    const endpoint = queryString ? \`/products?\${queryString}\` : '/products';
     return await this.apiCall(endpoint);
   }
 
   // 8. Siparişleri getir
   async getOrders() {
-    return await this.apiCall('/api/orders');
+    return await this.apiCall('/orders');
   }
 }
 

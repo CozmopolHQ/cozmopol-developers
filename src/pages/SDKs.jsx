@@ -164,7 +164,7 @@ const SDKs = () => {
             <CodeBlock
               code={`# Token alma
 curl -X POST \\
-  ${BASE_URL}/api/auth/token \\
+  ${BASE_URL}/auth/token \\
   -H 'Content-Type: application/json' \\
   -d '{
     "storeUserId": "YOUR_STORE_USER_ID",
@@ -174,7 +174,7 @@ curl -X POST \\
 
 # API kullanımı
 curl -X GET \\
-  ${BASE_URL}/api/test/ping \\
+  ${BASE_URL}/test/ping \\
   -H 'Authorization: Bearer YOUR_TOKEN'`}
               language="bash"
             />

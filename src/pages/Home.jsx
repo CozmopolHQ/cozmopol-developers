@@ -144,7 +144,7 @@ const Home = () => {
               <div className="text-green-400 mb-2"># İlk API çağrınız</div>
               <div className="text-blue-400">curl</div>
               <div className="ml-2 text-slate-300">-X GET \</div>
-              <div className="ml-2 text-yellow-400">{BASE_URL}/api/test/ping \</div>
+              <div className="ml-2 text-yellow-400">{BASE_URL}/test/ping \</div>
               <div className="ml-2 text-slate-300">-H <span className="text-green-400">'Authorization: Bearer YOUR_API_KEY'</span> \</div>
               <div className="ml-2 text-slate-300">-H <span className="text-green-400">'Content-Type: application/json'</span></div>
               <div className="mt-4 text-green-400"># Yanıt</div>

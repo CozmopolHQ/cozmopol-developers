@@ -6,7 +6,7 @@ const Endpoints = () => {
   const testEndpoints = [
     {
       method: 'GET',
-      path: '/api/test/ping',
+      path: '/test/ping',
       description: 'API bağlantısını test et',
       status: 'stable',
       parameters: [],
@@ -14,12 +14,12 @@ const Endpoints = () => {
   "message": "pong"
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/api/test/ping \\
+  ${BASE_URL}/test/ping \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/api/test/version',
+      path: '/test/version',
       description: 'API versiyonunu getir',
       status: 'stable',
       parameters: [],
@@ -27,12 +27,12 @@ const Endpoints = () => {
   "version": "1.0.0"
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/api/test/version \\
+  ${BASE_URL}/test/version \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/api/health',
+      path: '/health',
       description: 'Sistem sağlık durumunu kontrol et',
       status: 'stable',
       parameters: [],
@@ -50,12 +50,12 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/api/health \\
+  ${BASE_URL}/health \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'POST',
-      path: '/api/test/webhook',
+      path: '/test/webhook',
       description: 'Webhook test tetikleyicisi',
       status: 'development',
       parameters: [
@@ -67,7 +67,7 @@ const Endpoints = () => {
   "message": "Test webhook triggered successfully"
 }`,
       example: `curl -X POST \\
-  ${BASE_URL}/api/test/webhook \\
+  ${BASE_URL}/test/webhook \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -79,7 +79,7 @@ const Endpoints = () => {
     },
     {
       method: 'POST',
-      path: '/api/auth/token',
+      path: '/auth/token',
       description: 'Vendor olarak giriş yap ve token al',
       status: 'stable',
       parameters: [
@@ -91,7 +91,7 @@ const Endpoints = () => {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }`,
       example: `curl -X POST \\
-  ${BASE_URL}/api/auth/token \\
+  ${BASE_URL}/auth/token \\
   -H 'Content-Type: application/json' \\
   -d '{
     "storeUserId": "67c1b95d3201a327160dbca2",
@@ -104,7 +104,7 @@ const Endpoints = () => {
   const productEndpoints = [
     {
       method: 'POST',
-      path: '/v2/products',
+      path: '/products',
       description: 'Yeni ürün oluştur',
       status: 'development',
       parameters: [
@@ -133,7 +133,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X POST \\
-  ${BASE_URL}/v2/products \\
+  ${BASE_URL}/products \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -150,7 +150,7 @@ const Endpoints = () => {
     },
     {
       method: 'GET',
-      path: '/api/products',
+      path: '/products',
       description: 'Tüm ürünleri listele',
       status: 'stable',
       parameters: [
@@ -205,12 +205,12 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X GET \\
-  '${BASE_URL}/api/products?search=keçiboynuzu&brand=Yeni Marka Adı&category=1219&subcategory=1385&currency=TRY&status=true&isVariantProduct=false&minPrice=140&maxPrice=150' \\
+  '${BASE_URL}/products?search=keçiboynuzu&brand=Yeni Marka Adı&category=1219&subcategory=1385&currency=TRY&status=true&isVariantProduct=false&minPrice=140&maxPrice=150' \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/api/products/{id}',
+      path: '/products/{id}',
       description: 'Ürün detayını getir',
       status: 'stable',
       parameters: [
@@ -275,12 +275,12 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/api/products/67c1bcbb3c56211e5c53289c \\
+  ${BASE_URL}/products/67c1bcbb3c56211e5c53289c \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/api/categories',
+      path: '/categories',
       description: 'Kategori listesini getir',
       status: 'stable',
       parameters: [
@@ -313,12 +313,12 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X PUT \\
-  ${BASE_URL}/api/categories \\
+  ${BASE_URL}/categories \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/api/brands',
+      path: '/brands',
       description: 'Marka listesini getir',
       status: 'stable',
       parameters: [
@@ -344,14 +344,14 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X DELETE \\
-  ${BASE_URL}/api/brands`
+  ${BASE_URL}/brands`
     }
   ]
 
   const orderEndpoints = [
     {
       method: 'GET',
-      path: '/api/orders',
+      path: '/orders',
       description: 'Tüm siparişleri listele',
       status: 'stable',
       parameters: [
@@ -426,12 +426,12 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/api/orders \\
+  ${BASE_URL}/orders \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/api/orders/{id}',
+      path: '/orders/{id}',
       description: 'Sipariş detayını getir',
       status: 'stable',
       parameters: [
@@ -483,7 +483,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/api/orders/67d89c727ce36855bce10598 \\
+  ${BASE_URL}/orders/67d89c727ce36855bce10598 \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     }
   ]
@@ -491,7 +491,7 @@ const Endpoints = () => {
   const shippingEndpoints = [
     {
       method: 'GET',
-      path: '/api/shipping',
+      path: '/shipping',
       description: 'Kargo şirketlerini listele (Güncellenmiş)',
       status: 'stable',
       parameters: [
@@ -526,7 +526,7 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/api/shipping \\
+  ${BASE_URL}/shipping \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     }
   ]
@@ -534,7 +534,7 @@ const Endpoints = () => {
   const inventoryEndpoints = [
     {
       method: 'PUT',
-      path: '/v2/inventory/{product_id}',
+      path: '/inventory/{product_id}',
       description: 'Stok miktarını güncelle',
       status: 'development',
       parameters: [
@@ -552,7 +552,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X PUT \\
-  ${BASE_URL}/v2/inventory/12345 \\
+  ${BASE_URL}/inventory/12345 \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -562,7 +562,7 @@ const Endpoints = () => {
     },
     {
       method: 'GET',
-      path: '/v2/inventory/low-stock',
+      path: '/inventory/low-stock',
       description: 'Düşük stoklu ürünleri getir',
       status: 'development',
       parameters: [
@@ -595,7 +595,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  '${BASE_URL}/v2/inventory/low-stock?threshold=10' \\
+  '${BASE_URL}/inventory/low-stock?threshold=10' \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     }
   ]
@@ -603,7 +603,7 @@ const Endpoints = () => {
   const qaEndpoints = [
     {
       method: 'GET',
-      path: '/api/questions',
+      path: '/questions',
       description: 'Ürünlere gelen soruları listele',
       status: 'stable',
       parameters: [
@@ -655,12 +655,12 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/api/questions \\
+  ${BASE_URL}/questions \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'PATCH',
-      path: '/api/questions/{id}/answer',
+      path: '/questions/{id}/answer',
       description: 'Soruya cevap ver',
       status: 'stable',
       parameters: [
@@ -678,7 +678,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X PATCH \\
-  ${BASE_URL}/api/questions/686295d1c5948b00b525bbd7/answer \\
+  ${BASE_URL}/questions/686295d1c5948b00b525bbd7/answer \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -690,7 +690,7 @@ const Endpoints = () => {
   const returnEndpoints = [
     {
       method: 'GET',
-      path: '/v2/returns',
+      path: '/returns',
       description: 'İade taleplerini listele',
       status: 'development',
       parameters: [
@@ -743,12 +743,12 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  '${BASE_URL}/v2/returns?status=pending&page=1&limit=10' \\
+  '${BASE_URL}/returns?status=pending&page=1&limit=10' \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/v2/returns/{id}',
+      path: '/returns/{id}',
       description: 'İade talebi detayını getir',
       status: 'development',
       parameters: [
@@ -805,12 +805,12 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/v2/returns/67e1234567890abcdef12345 \\
+  ${BASE_URL}/returns/67e1234567890abcdef12345 \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'PATCH',
-      path: '/v2/returns/{id}/status',
+      path: '/returns/{id}/status',
       description: 'İade talebi durumunu güncelle',
       status: 'development',
       parameters: [
@@ -833,7 +833,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X PATCH \\
-  ${BASE_URL}/v2/returns/67e1234567890abcdef12345/status \\
+  ${BASE_URL}/returns/67e1234567890abcdef12345/status \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -1301,7 +1301,7 @@ const Endpoints = () => {
   const invoiceEndpoints = [
     {
       method: 'GET',
-      path: '/v2/invoices',
+      path: '/invoices',
       description: 'Fatura listesini getir',
       status: 'development',
       parameters: [
@@ -1369,12 +1369,12 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  '${BASE_URL}/v2/invoices?status=paid&start_date=2024-01-01&end_date=2024-01-31' \\
+  '${BASE_URL}/invoices?status=paid&start_date=2024-01-01&end_date=2024-01-31' \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/v2/invoices/{id}',
+      path: '/invoices/{id}',
       description: 'Fatura detayını getir',
       status: 'development',
       parameters: [
@@ -1448,12 +1448,12 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/v2/invoices/67f1234567890abcdef12345 \\
+  ${BASE_URL}/invoices/67f1234567890abcdef12345 \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/v2/invoices/{id}/pdf',
+      path: '/invoices/{id}/pdf',
       description: 'Fatura PDF\'ini indir',
       status: 'development',
       parameters: [
@@ -1465,7 +1465,7 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
 
 [PDF Binary Content]`,
       example: `curl -X GET \\
-  ${BASE_URL}/v2/invoices/67f1234567890abcdef12345/pdf \\
+  ${BASE_URL}/invoices/67f1234567890abcdef12345/pdf \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -o invoice.pdf`
     }

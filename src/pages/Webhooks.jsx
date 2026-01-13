@@ -127,7 +127,7 @@ const Webhooks = () => {
             </p>
             <CodeBlock
               code={`curl -X POST \\
-  ${BASE_URL}/v2/webhooks \\
+  ${BASE_URL}/webhooks \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -263,7 +263,7 @@ function verifyWebhookSignature(payload, signature, secret) {
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Test Endpoint'i ile Test</h3>
           <CodeBlock
             code={`curl -X POST \\
-  ${BASE_URL}/api/test/webhook \\
+  ${BASE_URL}/test/webhook \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
