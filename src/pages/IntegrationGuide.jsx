@@ -1,6 +1,7 @@
 import React from 'react'
 import { CheckCircle, AlertTriangle, Code, Zap, Shield, Clock } from 'lucide-react'
 import CodeBlock from '../components/CodeBlock'
+import { BASE_URL } from '../config'
 
 const IntegrationGuide = () => {
   const integrationSteps = [
@@ -31,7 +32,7 @@ const STORE_USER_ID = "67c1b95d3201a327160dbca2"`
       ],
       code: `// Token alma
 const getAuthToken = async () => {
-  const response = await fetch('https://api.cozmopol.com/api/auth/token', {
+  const response = await fetch(\`\${BASE_URL}/api/auth/token\`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -59,7 +60,7 @@ const getAuthToken = async () => {
       ],
       code: `// Bağlantı testi
 const testConnection = async (token) => {
-  const response = await fetch('https://api.cozmopol.com/api/test/ping', {
+  const response = await fetch(\`\${BASE_URL}/api/test/ping\`, {
     method: 'GET',
     headers: {
       'Authorization': \`Bearer \${token}\`,
@@ -83,14 +84,14 @@ const testConnection = async (token) => {
       ],
       code: `// Kategori ve marka bilgilerini alma
 const getCategories = async (token) => {
-  const response = await fetch('https://api.cozmopol.com/api/categories', {
+  const response = await fetch(\`\${BASE_URL}/api/categories\`, {
     headers: { 'Authorization': \`Bearer \${token}\` }
   });
   return await response.json();
 };
 
 const getBrands = async (token) => {
-  const response = await fetch('https://api.cozmopol.com/api/brands', {
+  const response = await fetch(\`\${BASE_URL}/api/brands\`, {
     headers: { 'Authorization': \`Bearer \${token}\` }
   });
   return await response.json();
@@ -122,7 +123,7 @@ const createProduct = async (token) => {
     weight: 250
   };
 
-  const response = await fetch('https://api.cozmopol.com/v2/products', {
+  const response = await fetch(\`\${BASE_URL}/v2/products\`, {
     method: 'POST',
     headers: {
       'Authorization': \`Bearer \${token}\`,
@@ -186,16 +187,16 @@ const createProduct = async (token) => {
                   {index + 1}
                 </div>
               </div>
-              
+
               {/* Step Content */}
               <div className="flex-1">
                 <div className="flex items-center space-x-3 mb-4">
                   <step.icon className="w-6 h-6 text-blue-600" />
                   <h2 className="text-2xl font-semibold text-gray-900">{step.title}</h2>
                 </div>
-                
+
                 <p className="text-gray-600 mb-6">{step.description}</p>
-                
+
                 {/* Steps List */}
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Adımlar:</h3>
@@ -208,7 +209,7 @@ const createProduct = async (token) => {
                     ))}
                   </ul>
                 </div>
-                
+
                 {/* Code Example */}
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Kod Örneği:</h3>
@@ -226,15 +227,15 @@ const createProduct = async (token) => {
         <p className="text-gray-600 mb-6">
           Aşağıda tüm adımları içeren kapsamlı bir entegrasyon örneği bulabilirsiniz:
         </p>
-        
-        <CodeBlock 
+
+        <CodeBlock
           code={`// Cozmopol API Entegrasyon Örneği
 class CozmopolAPI {
   constructor(storeUserId, apiKey, apiSecretKey) {
     this.storeUserId = storeUserId;
     this.apiKey = apiKey;
     this.apiSecretKey = apiSecretKey;
-    this.baseURL = 'https://api.cozmopol.com';
+    this.baseURL = BASE_URL;
     this.token = null;
   }
 
@@ -369,7 +370,7 @@ main();`}
       {/* Best Practices */}
       <div className="bg-white border border-gray-200 rounded-lg p-8 mb-16">
         <h2 className="text-2xl font-semibold text-gray-900 mb-8">En İyi Uygulamalar</h2>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {bestPractices.map((practice, index) => (
             <div key={index} className="bg-gray-50 rounded-lg p-6">
@@ -393,7 +394,7 @@ main();`}
           <AlertTriangle className="w-6 h-6 text-yellow-600" />
           <h2 className="text-2xl font-semibold text-yellow-800">Sık Karşılaşılan Sorunlar</h2>
         </div>
-        
+
         <div className="space-y-4">
           <div>
             <h3 className="font-semibold text-yellow-800 mb-2">401 Unauthorized Hatası</h3>
@@ -401,14 +402,14 @@ main();`}
               API anahtarınızı kontrol edin ve token'ın süresi dolmamış olduğundan emin olun.
             </p>
           </div>
-          
+
           <div>
             <h3 className="font-semibold text-yellow-800 mb-2">429 Rate Limit Hatası</h3>
             <p className="text-yellow-700 text-sm">
               Çok fazla istek gönderiyorsunuz. İstekler arasında bekleme süresi ekleyin.
             </p>
           </div>
-          
+
           <div>
             <h3 className="font-semibold text-yellow-800 mb-2">Ürün Yükleme Hatası</h3>
             <p className="text-yellow-700 text-sm">

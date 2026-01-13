@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { BASE_URL } from '../config'
 import { ChevronDown, ChevronRight, Play, Clock } from 'lucide-react'
 import CodeBlock from './CodeBlock'
 
@@ -59,7 +60,7 @@ const EndpointCard = ({ method, path, description, status, parameters, response,
   ]
 
   const generateCodeExample = (lang) => {
-    const baseUrl = 'https://backend-integration-mauve.vercel.app'
+    const baseUrl = BASE_URL
     const fullUrl = `${baseUrl}${path}`
     const hasAuth = !path.includes('/test/') || path.includes('/auth/')
     const hasBody = method === 'POST' || method === 'PUT'
@@ -203,9 +204,9 @@ public class ApiClient {
     setTestResult(null)
 
     try {
-      const baseUrl = 'https://backend-integration-mauve.vercel.app'
+      const baseUrl = BASE_URL
       let url = `${baseUrl}${path}`
-      
+
       // Path parametrelerini değiştir (örn: /api/products/{id} -> /api/products/123)
       if (path.includes('{') && path.includes('}')) {
         const pathParams = path.match(/\{([^}]+)\}/g)
@@ -269,7 +270,7 @@ public class ApiClient {
       } catch (e) {
         data = await response.text()
       }
-      
+
       setTestResult({
         success: response.ok,
         status: response.status,
@@ -297,7 +298,7 @@ public class ApiClient {
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
-      <div 
+      <div
         className="p-6 cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
@@ -332,11 +333,10 @@ public class ApiClient {
             {['parameters', 'response', 'example', 'test'].map((tab) => (
               <button
                 key={tab}
-                className={`px-6 py-3 text-sm font-medium transition-colors ${
-                  activeTab === tab
-                    ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
+                className={`px-6 py-3 text-sm font-medium transition-colors ${activeTab === tab
+                  ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
+                  : 'text-gray-600 hover:text-gray-900'
+                  }`}
                 onClick={() => setActiveTab(tab)}
               >
                 {tab === 'parameters' && 'Parameters'}
@@ -359,11 +359,10 @@ public class ApiClient {
                             <code className="text-sm font-mono bg-white px-2 py-1 rounded border">
                               {param.name}
                             </code>
-                            <span className={`px-2 py-1 rounded text-xs font-medium ${
-                              param.required 
-                                ? 'bg-red-100 text-red-700 border border-red-200' 
-                                : 'bg-gray-100 text-gray-700 border border-gray-200'
-                            }`}>
+                            <span className={`px-2 py-1 rounded text-xs font-medium ${param.required
+                              ? 'bg-red-100 text-red-700 border border-red-200'
+                              : 'bg-gray-100 text-gray-700 border border-gray-200'
+                              }`}>
                               {param.required ? 'Required' : 'Optional'}
                             </span>
                           </div>
@@ -401,11 +400,10 @@ public class ApiClient {
                   {languages.map((lang) => (
                     <button
                       key={lang.id}
-                      className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                        activeLanguage === lang.id
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
+                      className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${activeLanguage === lang.id
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
                       onClick={() => setActiveLanguage(lang.id)}
                     >
                       <span className="mr-2">{lang.icon}</span>
@@ -413,9 +411,9 @@ public class ApiClient {
                     </button>
                   ))}
                 </div>
-                <CodeBlock 
-                  code={generateCodeExample(activeLanguage)} 
-                  language={activeLanguage === 'nodejs' ? 'javascript' : activeLanguage} 
+                <CodeBlock
+                  code={generateCodeExample(activeLanguage)}
+                  language={activeLanguage === 'nodejs' ? 'javascript' : activeLanguage}
                 />
               </div>
             )}
@@ -424,7 +422,7 @@ public class ApiClient {
               <div>
                 <div className="space-y-4 mb-6">
                   <h3 className="text-lg font-semibold text-gray-900">Live API Test</h3>
-                  
+
                   {/* Authorization Token */}
                   {(!path.includes('/test/') || path.includes('/auth/')) && (
                     <div>
@@ -520,11 +518,10 @@ public class ApiClient {
                     <div className="flex items-center justify-between mb-4">
                       <h4 className="text-lg font-semibold text-gray-900">Response</h4>
                       <div className="flex items-center space-x-2">
-                        <span className={`px-2 py-1 rounded text-sm font-medium ${
-                          testResult.success 
-                            ? 'bg-green-100 text-green-700' 
-                            : 'bg-red-100 text-red-700'
-                        }`}>
+                        <span className={`px-2 py-1 rounded text-sm font-medium ${testResult.success
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-red-100 text-red-700'
+                          }`}>
                           {testResult.status} {testResult.statusText}
                         </span>
                         <span className="text-xs text-gray-500">
@@ -532,7 +529,7 @@ public class ApiClient {
                         </span>
                       </div>
                     </div>
-                    
+
                     {/* Response Headers */}
                     {Object.keys(testResult.headers).length > 0 && (
                       <div className="mb-4">
@@ -550,9 +547,9 @@ public class ApiClient {
                     {/* Response Body */}
                     <div>
                       <h5 className="text-sm font-medium text-gray-700 mb-2">Body</h5>
-                      <CodeBlock 
-                        code={typeof testResult.data === 'string' ? testResult.data : JSON.stringify(testResult.data, null, 2)} 
-                        language="json" 
+                      <CodeBlock
+                        code={typeof testResult.data === 'string' ? testResult.data : JSON.stringify(testResult.data, null, 2)}
+                        language="json"
                       />
                     </div>
                   </div>

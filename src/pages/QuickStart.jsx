@@ -1,6 +1,7 @@
 import React from 'react'
 import { CheckCircle, Copy, ExternalLink } from 'lucide-react'
 import CodeBlock from '../components/CodeBlock'
+import { BASE_URL } from '../config'
 
 const QuickStart = () => {
   const steps = [
@@ -14,7 +15,7 @@ const QuickStart = () => {
       title: 'Token Alın (Opsiyonel)',
       description: 'Vendor bilgileriniz ile authentication token alın',
       code: `curl -X POST \\
-  https://api.cozmopol.com/api/auth/token \\
+  ${BASE_URL}/api/auth/token \\
   -H 'Content-Type: application/json' \\
   -d '{
     "storeUserId": "YOUR_STORE_USER_ID",
@@ -25,8 +26,8 @@ const QuickStart = () => {
     {
       title: 'İlk API Çağrısı',
       description: 'Test endpoint\'i kullanarak bağlantınızı doğrulayın',
-        code: `curl -X GET \\
-  https://api.cozmopol.com/api/test/ping \\
+      code: `curl -X GET \\
+  ${BASE_URL}/api/test/ping \\
   -H 'Authorization: Bearer YOUR_TOKEN_OR_API_KEY' \\
   -H 'Content-Type: application/json'`
     },
@@ -34,7 +35,7 @@ const QuickStart = () => {
       title: 'Ürün Yükleme',
       description: 'İlk ürünlerinizi API üzerinden yükleyin',
       code: `curl -X POST \\
-  https://api.cozmopol.com/v2/products \\
+  ${BASE_URL}/v2/products \\
   -H 'Authorization: Bearer YOUR_TOKEN_OR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -63,18 +64,18 @@ const QuickStart = () => {
             {index < steps.length - 1 && (
               <div className="absolute left-4 top-12 w-0.5 h-24 bg-gray-200"></div>
             )}
-            
+
             <div className="flex items-start space-x-6">
               {/* Step number */}
               <div className="flex-shrink-0 w-8 h-8 bg-cozmopol-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">
                 {index + 1}
               </div>
-              
+
               {/* Step content */}
               <div className="flex-1">
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{step.title}</h3>
                 <p className="text-gray-600 mb-4">{step.description}</p>
-                
+
                 {step.action && (
                   <a
                     href={step.link}
@@ -84,7 +85,7 @@ const QuickStart = () => {
                     <ExternalLink className="w-4 h-4" />
                   </a>
                 )}
-                
+
                 {step.code && (
                   <CodeBlock code={step.code} language="bash" />
                 )}
@@ -100,24 +101,24 @@ const QuickStart = () => {
           <CheckCircle className="w-5 h-5 text-green-600" />
           <h3 className="text-lg font-semibold text-green-800">✅ Stable - Test API Başarılı Yanıt</h3>
         </div>
-        
+
         <div className="mb-6">
           <h4 className="font-semibold text-green-800 mb-2">Token Yanıtı</h4>
-          <CodeBlock 
+          <CodeBlock
             code={`{
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }`}
             language="json"
           />
         </div>
-        
-        <CodeBlock 
+
+        <CodeBlock
           code={`{
   "message": "pong"
 }`}
           language="json"
         />
-        
+
         <div className="mt-6">
           <h4 className="font-semibold text-green-800 mb-2">Diğer Test Endpoint'leri</h4>
           <div className="bg-green-100 border border-green-300 rounded p-2 mb-2">

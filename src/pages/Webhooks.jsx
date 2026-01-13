@@ -1,4 +1,5 @@
 import React from 'react'
+import { BASE_URL } from '../config'
 import { Webhook, Bell, Shield, Code } from 'lucide-react'
 import CodeBlock from '../components/CodeBlock'
 
@@ -94,9 +95,9 @@ const Webhooks = () => {
           <Bell className="w-6 h-6 text-cozmopol-600" />
           <h2 className="text-2xl font-semibold text-gray-900">Webhook Nedir?</h2>
         </div>
-        
+
         <p className="text-gray-600 mb-6">
-          Webhook'lar, sisteminizde önemli olaylar gerçekleştiğinde otomatik olarak bildirim almanızı sağlar. 
+          Webhook'lar, sisteminizde önemli olaylar gerçekleştiğinde otomatik olarak bildirim almanızı sağlar.
           Cozmopol API, belirli olaylar gerçekleştiğinde HTTP POST istekleri göndererek sisteminizi bilgilendirir.
         </p>
 
@@ -117,16 +118,16 @@ const Webhooks = () => {
           <Code className="w-6 h-6 text-green-600" />
           <h2 className="text-2xl font-semibold text-gray-900">Webhook Kurulumu</h2>
         </div>
-        
+
         <div className="space-y-6">
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-4">1. Webhook URL'i Kaydetme</h3>
             <p className="text-gray-600 mb-4">
               Partner Portal'dan webhook URL'inizi kaydedin ve hangi olayları dinlemek istediğinizi seçin.
             </p>
-            <CodeBlock 
+            <CodeBlock
               code={`curl -X POST \\
-  https://api.cozmopol.com/v2/webhooks \\
+  ${BASE_URL}/v2/webhooks \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -143,7 +144,7 @@ const Webhooks = () => {
             <p className="text-gray-600 mb-4">
               Webhook'ları almak için bir HTTP endpoint oluşturun:
             </p>
-            <CodeBlock 
+            <CodeBlock
               code={`// Node.js Express örneği
 app.post('/webhook', (req, res) => {
   const signature = req.headers['x-cozmopol-signature'];
@@ -188,7 +189,7 @@ app.post('/webhook', (req, res) => {
           <Shield className="w-6 h-6 text-red-600" />
           <h2 className="text-2xl font-semibold text-gray-900">Güvenlik</h2>
         </div>
-        
+
         <p className="text-gray-600 mb-6">
           Webhook'ların güvenliğini sağlamak için HMAC SHA256 imza doğrulaması kullanıyoruz.
         </p>
@@ -197,10 +198,10 @@ app.post('/webhook', (req, res) => {
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">İmza Doğrulama</h3>
             <p className="text-gray-600 mb-4">
-              Her webhook isteği <code className="bg-gray-100 px-2 py-1 rounded">X-Cozmopol-Signature</code> 
+              Her webhook isteği <code className="bg-gray-100 px-2 py-1 rounded">X-Cozmopol-Signature</code>
               header'ı ile birlikte gelir.
             </p>
-            <CodeBlock 
+            <CodeBlock
               code={`const crypto = require('crypto');
 
 function verifyWebhookSignature(payload, signature, secret) {
@@ -234,7 +235,7 @@ function verifyWebhookSignature(payload, signature, secret) {
           <Webhook className="w-6 h-6 text-purple-600" />
           <h2 className="text-2xl font-semibold text-gray-900">Desteklenen Olaylar</h2>
         </div>
-        
+
         <div className="space-y-8">
           {webhookEvents.map((webhook, index) => (
             <div key={index} className="border-b border-gray-200 pb-6 last:border-b-0">
@@ -253,16 +254,16 @@ function verifyWebhookSignature(payload, signature, secret) {
       {/* Testing */}
       <div className="bg-white border border-gray-200 rounded-lg p-8">
         <h2 className="text-2xl font-semibold text-gray-900 mb-6">Webhook Test Etme</h2>
-        
+
         <p className="text-gray-600 mb-4">
           Webhook'larınızı test etmek için test endpoint'ini kullanabilir veya Partner Portal'dan test webhook'ları gönderebilirsiniz.
         </p>
 
         <div className="mb-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Test Endpoint'i ile Test</h3>
-          <CodeBlock 
+          <CodeBlock
             code={`curl -X POST \\
-  https://api.cozmopol.com/api/test/webhook \\
+  ${BASE_URL}/api/test/webhook \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{

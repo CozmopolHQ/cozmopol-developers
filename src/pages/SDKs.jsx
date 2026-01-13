@@ -1,4 +1,5 @@
 import React from 'react'
+import { BASE_URL } from '../config'
 import { Code, Calendar, Bell, CheckCircle } from 'lucide-react'
 import CodeBlock from '../components/CodeBlock'
 
@@ -74,7 +75,7 @@ const SDKs = () => {
         </div>
         <h2 className="text-2xl font-bold text-blue-900 mb-4">SDK'lar Yakında Geliyor!</h2>
         <p className="text-blue-700 mb-6 max-w-2xl mx-auto">
-          Şu anda API'mizi REST endpoint'leri üzerinden kullanabilirsiniz. 
+          Şu anda API'mizi REST endpoint'leri üzerinden kullanabilirsiniz.
           Popüler programlama dilleri için resmi SDK'lar aktif olarak geliştirilmekte ve yakında yayınlanacak.
         </p>
         <div className="flex items-center justify-center space-x-2 text-blue-600">
@@ -130,7 +131,7 @@ const SDKs = () => {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Şu An İçin: REST API</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            SDK'lar hazırlanırken, doğrudan REST API endpoint'lerini kullanabilirsiniz. 
+            SDK'lar hazırlanırken, doğrudan REST API endpoint'lerini kullanabilirsiniz.
             Herhangi bir programlama dili ile HTTP istekleri yaparak API'mizi kullanabilirsiniz.
           </p>
         </div>
@@ -160,10 +161,10 @@ const SDKs = () => {
 
           <div>
             <h3 className="font-semibold text-gray-900 mb-4">Örnek cURL İsteği</h3>
-            <CodeBlock 
+            <CodeBlock
               code={`# Token alma
 curl -X POST \\
-  https://api.cozmopol.com/api/auth/token \\
+  ${BASE_URL}/api/auth/token \\
   -H 'Content-Type: application/json' \\
   -d '{
     "storeUserId": "YOUR_STORE_USER_ID",
@@ -173,7 +174,7 @@ curl -X POST \\
 
 # API kullanımı
 curl -X GET \\
-  https://api.cozmopol.com/api/test/ping \\
+  ${BASE_URL}/api/test/ping \\
   -H 'Authorization: Bearer YOUR_TOKEN'`}
               language="bash"
             />
@@ -195,7 +196,7 @@ curl -X GET \\
       <div className="mt-16 bg-blue-900 text-white rounded-lg p-8 text-center">
         <h2 className="text-2xl font-bold mb-4">SDK'lar Hazır Olduğunda Haberdar Olun</h2>
         <p className="text-blue-200 mb-6">
-          SDK'lar yayınlandığında ilk siz haberdar olun. E-posta adresinizi bırakın, 
+          SDK'lar yayınlandığında ilk siz haberdar olun. E-posta adresinizi bırakın,
           size haber verelim.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">

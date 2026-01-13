@@ -1,5 +1,6 @@
 import React from 'react'
 import EndpointCard from '../components/EndpointCard'
+import { BASE_URL } from '../config'
 
 const Endpoints = () => {
   const testEndpoints = [
@@ -13,7 +14,7 @@ const Endpoints = () => {
   "message": "pong"
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/api/test/ping \\
+  ${BASE_URL}/api/test/ping \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
@@ -26,7 +27,7 @@ const Endpoints = () => {
   "version": "1.0.0"
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/api/test/version \\
+  ${BASE_URL}/api/test/version \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
@@ -49,7 +50,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/api/health \\
+  ${BASE_URL}/api/health \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
@@ -66,7 +67,7 @@ const Endpoints = () => {
   "message": "Test webhook triggered successfully"
 }`,
       example: `curl -X POST \\
-  https://api.cozmopol.com/api/test/webhook \\
+  ${BASE_URL}/api/test/webhook \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -90,7 +91,7 @@ const Endpoints = () => {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }`,
       example: `curl -X POST \\
-  https://api.cozmopol.com/api/auth/token \\
+  ${BASE_URL}/api/auth/token \\
   -H 'Content-Type: application/json' \\
   -d '{
     "storeUserId": "67c1b95d3201a327160dbca2",
@@ -132,7 +133,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X POST \\
-  https://api.cozmopol.com/v2/products \\
+  ${BASE_URL}/v2/products \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -204,7 +205,7 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X GET \\
-  'https://api.cozmopol.com/api/products?search=keçiboynuzu&brand=Yeni Marka Adı&category=1219&subcategory=1385&currency=TRY&status=true&isVariantProduct=false&minPrice=140&maxPrice=150' \\
+  '${BASE_URL}/api/products?search=keçiboynuzu&brand=Yeni Marka Adı&category=1219&subcategory=1385&currency=TRY&status=true&isVariantProduct=false&minPrice=140&maxPrice=150' \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
@@ -274,7 +275,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/api/products/67c1bcbb3c56211e5c53289c \\
+  ${BASE_URL}/api/products/67c1bcbb3c56211e5c53289c \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
@@ -312,7 +313,7 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X PUT \\
-  https://api.cozmopol.com/api/categories \\
+  ${BASE_URL}/api/categories \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
@@ -343,7 +344,7 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X DELETE \\
-  https://api.cozmopol.com/api/brands`
+  ${BASE_URL}/api/brands`
     }
   ]
 
@@ -425,7 +426,7 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/api/orders \\
+  ${BASE_URL}/api/orders \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
@@ -482,7 +483,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/api/orders/67d89c727ce36855bce10598 \\
+  ${BASE_URL}/api/orders/67d89c727ce36855bce10598 \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     }
   ]
@@ -525,7 +526,7 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/api/shipping \\
+  ${BASE_URL}/api/shipping \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     }
   ]
@@ -551,7 +552,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X PUT \\
-  https://api.cozmopol.com/v2/inventory/12345 \\
+  ${BASE_URL}/v2/inventory/12345 \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -594,7 +595,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  'https://api.cozmopol.com/v2/inventory/low-stock?threshold=10' \\
+  '${BASE_URL}/v2/inventory/low-stock?threshold=10' \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     }
   ]
@@ -654,7 +655,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/api/questions \\
+  ${BASE_URL}/api/questions \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
@@ -677,7 +678,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X PATCH \\
-  https://api.cozmopol.com/api/questions/686295d1c5948b00b525bbd7/answer \\
+  ${BASE_URL}/api/questions/686295d1c5948b00b525bbd7/answer \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -742,7 +743,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  'https://api.cozmopol.com/v2/returns?status=pending&page=1&limit=10' \\
+  '${BASE_URL}/v2/returns?status=pending&page=1&limit=10' \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
@@ -804,7 +805,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/v2/returns/67e1234567890abcdef12345 \\
+  ${BASE_URL}/v2/returns/67e1234567890abcdef12345 \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
@@ -832,7 +833,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X PATCH \\
-  https://api.cozmopol.com/v2/returns/67e1234567890abcdef12345/status \\
+  ${BASE_URL}/v2/returns/67e1234567890abcdef12345/status \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -861,7 +862,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X POST \\
-  https://backend-integration-mauve.vercel.app/integration/create-api-key \\
+  ${BASE_URL}/integration/create-api-key \\
   -H 'Authorization: Bearer YOUR_TOKEN'`
     },
     {
@@ -881,7 +882,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  https://backend-integration-mauve.vercel.app/integration/retrieve-api-key \\
+  ${BASE_URL}/integration/retrieve-api-key \\
   -H 'Authorization: Bearer YOUR_TOKEN'`
     }
   ]
@@ -913,7 +914,7 @@ const Endpoints = () => {
   }
 ]`,
       example: `curl -X GET \\
-  https://backend-integration-mauve.vercel.app/store/brands \\
+  ${BASE_URL}/store/brands \\
   -H 'Authorization: Bearer YOUR_TOKEN'`
     },
     {
@@ -943,7 +944,7 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X GET \\
-  https://backend-integration-mauve.vercel.app/common/product-categories \\
+  ${BASE_URL}/common/product-categories \\
   -H 'Authorization: Bearer YOUR_TOKEN'`
     },
     {
@@ -989,7 +990,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  https://backend-integration-mauve.vercel.app/common/product-categories/1583/attributes \\
+  ${BASE_URL}/common/product-categories/1583/attributes \\
   -H 'Authorization: Bearer YOUR_TOKEN'`
     },
     {
@@ -1010,7 +1011,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X POST \\
-  https://backend-integration-mauve.vercel.app/store/productsV2/product/bulk \\
+  ${BASE_URL}/store/productsV2/product/bulk \\
   -H 'Authorization: Bearer YOUR_TOKEN' \\
   -H 'Content-Type: application/json' \\
   -d '[
@@ -1061,7 +1062,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  'https://backend-integration-mauve.vercel.app/store/productsV2/product/v2?page=1&size=20' \\
+  '${BASE_URL}/store/productsV2/product/v2?page=1&size=20' \\
   -H 'Authorization: Bearer YOUR_TOKEN'`
     },
     {
@@ -1085,7 +1086,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X PUT \\
-  https://backend-integration-mauve.vercel.app/store/productsV2/product/8682458451243 \\
+  ${BASE_URL}/store/productsV2/product/8682458451243 \\
   -H 'Authorization: Bearer YOUR_TOKEN' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -1112,7 +1113,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X DELETE \\
-  https://backend-integration-mauve.vercel.app/store/productsV2/product/8682458451243 \\
+  ${BASE_URL}/store/productsV2/product/8682458451243 \\
   -H 'Authorization: Bearer YOUR_TOKEN'`
     }
   ]
@@ -1132,7 +1133,7 @@ const Endpoints = () => {
   "batchRequestId": "09b3ff84-5993-4946-b1ec-2a4a9d8820f5"
 }`,
       example: `curl -X PUT \\
-  https://backend-integration-mauve.vercel.app/store/productsV2/listing \\
+  ${BASE_URL}/store/productsV2/listing \\
   -H 'Authorization: Bearer YOUR_TOKEN' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -1189,7 +1190,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  'https://backend-integration-mauve.vercel.app/store/ordersV2?page=1&size=20' \\
+  '${BASE_URL}/store/ordersV2?page=1&size=20' \\
   -H 'Authorization: Bearer YOUR_TOKEN'`
     },
     {
@@ -1211,7 +1212,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X PUT \\
-  https://backend-integration-mauve.vercel.app/store/ordersV2/splitOrder/5892398542 \\
+  ${BASE_URL}/store/ordersV2/splitOrder/5892398542 \\
   -H 'Authorization: Bearer YOUR_TOKEN' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -1243,7 +1244,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X PUT \\
-  https://backend-integration-mauve.vercel.app/store/ordersV2/status/3580169126 \\
+  ${BASE_URL}/store/ordersV2/status/3580169126 \\
   -H 'Authorization: Bearer YOUR_TOKEN' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -1292,7 +1293,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  https://backend-integration-mauve.vercel.app/store/batch-request/09b3ff84-5993-4946-b1ec-2a4a9d8820f5 \\
+  ${BASE_URL}/store/batch-request/09b3ff84-5993-4946-b1ec-2a4a9d8820f5 \\
   -H 'Authorization: Bearer YOUR_TOKEN'`
     }
   ]
@@ -1355,7 +1356,7 @@ const Endpoints = () => {
         "transaction_id": "TXN123456789",
         "paid_amount": 299.99
       },
-      "pdf_url": "https://api.cozmopol.com/invoices/67f1234567890abcdef12345/pdf",
+      "pdf_url": "\${BASE_URL}/invoices/67f1234567890abcdef12345/pdf",
       "created_at": "2024-01-15T10:30:00Z",
       "updated_at": "2024-01-18T14:30:00Z"
     }
@@ -1368,7 +1369,7 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  'https://api.cozmopol.com/v2/invoices?status=paid&start_date=2024-01-01&end_date=2024-01-31' \\
+  '${BASE_URL}/v2/invoices?status=paid&start_date=2024-01-01&end_date=2024-01-31' \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
@@ -1441,13 +1442,13 @@ const Endpoints = () => {
       "paid_amount": 299.99,
       "payment_date": "2024-01-18T14:30:00Z"
     },
-    "pdf_url": "https://api.cozmopol.com/invoices/67f1234567890abcdef12345/pdf",
+    "pdf_url": "\${BASE_URL}/invoices/67f1234567890abcdef12345/pdf",
     "created_at": "2024-01-15T10:30:00Z",
     "updated_at": "2024-01-18T14:30:00Z"
   }
 }`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/v2/invoices/67f1234567890abcdef12345 \\
+  ${BASE_URL}/v2/invoices/67f1234567890abcdef12345 \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
@@ -1464,7 +1465,7 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
 
 [PDF Binary Content]`,
       example: `curl -X GET \\
-  https://api.cozmopol.com/v2/invoices/67f1234567890abcdef12345/pdf \\
+  ${BASE_URL}/v2/invoices/67f1234567890abcdef12345/pdf \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -o invoice.pdf`
     }
@@ -1567,10 +1568,10 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
       {/* Base URL Info */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
         <code className="text-blue-700 font-mono bg-blue-100 px-3 py-2 rounded">
-          https://backend-integration-mauve.vercel.app
+          {BASE_URL}
         </code>
         <p className="text-blue-700 mt-4 text-sm">
-          <code className="bg-blue-100 px-2 py-1 rounded mx-1">https://backend-integration-mauve.vercel.app</code>
+          <code className="bg-blue-100 px-2 py-1 rounded mx-1">{BASE_URL}</code>
           kullanabilirsiniz.
         </p>
       </div>

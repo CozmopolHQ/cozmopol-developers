@@ -34,7 +34,7 @@ const PostmanCollections = () => {
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">Postman Collection</h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Cozmopol API'sini test etmek için hazırlanmış kapsamlı Postman collection'ı. 
+          Cozmopol API'sini test etmek için hazırlanmış kapsamlı Postman collection'ı.
           Tüm endpoint'leri ve örnek istekleri tek collection'da bulabilirsiniz.
         </p>
       </div>
@@ -83,7 +83,7 @@ const PostmanCollections = () => {
         </div>
 
         <p className="text-gray-600 mb-6">
-          Bu collection, Cozmopol API'sinin tüm endpoint'lerini içerir. Test araçlarından ürün yönetimine, 
+          Bu collection, Cozmopol API'sinin tüm endpoint'lerini içerir. Test araçlarından ürün yönetimine,
           sipariş takibinden stok kontrolüne kadar tüm işlemleri tek yerden gerçekleştirebilirsiniz.
         </p>
 
@@ -110,7 +110,7 @@ const PostmanCollections = () => {
             <span>Postman'de Aç</span>
             <ExternalLink className="w-4 h-4" />
           </button>
-          
+
           <button
             onClick={handleDownload}
             className="flex items-center space-x-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
@@ -127,7 +127,7 @@ const PostmanCollections = () => {
           <FileText className="w-6 h-6 text-gray-600" />
           <h2 className="text-2xl font-semibold text-gray-900">Environment Kurulumu</h2>
         </div>
-        
+
         <p className="text-gray-600 mb-6">
           Postman collection'ını kullanmak için aşağıdaki environment değişkenlerini ayarlamanız gerekir:
         </p>
@@ -140,9 +140,9 @@ const PostmanCollections = () => {
                 <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono">BASE_URL</code>
                 <p className="text-sm text-gray-600 mt-1">API'nin base URL'i</p>
               </div>
-              <code className="text-sm text-gray-700">https://backend-integration-mauve.vercel.app</code>
+              <code className="text-sm text-gray-700">https://api.cozmopol.net/api/v2</code>
             </div>
-            
+
             <div className="flex items-center justify-between py-2 border-b border-gray-200">
               <div>
                 <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono">ACCESS_TOKEN</code>
@@ -166,10 +166,10 @@ const PostmanCollections = () => {
       <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-8">
         <h2 className="text-2xl font-semibold text-purple-900 mb-4">Cozmopol Integration Workspace</h2>
         <p className="text-purple-800 mb-6">
-          Collection, Cozmopol Integration workspace'inde organize edilmiştir. 
+          Collection, Cozmopol Integration workspace'inde organize edilmiştir.
           Workspace'e katılarak en güncel collection'a erişebilirsiniz.
         </p>
-        
+
         <div className="flex items-center space-x-4">
           <a
             href="https://www.postman.com/cozmopol/cozmopol-integration"
@@ -180,7 +180,7 @@ const PostmanCollections = () => {
             <span>Workspace'i Ziyaret Et</span>
             <ExternalLink className="w-4 h-4" />
           </a>
-          
+
           <div className="text-sm text-purple-700">
             <p><strong>Workspace:</strong> Cozmopol Integration</p>
             <p><strong>Organizasyon:</strong> Cozmopol</p>

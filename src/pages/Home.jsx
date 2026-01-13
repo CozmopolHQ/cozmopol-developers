@@ -1,4 +1,5 @@
 import React from 'react'
+import { BASE_URL } from '../config'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Zap, Shield, Globe, Clock, Users, TrendingUp } from 'lucide-react'
 
@@ -38,7 +39,7 @@ const Home = () => {
               <span className="block gradient-text">API Dökümantasyonu</span>
             </h1>
             <p className="text-lg text-slate-600 mb-8 max-w-3xl mx-auto">
-              Güçlü ve esnek API'miz ile Cozmopol pazaryerine entegre olun. 
+              Güçlü ve esnek API'miz ile Cozmopol pazaryerine entegre olun.
               Ürün yönetimi, sipariş takibi, stok kontrolü ve daha fazlası için kapsamlı çözümler.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -108,7 +109,7 @@ const Home = () => {
                 Dakikalar İçinde Başlayın
               </h2>
               <p className="text-lg text-slate-600 mb-8">
-                Basit REST API çağrıları ile hemen entegrasyona başlayın. 
+                Basit REST API çağrıları ile hemen entegrasyona başlayın.
                 Kapsamlı dökümantasyon ve örneklerle her adımda yanınızdayız.
               </p>
               <div className="space-y-4 mb-8">
@@ -143,7 +144,7 @@ const Home = () => {
               <div className="text-green-400 mb-2"># İlk API çağrınız</div>
               <div className="text-blue-400">curl</div>
               <div className="ml-2 text-slate-300">-X GET \</div>
-              <div className="ml-2 text-yellow-400">https://api.cozmopol.com/api/test/ping \</div>
+              <div className="ml-2 text-yellow-400">{BASE_URL}/api/test/ping \</div>
               <div className="ml-2 text-slate-300">-H <span className="text-green-400">'Authorization: Bearer YOUR_API_KEY'</span> \</div>
               <div className="ml-2 text-slate-300">-H <span className="text-green-400">'Content-Type: application/json'</span></div>
               <div className="mt-4 text-green-400"># Yanıt</div>
@@ -162,7 +163,7 @@ const Home = () => {
             Entegrasyona Hazır mısınız?
           </h2>
           <p className="text-lg text-slate-300 mb-8">
-            Binlerce partner zaten Cozmopol API'sini kullanıyor. 
+            Binlerce partner zaten Cozmopol API'sini kullanıyor.
             Siz de pazaryeri entegrasyonunuzu bugün başlatın.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
