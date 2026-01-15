@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Activity, CheckCircle, XCircle, Clock, Zap, AlertTriangle, RefreshCw } from 'lucide-react'
 
-const HealthCheck = () => {
+const Status = () => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [lastUpdated, setLastUpdated] = useState(new Date())
 
@@ -273,7 +273,7 @@ const HealthCheck = () => {
                     <span className="text-slate-900">{server.cpu}%</span>
                   </div>
                   <div className="w-full bg-slate-200 rounded-full h-2">
-                    <div 
+                    <div
                       className={`h-2 rounded-full ${getLoadColor(server.cpu)}`}
                       style={{ width: `${server.cpu}%` }}
                     ></div>
@@ -286,7 +286,7 @@ const HealthCheck = () => {
                     <span className="text-slate-900">{server.memory}%</span>
                   </div>
                   <div className="w-full bg-slate-200 rounded-full h-2">
-                    <div 
+                    <div
                       className={`h-2 rounded-full ${getLoadColor(server.memory)}`}
                       style={{ width: `${server.memory}%` }}
                     ></div>
@@ -299,7 +299,7 @@ const HealthCheck = () => {
                     <span className="text-slate-900">{server.load}%</span>
                   </div>
                   <div className="w-full bg-slate-200 rounded-full h-2">
-                    <div 
+                    <div
                       className={`h-2 rounded-full ${getLoadColor(server.load)}`}
                       style={{ width: `${server.load}%` }}
                     ></div>
@@ -314,4 +314,4 @@ const HealthCheck = () => {
   )
 }
 
-export default HealthCheck
+export default Status

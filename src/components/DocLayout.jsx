@@ -19,30 +19,29 @@ const DocLayout = ({ children }) => {
         { name: 'Hızlı Başlangıç', href: '/quickstart', icon: '🚀' },
         { name: 'Kimlik Doğrulama', href: '/authentication', icon: '🔐' },
         { name: 'Nasıl Entegrasyon Yaparım?', href: '/integration-guide', icon: '🔧' },
-        { name: 'Hata Kodları', href: '/error-codes', icon: '⚠️' },
-        { name: 'Postman Collections', href: '/postman', icon: '📮' },
+        { name: 'Hata Kodları (Yakında)', href: '/error-codes', icon: '⚠️' },
+        { name: 'Postman Collections (Yakında)', href: '/postman', icon: '📮' },
       ]
     },
     {
       id: 'api-reference',
       title: 'API Referansı',
       items: [
-        { 
-          name: 'Endpoints', 
-          href: '/endpoints', 
+        {
+          name: 'Endpoints',
+          href: '/endpoints',
           icon: '📚',
           subItems: [
-            { name: 'Test & Araçlar', href: '/endpoints#test-tools', icon: '🧪' },
-            { name: 'Ürün Yönetimi', href: '/endpoints#products', icon: '📦' },
-            { name: 'Sipariş Yönetimi', href: '/endpoints#orders', icon: '📋' },
-            { name: 'Kargo Yönetimi', href: '/endpoints#shipping', icon: '🚚' },
-            { name: 'Stok Yönetimi', href: '/endpoints#inventory', icon: '📊' },
-            { name: 'Soru & Cevap', href: '/endpoints#qa', icon: '💬' },
-            { name: 'İade Talepleri', href: '/endpoints#returns', icon: '🔄' },
-            { name: 'Fatura Yönetimi', href: '/endpoints#invoices', icon: '🧾' }
+            { name: 'Kategori ve Marka Listeleme', href: '/endpoints#category-brand', icon: '🏷️' },
+            { name: 'Ürün Yönetimi', href: '/endpoints#product-management', icon: '📦' },
+            { name: 'Sipariş Yönetimi', href: '/endpoints#integration-orders', icon: '📋' },
+            { name: 'Fatura Yükleme (Yakında)', href: '/endpoints#invoices', icon: '📄' },
+            { name: 'Toplu İşlem Takibi', href: '/endpoints#integration-batch', icon: '⚙️' },
+            { name: 'Soru Cevap İşlemleri', href: '/endpoints#integration-qa', icon: '💬' },
+            { name: 'İade Yönetimi (Yakında)', href: '/endpoints#returns', icon: '↩️' }
           ]
         },
-        { name: 'Webhooks', href: '/webhooks', icon: '🔗' },
+        { name: 'Webhooks (Yakında)', href: '/webhooks', icon: '🔗' },
         { name: 'SDK\'lar (Yakında)', href: '/sdks', icon: '📦' },
       ]
     },
@@ -69,16 +68,15 @@ const DocLayout = ({ children }) => {
     <div className="flex min-h-screen bg-slate-50">
       {/* Mobile sidebar overlay */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-40 bg-slate-600 bg-opacity-75 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
-        isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
+      <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}>
         <div className="flex items-center justify-between h-16 px-6 border-b border-slate-200">
           <h2 className="text-lg font-semibold text-slate-900">Dökümantasyon</h2>
           <button
@@ -112,16 +110,15 @@ const DocLayout = ({ children }) => {
                         <Link
                           to={item.href}
                           onClick={() => setIsSidebarOpen(false)}
-                          className={`flex items-center space-x-3 px-4 py-2 text-sm rounded-md transition-colors ${
-                            isCurrentPage(item.href)
+                          className={`flex items-center space-x-3 px-4 py-2 text-sm rounded-md transition-colors ${isCurrentPage(item.href)
                               ? 'bg-slate-900 text-white'
                               : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                          }`}
+                            }`}
                         >
                           <span className="text-base">{item.icon}</span>
                           <span>{item.name}</span>
                         </Link>
-                        
+
                         {/* Sub items for Endpoints */}
                         {item.subItems && isCurrentPage(item.href) && (
                           <div className="ml-6 mt-2 space-y-1">
@@ -165,14 +162,14 @@ const DocLayout = ({ children }) => {
                 className="flex items-center px-2 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md transition-colors"
               >
                 <span className="mr-3">🌐</span>
-                Partner Portal
+                Partner Portal (Yakında)
               </a>
               <a
                 href="#"
                 className="flex items-center px-2 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md transition-colors"
               >
                 <span className="mr-3">💬</span>
-                Discord Destek
+                Discord Destek (Yakında)
               </a>
               <a
                 href="#"

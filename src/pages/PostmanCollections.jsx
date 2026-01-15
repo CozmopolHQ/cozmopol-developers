@@ -1,4 +1,5 @@
 import React from 'react'
+import { BASE_URL } from '../config'
 import { Download, ExternalLink, Play, FileText, Zap } from 'lucide-react'
 
 const PostmanCollections = () => {

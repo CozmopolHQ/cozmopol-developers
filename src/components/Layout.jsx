@@ -17,9 +17,9 @@ const Layout = ({ children }) => {
     { name: 'Kimlik Doğrulama', href: '/authentication', current: location.pathname === '/authentication' },
     { name: 'API Endpoints', href: '/endpoints', current: location.pathname === '/endpoints' },
     { name: 'Nasıl Entegrasyon Yaparım?', href: '/integration-guide', current: location.pathname === '/integration-guide' },
-    { name: 'Hata Kodları', href: '/error-codes', current: location.pathname === '/error-codes' },
-    { name: 'Webhooks', href: '/webhooks', current: location.pathname === '/webhooks' },
-    { name: 'Postman Collections', href: '/postman', current: location.pathname === '/postman' },
+    { name: 'Hata Kodları (Yakında)', href: '/error-codes', current: location.pathname === '/error-codes' },
+    { name: 'Webhooks (Yakında)', href: '/webhooks', current: location.pathname === '/webhooks' },
+    { name: 'Postman Collections (Yakında)', href: '/postman', current: location.pathname === '/postman' },
     { name: 'SDK\'lar (Yakında)', href: '/sdks', current: location.pathname === '/sdks' },
   ]
 
@@ -60,11 +60,10 @@ const Layout = ({ children }) => {
                   key={item.name}
                   to={item.href}
                   onClick={closeAllDropdowns}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    item.current
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${item.current
                       ? 'text-slate-900 bg-slate-100'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                  }`}
+                    }`}
                 >
                   {item.name}
                 </Link>
@@ -77,11 +76,10 @@ const Layout = ({ children }) => {
                     setIsStatusMenuOpen(false)
                     setIsDocsMenuOpen(!isDocsMenuOpen)
                   }}
-                  className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    isDocsActive
+                  className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isDocsActive
                       ? 'text-slate-900 bg-slate-100'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                  }`}
+                    }`}
                 >
                   <span>Dökümantasyon</span>
                   <ChevronDown className={`w-3 h-3 transition-transform ${isDocsMenuOpen ? 'rotate-180' : ''}`} />
@@ -93,11 +91,10 @@ const Layout = ({ children }) => {
                       <Link
                         key={item.name}
                         to={item.href}
-                        className={`block px-4 py-2 text-sm transition-colors ${
-                          item.current
+                        className={`block px-4 py-2 text-sm transition-colors ${item.current
                             ? 'text-slate-900 bg-slate-100'
                             : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                        }`}
+                          }`}
                         onClick={closeAllDropdowns}
                       >
                         {item.name}
@@ -114,11 +111,10 @@ const Layout = ({ children }) => {
                     setIsDocsMenuOpen(false)
                     setIsStatusMenuOpen(!isStatusMenuOpen)
                   }}
-                  className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    isStatusActive
+                  className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isStatusActive
                       ? 'text-slate-900 bg-slate-100'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                  }`}
+                    }`}
                 >
                   <span>Durum</span>
                   <ChevronDown className={`w-3 h-3 transition-transform ${isStatusMenuOpen ? 'rotate-180' : ''}`} />
@@ -130,11 +126,10 @@ const Layout = ({ children }) => {
                       <Link
                         key={item.name}
                         to={item.href}
-                        className={`block px-4 py-2 text-sm transition-colors ${
-                          item.current
+                        className={`block px-4 py-2 text-sm transition-colors ${item.current
                             ? 'text-slate-900 bg-slate-100'
                             : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                        }`}
+                          }`}
                         onClick={closeAllDropdowns}
                       >
                         {item.name}
@@ -193,11 +188,10 @@ const Layout = ({ children }) => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
-                    item.current
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${item.current
                       ? 'text-slate-900 bg-slate-100'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                  }`}
+                    }`}
                   onClick={() => {
                     setIsMobileMenuOpen(false)
                     closeAllDropdowns()
@@ -206,7 +200,7 @@ const Layout = ({ children }) => {
                   {item.name}
                 </Link>
               ))}
-              
+
               <div className="pt-2 border-t border-slate-200">
                 <div className="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wide">
                   Dökümantasyon
@@ -215,11 +209,10 @@ const Layout = ({ children }) => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`block px-3 py-2 rounded-md text-base font-medium ${
-                      item.current
+                    className={`block px-3 py-2 rounded-md text-base font-medium ${item.current
                         ? 'text-slate-900 bg-slate-100'
                         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    }`}
+                      }`}
                     onClick={() => {
                       setIsMobileMenuOpen(false)
                       closeAllDropdowns()
@@ -238,11 +231,10 @@ const Layout = ({ children }) => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`block px-3 py-2 rounded-md text-base font-medium ${
-                      item.current
+                    className={`block px-3 py-2 rounded-md text-base font-medium ${item.current
                         ? 'text-slate-900 bg-slate-100'
                         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    }`}
+                      }`}
                     onClick={() => {
                       setIsMobileMenuOpen(false)
                       closeAllDropdowns()
@@ -267,8 +259,8 @@ const Layout = ({ children }) => {
 
         {/* Dropdown overlay */}
         {(isDocsMenuOpen || isStatusMenuOpen) && (
-          <div 
-            className="fixed inset-0 z-40" 
+          <div
+            className="fixed inset-0 z-40"
             onClick={closeAllDropdowns}
           ></div>
         )}
@@ -325,7 +317,7 @@ const Layout = ({ children }) => {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400">
             <p className="text-sm">&copy; 2024 Cozmopol. Tüm hakları saklıdır.</p>
           </div>
