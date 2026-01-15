@@ -894,6 +894,11 @@ const Endpoints = () => {
       ],
       response: `[
   {
+    "_id": "0000000000000000000f4404",
+    "value": "7artisans",
+    "label": "7Artisans"
+  },
+  {
     "_id": "0000000000000000000f4315",
     "value": "akg",
     "label": "AKG"
@@ -904,9 +909,24 @@ const Endpoints = () => {
     "label": "AMD"
   },
   {
-    "_id": "6943bbfd7c5c681734bec174",
-    "value": "apple",
-    "label": "Apple"
+    "_id": "0000000000000000000f4398",
+    "value": "aorus",
+    "label": "AORUS"
+  },
+  {
+    "_id": "0000000000000000000f4390",
+    "value": "asrock",
+    "label": "ASRock"
+  },
+  {
+    "_id": "0000000000000000000f4383",
+    "value": "asusrog",
+    "label": "ASUS ROG"
+  },
+  {
+    "_id": "0000000000000000000f4397",
+    "value": "asustuf",
+    "label": "ASUS TUF"
   }
 ]`,
       example: `curl -X GET \\
@@ -1020,9 +1040,33 @@ const Endpoints = () => {
       "brandName": "Apple",
       "description": "MBA 15 SKY/10C GPU/16GB/256GB-TUR",
       "productCode": "test-product-code-123",
-      "commonAttributes": [...],
-      "varianterAttribute": null,
-      "variants": [...]
+      "commonAttributes": [
+        {
+          "attributeId": 249,
+          "valueId": 3379
+        }
+      ],
+      "varianterAttribute": {
+        "attributeId": 123,
+        "valueId": 456
+      },
+      "variants": [
+        {
+          "barcode": "8682458451243",
+          "stockCode": "STK-001",
+          "price": 35000,
+          "quantity": 10,
+          "images": [
+             "https://example.com/image.jpg"
+          ],
+          "attributes": [
+            {
+              "attributeId": 500,
+              "valueId": 1000
+            }
+          ]
+        }
+      ]
     }
   ]'`
     },
@@ -1244,7 +1288,7 @@ const Endpoints = () => {
   -H 'Authorization: Bearer YOUR_TOKEN' \\
   -H 'Content-Type: application/json' \\
   -d '{
-    "status": "shipped"
+    "status": "picking"
   }'`
     }
   ]
