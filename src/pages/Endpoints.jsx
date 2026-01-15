@@ -883,7 +883,7 @@ const Endpoints = () => {
     }
   ]
 
-  const integrationProductEndpoints = [
+  const categoryBrandEndpoints = [
     {
       method: 'GET',
       path: '/store/brands',
@@ -988,7 +988,10 @@ const Endpoints = () => {
       example: `curl -X GET \\
   ${BASE_URL}/common/product-categories/1583/attributes \\
   -H 'Authorization: Bearer YOUR_TOKEN'`
-    },
+    }
+  ]
+
+  const productManagementEndpoints = [
     {
       method: 'POST',
       path: '/store/productsV2/product/bulk',
@@ -1111,10 +1114,7 @@ const Endpoints = () => {
       example: `curl -X DELETE \\
   ${BASE_URL}/store/productsV2/product/8682458451243 \\
   -H 'Authorization: Bearer YOUR_TOKEN'`
-    }
-  ]
-
-  const integrationListingEndpoints = [
+    },
     {
       method: 'PUT',
       path: '/store/productsV2/listing',
@@ -1594,48 +1594,48 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
         </div>
       </section>
 
-      {/* Integration Product Management Section */}
-      <section id="integration-products" className="mb-16">
+      {/* 1. Kategori ve Marka Listeleme */}
+      <section id="category-brand" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
-          📦 Integration API - Ürün Yönetimi
+          🏷️ Kategori ve Marka Listeleme
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Toplu ürün işlemleri ve kategori yönetimi için kullanın.
+            <strong>✅ Stable:</strong> Marka ve kategori listeleme işlemleri.
           </p>
         </div>
         <div className="space-y-4">
-          {integrationProductEndpoints.map((endpoint, index) => (
+          {categoryBrandEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>
       </section>
 
-      {/* Integration Listing Management Section */}
-      <section id="integration-listing" className="mb-16">
+      {/* 2. Ürün Yönetimi */}
+      <section id="product-management" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
-          💰 Integration API - Listeleme Yönetimi
+          � Ürün Yönetimi
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Toplu fiyat ve stok güncellemeleri için kullanın.
+            <strong>✅ Stable:</strong> Ürün oluşturma, güncelleme, silme ve stok/fiyat yönetimi.
           </p>
         </div>
         <div className="space-y-4">
-          {integrationListingEndpoints.map((endpoint, index) => (
+          {productManagementEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>
       </section>
 
-      {/* Integration Order Management Section */}
+      {/* 3. Sipariş Yönetimi */}
       <section id="integration-orders" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
-          📋 Integration API - Sipariş Yönetimi
+          📋 Sipariş Yönetimi
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Sipariş sorgulama ve durum güncelleme için kullanın.
+            <strong>✅ Stable:</strong> Sipariş sorgulama ve durum güncelleme işlemleri.
           </p>
         </div>
         <div className="space-y-4">
@@ -1645,48 +1645,14 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
         </div>
       </section>
 
-      {/* Integration Batch Request Section */}
-      <section id="integration-batch" className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
-          ⚙️ Integration API - Toplu İşlem Takibi
-        </h2>
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-          <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Toplu işlemlerin durumunu sorgulamak için kullanın.
-          </p>
-        </div>
-        <div className="space-y-4">
-          {integrationBatchEndpoints.map((endpoint, index) => (
-            <EndpointCard key={index} {...endpoint} />
-          ))}
-        </div>
-      </section>
-
-      {/* Integration QA Section */}
-      <section id="integration-qa" className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
-          💬 Integration API - Soru & Cevap Yönetimi
-        </h2>
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-          <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Müşteri sorularını listeleme ve cevaplama işlemleri için kullanın.
-          </p>
-        </div>
-        <div className="space-y-4">
-          {integrationQaEndpoints.map((endpoint, index) => (
-            <EndpointCard key={index} {...endpoint} />
-          ))}
-        </div>
-      </section>
-
-      {/* Invoice Management Section */}
+      {/* 4. Fatura Yükleme (coming soon) */}
       <section id="invoices" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
-          📄 Faturalar (User API)
+          📄 Fatura Yükleme (coming soon)
         </h2>
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
           <p className="text-blue-800 text-sm">
-            <strong>🚧 Development:</strong> Bu endpoint'ler geliştirme aşamasındadır. Fatura işlemleri için kullanın.
+            <strong>🚧 Development:</strong> Bu özellik yakında kullanıma sunulacaktır.
           </p>
         </div>
         <div className="space-y-4">
@@ -1696,14 +1662,48 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
         </div>
       </section>
 
-      {/* Return Management Section */}
+      {/* 5. Toplu İşlem Takibi */}
+      <section id="integration-batch" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
+          ⚙️ Toplu İşlem Takibi
+        </h2>
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <p className="text-green-800 text-sm">
+            <strong>✅ Stable:</strong> Toplu işlem durumlarını sorgulama.
+          </p>
+        </div>
+        <div className="space-y-4">
+          {integrationBatchEndpoints.map((endpoint, index) => (
+            <EndpointCard key={index} {...endpoint} />
+          ))}
+        </div>
+      </section>
+
+      {/* 6. Soru Cevap İşlemleri */}
+      <section id="integration-qa" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
+          � Soru Cevap İşlemleri
+        </h2>
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <p className="text-green-800 text-sm">
+            <strong>✅ Stable:</strong> Müşteri sorularını listeleme ve cevaplama.
+          </p>
+        </div>
+        <div className="space-y-4">
+          {integrationQaEndpoints.map((endpoint, index) => (
+            <EndpointCard key={index} {...endpoint} />
+          ))}
+        </div>
+      </section>
+
+      {/* 7. İade Yönetimi (coming soon) */}
       <section id="returns" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
-          ↩️ İadeler (User API)
+          ↩️ İade Yönetimi (coming soon)
         </h2>
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
           <p className="text-blue-800 text-sm">
-            <strong>🚧 Development:</strong> Bu endpoint'ler geliştirme aşamasındadır. İade işlemleri için kullanın.
+            <strong>🚧 Development:</strong> Bu özellik yakında kullanıma sunulacaktır.
           </p>
         </div>
         <div className="space-y-4">
