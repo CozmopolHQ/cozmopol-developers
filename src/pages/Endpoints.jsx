@@ -690,15 +690,15 @@ const Endpoints = () => {
   const returnEndpoints = [
     {
       method: 'GET',
-      path: '/returns',
+      path: '/user/returns',
       description: 'İade taleplerini listele',
       status: 'development',
       parameters: [
         { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
         { name: 'status', type: 'string', required: false, description: 'İade durumu (pending, approved, rejected, completed)' },
-        { name: 'order_id', type: 'string', required: false, description: 'Sipariş ID\'sine göre filtrele' },
-        { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası' },
-        { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı' }
+        { name: 'orderId', type: 'string', required: false, description: 'Sipariş ID\'sine göre filtrele' },
+        { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı (varsayılan: 10)' },
+        { name: 'skip', type: 'integer', required: false, description: 'Atlanacak öğe sayısı (varsayılan: 0)' }
       ],
       response: `{
   "data": [
@@ -743,12 +743,12 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  '${BASE_URL}/returns?status=pending&page=1&limit=10' \\
+  '${BASE_URL}/user/returns?status=pending&limit=10&skip=0' \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/returns/{id}',
+      path: '/user/returns/:id',
       description: 'İade talebi detayını getir',
       status: 'development',
       parameters: [
@@ -805,21 +805,19 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/returns/67e1234567890abcdef12345 \\
+  ${BASE_URL}/user/returns/67e1234567890abcdef12345 \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'PATCH',
-      path: '/returns/{id}/status',
+      path: '/user/returns/:id/status',
       description: 'İade talebi durumunu güncelle',
       status: 'development',
       parameters: [
         { name: 'id', type: 'string', required: true, description: 'İade talebi ID\'si (MongoDB ObjectId)' },
         { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'status', type: 'string', required: true, description: 'Yeni durum (approved, rejected, completed)' },
-        { name: 'approved_amount', type: 'number', required: false, description: 'Onaylanan iade tutarı' },
-        { name: 'rejection_reason', type: 'string', required: false, description: 'Red nedeni (status=rejected ise zorunlu)' },
-        { name: 'admin_note', type: 'string', required: false, description: 'Yönetici notu' }
+        { name: 'status', type: 'string', required: true, description: 'Yeni durum (approved)' },
+        { name: 'note', type: 'string', required: false, description: 'İade notu' }
       ],
       response: `{
   "success": true,
@@ -827,19 +825,17 @@ const Endpoints = () => {
   "data": {
     "id": "67e1234567890abcdef12345",
     "status": "approved",
-    "approved_amount": 299.99,
-    "admin_note": "Ürün hasarı doğrulandı, iade onaylandı",
+    "note": "Return accepted",
     "updated_at": "2024-01-21T09:15:00Z"
   }
 }`,
       example: `curl -X PATCH \\
-  ${BASE_URL}/returns/67e1234567890abcdef12345/status \\
+  ${BASE_URL}/user/returns/67e1234567890abcdef12345/status \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
     "status": "approved",
-    "approved_amount": 299.99,
-    "admin_note": "Ürün hasarı doğrulandı, iade onaylandı"
+    "note": "Return accepted"
   }'`
     }
   ]
@@ -1378,7 +1374,7 @@ const Endpoints = () => {
   const invoiceEndpoints = [
     {
       method: 'GET',
-      path: '/invoices',
+      path: '/user/invoices',
       description: 'Fatura listesini getir',
       status: 'development',
       parameters: [
@@ -1446,12 +1442,12 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  '${BASE_URL}/invoices?status=paid&start_date=2024-01-01&end_date=2024-01-31' \\
+  '${BASE_URL}/user/invoices?status=paid&start_date=2024-01-01&end_date=2024-01-31' \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/invoices/{id}',
+      path: '/user/invoices/:id',
       description: 'Fatura detayını getir',
       status: 'development',
       parameters: [
@@ -1525,12 +1521,12 @@ const Endpoints = () => {
   }
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/invoices/67f1234567890abcdef12345 \\
+  ${BASE_URL}/user/invoices/67f1234567890abcdef12345 \\
   -H 'Authorization: Bearer YOUR_API_KEY'`
     },
     {
       method: 'GET',
-      path: '/invoices/{id}/pdf',
+      path: '/user/invoices/:id/pdf',
       description: 'Fatura PDF\'ini indir',
       status: 'development',
       parameters: [
@@ -1542,9 +1538,33 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
 
 [PDF Binary Content]`,
       example: `curl -X GET \\
-  ${BASE_URL}/invoices/67f1234567890abcdef12345/pdf \\
+  ${BASE_URL}/user/invoices/67f1234567890abcdef12345/pdf \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -o invoice.pdf`
+    },
+    {
+      method: 'POST',
+      path: '/user/invoices/upload',
+      description: 'Fatura PDF\'i yükle',
+      status: 'development',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'orderId', type: 'string', required: true, description: 'Sipariş ID' },
+        { name: 'invoicePdf', type: 'file', required: true, description: 'Fatura PDF dosyası' }
+      ],
+      response: `{
+  "success": true,
+  "message": "Invoice uploaded successfully",
+  "data": {
+    "id": "67f1234567890abcdef12345",
+    "url": "https://storage.cozmopol.com/invoices/INV-2024-001.pdf"
+  }
+}`,
+      example: `curl -X POST \\
+  ${BASE_URL}/user/invoices/upload \\
+  -H 'Authorization: Bearer YOUR_API_KEY' \\
+  -F 'orderId=67d9250b98a026849af11ea5' \\
+  -F 'invoicePdf=@/path/to/invoice.pdf'`
     }
   ]
 
@@ -1654,6 +1674,40 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
         </div>
         <div className="space-y-4">
           {integrationQaEndpoints.map((endpoint, index) => (
+            <EndpointCard key={index} {...endpoint} />
+          ))}
+        </div>
+      </section>
+
+      {/* Invoice Management Section */}
+      <section id="invoices" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
+          📄 Faturalar (User API)
+        </h2>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <p className="text-blue-800 text-sm">
+            <strong>🚧 Development:</strong> Bu endpoint'ler geliştirme aşamasındadır. Fatura işlemleri için kullanın.
+          </p>
+        </div>
+        <div className="space-y-4">
+          {invoiceEndpoints.map((endpoint, index) => (
+            <EndpointCard key={index} {...endpoint} />
+          ))}
+        </div>
+      </section>
+
+      {/* Return Management Section */}
+      <section id="returns" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
+          ↩️ İadeler (User API)
+        </h2>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <p className="text-blue-800 text-sm">
+            <strong>🚧 Development:</strong> Bu endpoint'ler geliştirme aşamasındadır. İade işlemleri için kullanın.
+          </p>
+        </div>
+        <div className="space-y-4">
+          {returnEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>
