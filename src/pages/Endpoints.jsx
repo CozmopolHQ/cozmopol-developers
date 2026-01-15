@@ -1298,6 +1298,83 @@ const Endpoints = () => {
     }
   ]
 
+  const integrationQaEndpoints = [
+    {
+      method: 'GET',
+      path: '/store/product-questions',
+      description: 'Satıcıya gelen ürün sorularını listele',
+      status: 'stable',
+      parameters: [
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+      ],
+      response: `{
+    "success": true,
+    "data": [
+        {
+            "_id": "6967b7915d5baccd1a4362b6",
+            "listingId": "6966298ab0c47604ab609676",
+            "sellerId": "694e57506ea296361282d5f2",
+            "userId": null,
+            "question": "90537 824 19 kırk beş bu numaradan iletişime geç",
+            "category": "cargo",
+            "status": "answered",
+            "rejectionReason": null,
+            "isPublic": true,
+            "answer": "Thank you for your question! This product comes with a 2-year warranty.",
+            "answeredAt": "2026-01-14T15:53:50.306Z",
+            "isAnswered": true,
+            "askedAt": "2026-01-14T15:34:41.571Z",
+            "createdAt": "2026-01-14T15:34:41.572Z",
+            "updatedAt": "2026-01-14T15:53:50.315Z"
+        }
+    ],
+    "totalCount": 1
+}`,
+      example: `curl -X GET \\
+  \${BASE_URL}/store/product-questions \\
+  -H 'Authorization: Bearer YOUR_TOKEN'`
+    },
+    {
+      method: 'PATCH',
+      path: '/store/product-questions/:id/answer',
+      description: 'Bir ürün sorusunu cevapla',
+      status: 'stable',
+      parameters: [
+        { name: 'id', type: 'string', required: true, description: 'Soru ID (URL parametresi)' },
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'answer', type: 'string', required: true, description: 'Cevap metni' }
+      ],
+      response: `{
+    "success": true,
+    "message": "Yanıtınız kaydedildi.",
+    "data": {
+        "_id": "69689fc2642467edc4269e88",
+        "listingId": "6967f2807b3ea4d5b971ffc7",
+        "sellerId": "694e574f6ea296361282d5f0",
+        "userId": "694e57506ea296361282d5f2",
+        "question": "90537 824 19 kırk beş bu numaradan iletişime geç",
+        "category": "cargo",
+        "status": "answered",
+        "rejectionReason": null,
+        "isPublic": true,
+        "answer": "Thank you for your question! This product comes with a 2-year warranty.",
+        "answeredAt": "2026-01-15T08:07:48.977Z",
+        "isAnswered": true,
+        "askedAt": "2026-01-15T08:05:22.549Z",
+        "createdAt": "2026-01-15T08:05:22.557Z",
+        "updatedAt": "2026-01-15T08:07:48.987Z"
+    }
+}`,
+      example: `curl -X PATCH \\
+  \${BASE_URL}/store/product-questions/69689fc2642467edc4269e88/answer \\
+  -H 'Authorization: Bearer YOUR_TOKEN' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "answer": "Thank you for your question! This product comes with a 2-year warranty."
+  }'`
+    }
+  ]
+
   const invoiceEndpoints = [
     {
       method: 'GET',
@@ -1560,6 +1637,23 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
         </div>
         <div className="space-y-4">
           {integrationBatchEndpoints.map((endpoint, index) => (
+            <EndpointCard key={index} {...endpoint} />
+          ))}
+        </div>
+      </section>
+
+      {/* Integration QA Section */}
+      <section id="integration-qa" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
+          💬 Integration API - Soru & Cevap Yönetimi
+        </h2>
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <p className="text-green-800 text-sm">
+            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Müşteri sorularını listeleme ve cevaplama işlemleri için kullanın.
+          </p>
+        </div>
+        <div className="space-y-4">
+          {integrationQaEndpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>
