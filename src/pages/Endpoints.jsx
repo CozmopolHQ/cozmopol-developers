@@ -1203,30 +1203,83 @@ const Endpoints = () => {
       response: `{
   "success": true,
   "data": {
-    "orders": [
+    "data": [
       {
-        "orderId": "3580169126",
-        "orderNumber": "ORD-2024-001",
-        "status": "confirmed",
-        "createdAt": "2024-01-15T10:30:00Z",
-        "totalAmount": 299.99,
-        "currency": "TRY",
         "customer": {
-          "name": "John Doe",
-          "email": "john@example.com"
+          "firstname": "Sinan",
+          "surname": "Karatas",
+          "email": "sinan.karatas@cozmopol.com",
+          "identityNo": "11111111111",
+          "companyName": null,
+          "taxNumber": null,
+          "taxOffice": null
         },
-        "items": [
+        "shipment": {
+          "firstname": "firstnametest",
+          "surname": "surnametest",
+          "email": "sinan.karatas@cozmopol.com",
+          "phoneNumber": "+90 532 456 7890",
+          "identityNo": "11111111111",
+          "companyName": null,
+          "taxNumber": null,
+          "taxOffice": null,
+          "city": "Aydın",
+          "fullAddress": "Atatürk Bulvarı No: 29"
+        },
+        "invoice": {
+          "firstname": "firstnametest",
+          "surname": "surnametest",
+          "email": "sinan.karatas@cozmopol.com",
+          "phoneNumber": "+90 532 456 7890",
+          "identityNo": "11111111111",
+          "companyName": null,
+          "taxNumber": null,
+          "taxOffice": null,
+          "city": "Aydın",
+          "fullAddress": "Atatürk Bulvarı No: 29"
+        },
+        "totalPrice": 117.5,
+        "totalDiscount": 0,
+        "currencyCode": "TRY",
+        "status": "created",
+        "statusHistory": [
           {
-            "barcode": "8682458451243",
-            "title": "Premium Kulaklık",
-            "quantity": 1,
-            "price": 299.99
+            "date": "2026-01-15T15:20:15.085Z",
+            "status": "awaiting"
+          },
+          {
+            "date": "2026-01-15T15:21:19.323Z",
+            "status": "created"
           }
-        ]
+        ],
+        "listings": [
+          {
+            "barcode": "8682458451225",
+            "name": "MacBook Air: Apple M4 chip with 10-core CPU and 10-core GPU 960GB SSD-64GB RAM",
+            "quantity": 1,
+            "price": 65,
+            "sku": "test-sku-1235"
+          },
+          {
+            "barcode": "8682458451224",
+            "name": "MacBook Air: Apple M4 chip with 10-core CPU and 10-core GPU 512GB SSD-32GB RAM",
+            "quantity": 1,
+            "price": 52.5,
+            "sku": ""
+          }
+        ],
+        "orderNumber": "7224100418",
+        "packageNumber": "4567342578",
+        "orderDate": "2026-01-15T15:20:15.086Z",
+        "cargoProviderName": "Test Kargo Firması",
+        "cargoTrackingNumber": "1234567890",
+        "cargoTrackingLink": "https://www.cozmopol.com.tr"
       }
     ],
-    "totalPages": 5,
-    "currentPage": 1
+    "page": 1,
+    "limit": 20,
+    "total": 1,
+    "totalPages": 1
   }
 }`,
       example: `curl -X GET \\
@@ -1245,11 +1298,7 @@ const Endpoints = () => {
       ],
       response: `{
   "success": true,
-  "message": "Order split successfully",
-  "data": {
-    "originalOrderId": "5892398542",
-    "newOrderIds": ["5892398543", "5892398544"]
-  }
+  "data": {}
 }`,
       example: `curl -X PUT \\
   ${BASE_URL}/store/ordersV2/splitOrder/5892398542 \\
@@ -1276,12 +1325,7 @@ const Endpoints = () => {
       ],
       response: `{
   "success": true,
-  "message": "Order status updated successfully",
-  "data": {
-    "orderId": "3580169126",
-    "status": "shipped",
-    "updatedAt": "2024-01-15T14:30:00Z"
-  }
+  "data": {}
 }`,
       example: `curl -X PUT \\
   ${BASE_URL}/store/ordersV2/status/3580169126 \\
