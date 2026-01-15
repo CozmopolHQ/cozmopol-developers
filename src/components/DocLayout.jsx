@@ -18,9 +18,9 @@ const DocLayout = ({ children }) => {
       items: [
         { name: 'Hızlı Başlangıç', href: '/quickstart', icon: '🚀' },
         { name: 'Kimlik Doğrulama', href: '/authentication', icon: '🔐' },
-        { name: 'Nasıl Entegrasyon Yaparım?', href: '/integration-guide', icon: '🔧' },
-        { name: 'Hata Kodları (Yakında)', href: '/error-codes', icon: '⚠️' },
-        { name: 'Postman Collections (Yakında)', href: '/postman', icon: '📮' },
+        { name: 'Nasıl Entegrasyon Yaparım?', href: '/integration-guide', icon: '🔧', disabled: true },
+        { name: 'Hata Kodları (Yakında)', href: '/error-codes', icon: '⚠️', disabled: true },
+        { name: 'Postman Collections (Yakında)', href: '/postman', icon: '📮', disabled: true },
       ]
     },
     {
@@ -35,22 +35,23 @@ const DocLayout = ({ children }) => {
             { name: 'Kategori ve Marka Listeleme', href: '/endpoints#category-brand', icon: '🏷️' },
             { name: 'Ürün Yönetimi', href: '/endpoints#product-management', icon: '📦' },
             { name: 'Sipariş Yönetimi', href: '/endpoints#integration-orders', icon: '📋' },
-            { name: 'Fatura Yükleme (Yakında)', href: '/endpoints#invoices', icon: '📄' },
+            { name: 'Sipariş Yönetimi', href: '/endpoints#integration-orders', icon: '📋' },
+            { name: 'Fatura Yükleme', href: '/endpoints#invoices', icon: '📄' },
             { name: 'Toplu İşlem Takibi', href: '/endpoints#integration-batch', icon: '⚙️' },
             { name: 'Soru Cevap İşlemleri', href: '/endpoints#integration-qa', icon: '💬' },
-            { name: 'İade Yönetimi (Yakında)', href: '/endpoints#returns', icon: '↩️' }
+            { name: 'İade Yönetimi', href: '/endpoints#returns', icon: '↩️' }
           ]
         },
-        { name: 'Webhooks (Yakında)', href: '/webhooks', icon: '🔗' },
-        { name: 'SDK\'lar (Yakında)', href: '/sdks', icon: '📦' },
+        { name: 'Webhooks (Yakında)', href: '/webhooks', icon: '🔗', disabled: true },
+        { name: 'SDK\'lar (Yakında)', href: '/sdks', icon: '📦', disabled: true },
       ]
     },
     {
       id: 'advanced',
       title: 'Sistem Durumu',
       items: [
-        { name: 'Health Check', href: '/health', icon: '💚' },
-        { name: 'Status', href: '/status', icon: '📊' },
+        { name: 'Health Check', href: '/health', icon: '💚', disabled: true },
+        { name: 'Status', href: '/status', icon: '📊', disabled: true },
       ]
     }
   ]
@@ -107,39 +108,56 @@ const DocLayout = ({ children }) => {
                   <div className="mt-2 space-y-1">
                     {section.items.map((item) => (
                       <div key={item.href}>
-                        <Link
-                          to={item.href}
-                          onClick={() => setIsSidebarOpen(false)}
-                          className={`flex items-center space-x-3 px-4 py-2 text-sm rounded-md transition-colors ${isCurrentPage(item.href)
+                        {item.disabled ? (
+                          <div className="flex items-center space-x-3 px-4 py-2 text-sm rounded-md text-slate-400 cursor-not-allowed opacity-75 bg-slate-50/50">
+                            <span className="text-base grayscale opacity-75">{item.icon}</span>
+                            <span>{item.name}</span>
+                          </div>
+                        ) : (
+                          <Link
+                            to={item.href}
+                            onClick={() => setIsSidebarOpen(false)}
+                            className={`flex items-center space-x-3 px-4 py-2 text-sm rounded-md transition-colors ${isCurrentPage(item.href)
                               ? 'bg-slate-900 text-white'
                               : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                            }`}
-                        >
-                          <span className="text-base">{item.icon}</span>
-                          <span>{item.name}</span>
-                        </Link>
+                              }`}
+                          >
+                            <span className="text-base">{item.icon}</span>
+                            <span>{item.name}</span>
+                          </Link>
+                        )}
 
                         {/* Sub items for Endpoints */}
-                        {item.subItems && isCurrentPage(item.href) && (
+                        {item.subItems && (isCurrentPage(item.href) || item.href === '/endpoints') && (
                           <div className="ml-6 mt-2 space-y-1">
                             {item.subItems.map((subItem) => (
-                              <a
-                                key={subItem.href}
-                                href={subItem.href}
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  const elementId = subItem.href.split('#')[1];
-                                  const element = document.getElementById(elementId);
-                                  if (element) {
-                                    element.scrollIntoView({ behavior: 'smooth' });
-                                  }
-                                  setIsSidebarOpen(false);
-                                }}
-                                className="flex items-center space-x-3 px-4 py-2 text-sm rounded-md transition-colors text-slate-500 hover:text-slate-700 hover:bg-slate-50"
-                              >
-                                <span className="text-sm">{subItem.icon}</span>
-                                <span>{subItem.name}</span>
-                              </a>
+                              subItem.disabled ? (
+                                <div
+                                  key={subItem.href}
+                                  className="flex items-center space-x-3 px-4 py-2 text-sm rounded-md text-slate-400 cursor-not-allowed opacity-75"
+                                >
+                                  <span className="text-sm grayscale opacity-75">{subItem.icon}</span>
+                                  <span>{subItem.name}</span>
+                                </div>
+                              ) : (
+                                <a
+                                  key={subItem.href}
+                                  href={subItem.href}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    const elementId = subItem.href.split('#')[1];
+                                    const element = document.getElementById(elementId);
+                                    if (element) {
+                                      element.scrollIntoView({ behavior: 'smooth' });
+                                    }
+                                    setIsSidebarOpen(false);
+                                  }}
+                                  className="flex items-center space-x-3 px-4 py-2 text-sm rounded-md transition-colors text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                                >
+                                  <span className="text-sm">{subItem.icon}</span>
+                                  <span>{subItem.name}</span>
+                                </a>
+                              )
                             ))}
                           </div>
                         )}
@@ -157,27 +175,18 @@ const DocLayout = ({ children }) => {
               Hızlı Bağlantılar
             </h3>
             <div className="mt-3 space-y-1">
-              <a
-                href="#"
-                className="flex items-center px-2 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md transition-colors"
-              >
-                <span className="mr-3">🌐</span>
+              <div className="flex items-center px-2 py-2 text-sm text-slate-400 bg-slate-50/50 rounded-md cursor-not-allowed opacity-75">
+                <span className="mr-3 grayscale opacity-75">🌐</span>
                 Partner Portal (Yakında)
-              </a>
-              <a
-                href="#"
-                className="flex items-center px-2 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md transition-colors"
-              >
-                <span className="mr-3">💬</span>
+              </div>
+              <div className="flex items-center px-2 py-2 text-sm text-slate-400 bg-slate-50/50 rounded-md cursor-not-allowed opacity-75">
+                <span className="mr-3 grayscale opacity-75">💬</span>
                 Discord Destek (Yakında)
-              </a>
-              <a
-                href="#"
-                className="flex items-center px-2 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md transition-colors"
-              >
-                <span className="mr-3">📧</span>
-                E-posta Destek
-              </a>
+              </div>
+              <div className="flex items-center px-2 py-2 text-sm text-slate-400 bg-slate-50/50 rounded-md cursor-not-allowed opacity-75">
+                <span className="mr-3 grayscale opacity-75">📧</span>
+                E-posta Destek (Yakında)
+              </div>
             </div>
           </div>
         </nav>

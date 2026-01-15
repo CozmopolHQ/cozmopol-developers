@@ -692,7 +692,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/user/returns',
       description: 'İade taleplerini listele',
-      status: 'development',
+      status: 'stable',
       parameters: [
         { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
         { name: 'status', type: 'string', required: false, description: 'İade durumu (pending, approved, rejected, completed)' },
@@ -750,7 +750,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/user/returns/:id',
       description: 'İade talebi detayını getir',
-      status: 'development',
+      status: 'stable',
       parameters: [
         { name: 'id', type: 'string', required: true, description: 'İade talebi ID\'si (MongoDB ObjectId)' },
         { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
@@ -812,7 +812,7 @@ const Endpoints = () => {
       method: 'PATCH',
       path: '/user/returns/:id/status',
       description: 'İade talebi durumunu güncelle',
-      status: 'development',
+      status: 'stable',
       parameters: [
         { name: 'id', type: 'string', required: true, description: 'İade talebi ID\'si (MongoDB ObjectId)' },
         { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
@@ -1376,7 +1376,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/user/invoices',
       description: 'Fatura listesini getir',
-      status: 'development',
+      status: 'stable',
       parameters: [
         { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
         { name: 'order_id', type: 'string', required: false, description: 'Sipariş ID\'sine göre filtrele' },
@@ -1449,7 +1449,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/user/invoices/:id',
       description: 'Fatura detayını getir',
-      status: 'development',
+      status: 'stable',
       parameters: [
         { name: 'id', type: 'string', required: true, description: 'Fatura ID\'si (MongoDB ObjectId)' },
         { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
@@ -1528,7 +1528,7 @@ const Endpoints = () => {
       method: 'GET',
       path: '/user/invoices/:id/pdf',
       description: 'Fatura PDF\'ini indir',
-      status: 'development',
+      status: 'stable',
       parameters: [
         { name: 'id', type: 'string', required: true, description: 'Fatura ID\'si (MongoDB ObjectId)' },
         { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
@@ -1546,7 +1546,7 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
       method: 'POST',
       path: '/user/invoices/upload',
       description: 'Fatura PDF\'i yükle',
-      status: 'development',
+      status: 'stable',
       parameters: [
         { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
         { name: 'orderId', type: 'string', required: true, description: 'Sipariş ID' },
@@ -1648,11 +1648,11 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
       {/* 4. Fatura Yükleme (coming soon) */}
       <section id="invoices" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
-          📄 Fatura Yükleme (coming soon)
+          📄 Fatura Yükleme
         </h2>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-          <p className="text-blue-800 text-sm">
-            <strong>🚧 Development:</strong> Bu özellik yakında kullanıma sunulacaktır.
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <p className="text-green-800 text-sm">
+            <strong>✅ Stable:</strong> Fatura yükleme ve görüntüleme işlemleri.
           </p>
         </div>
         <div className="space-y-4">
@@ -1699,11 +1699,11 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
       {/* 7. İade Yönetimi (coming soon) */}
       <section id="returns" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
-          ↩️ İade Yönetimi (coming soon)
+          ↩️ İade Yönetimi
         </h2>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-          <p className="text-blue-800 text-sm">
-            <strong>🚧 Development:</strong> Bu özellik yakında kullanıma sunulacaktır.
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <p className="text-green-800 text-sm">
+            <strong>✅ Stable:</strong> İade taleplerini yönetme ve durum güncelleme işlemleri.
           </p>
         </div>
         <div className="space-y-4">
