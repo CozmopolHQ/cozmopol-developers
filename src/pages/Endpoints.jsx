@@ -847,7 +847,6 @@ const Endpoints = () => {
       description: 'Get Access Key',
       status: 'stable',
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token' },
         { name: 'sellerId', type: 'string', required: true, description: 'Satıcı ID' },
         { name: 'apiKey', type: 'string', required: true, description: 'API Anahtarı' },
         { name: 'apiSecretKey', type: 'string', required: true, description: 'API Gizli Anahtarı' }
