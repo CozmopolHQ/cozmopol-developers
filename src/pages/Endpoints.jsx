@@ -3,689 +3,6 @@ import EndpointCard from '../components/EndpointCard'
 import { BASE_URL } from '../config'
 
 const Endpoints = () => {
-  const testEndpoints = [
-    {
-      method: 'GET',
-      path: '/test/ping',
-      description: 'API bağlantısını test et',
-      status: 'stable',
-      parameters: [],
-      response: `{
-  "message": "pong"
-}`,
-      example: `curl -X GET \\
-  ${BASE_URL}/test/ping \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
-    },
-    {
-      method: 'GET',
-      path: '/test/version',
-      description: 'API versiyonunu getir',
-      status: 'stable',
-      parameters: [],
-      response: `{
-  "version": "1.0.0"
-}`,
-      example: `curl -X GET \\
-  ${BASE_URL}/test/version \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
-    },
-    {
-      method: 'GET',
-      path: '/health',
-      description: 'Sistem sağlık durumunu kontrol et',
-      status: 'stable',
-      parameters: [],
-      response: `{
-  "status": "ok",
-  "services": {
-    "database": {
-      "status": "connected",
-      "ping": 80,
-      "pingError": null
-    },
-    "redis": "unknown",
-    "queue": "unknown",
-    "mail": "unknown"
-  }
-}`,
-      example: `curl -X GET \\
-  ${BASE_URL}/health \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
-    },
-    {
-      method: 'POST',
-      path: '/test/webhook',
-      description: 'Webhook test tetikleyicisi',
-      status: 'development',
-      parameters: [
-        { name: 'event', type: 'string', required: false, description: 'Test edilecek webhook event türü' },
-        { name: 'data', type: 'object', required: false, description: 'Test verisi' }
-      ],
-      response: `{
-  "success": true,
-  "message": "Test webhook triggered successfully"
-}`,
-      example: `curl -X POST \\
-  ${BASE_URL}/test/webhook \\
-  -H 'Authorization: Bearer YOUR_API_KEY' \\
-  -H 'Content-Type: application/json' \\
-  -d '{
-    "event": "order.created",
-    "data": {
-      "order_id": 12345
-    }
-  }'`
-    },
-    {
-      method: 'POST',
-      path: '/auth/token',
-      description: 'Vendor olarak giriş yap ve token al',
-      status: 'stable',
-      parameters: [
-        { name: 'storeUserId', type: 'string', required: true, description: 'Mağaza kullanıcı ID\'si' },
-        { name: 'apiKey', type: 'string', required: true, description: 'API anahtarı' },
-        { name: 'apiSecretKey', type: 'string', required: true, description: 'API gizli anahtarı' }
-      ],
-      response: `{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}`,
-      example: `curl -X POST \\
-  ${BASE_URL}/auth/token \\
-  -H 'Content-Type: application/json' \\
-  -d '{
-    "storeUserId": "67c1b95d3201a327160dbca2",
-    "apiKey": "259aa5b375e08fb26e6e0ebf3f0949ca",
-    "apiSecretKey": "720f5664ee414a5047bb130144f1a29cba65130d4e7585f18992421a02e6f065"
-  }'`
-    }
-  ]
-
-  const productEndpoints = [
-    {
-      method: 'POST',
-      path: '/products',
-      description: 'Yeni ürün oluştur',
-      status: 'development',
-      parameters: [
-        { name: 'title', type: 'string', required: true, description: 'Ürün başlığı' },
-        { name: 'description', type: 'string', required: true, description: 'Ürün açıklaması' },
-        { name: 'price', type: 'number', required: true, description: 'Ürün fiyatı (TL)' },
-        { name: 'category_id', type: 'integer', required: true, description: 'Kategori ID\'si' },
-        { name: 'stock_quantity', type: 'integer', required: true, description: 'Stok miktarı' },
-        { name: 'images', type: 'array', required: false, description: 'Ürün görselleri URL\'leri' },
-        { name: 'sku', type: 'string', required: false, description: 'Stok kodu' },
-        { name: 'weight', type: 'number', required: false, description: 'Ürün ağırlığı (gram)' },
-        { name: 'dimensions', type: 'object', required: false, description: 'Ürün boyutları (cm)' }
-      ],
-      response: `{
-  "success": true,
-  "data": {
-    "id": 12345,
-    "title": "Premium Kulaklık",
-    "description": "Yüksek kaliteli wireless kulaklık",
-    "price": 299.99,
-    "category_id": 15,
-    "stock_quantity": 50,
-    "status": "active",
-    "created_at": "2024-01-15T10:30:00Z",
-    "updated_at": "2024-01-15T10:30:00Z"
-  }
-}`,
-      example: `curl -X POST \\
-  ${BASE_URL}/products \\
-  -H 'Authorization: Bearer YOUR_API_KEY' \\
-  -H 'Content-Type: application/json' \\
-  -d '{
-    "title": "Premium Kulaklık",
-    "description": "Yüksek kaliteli wireless kulaklık",
-    "price": 299.99,
-    "category_id": 15,
-    "stock_quantity": 50,
-    "images": [
-      "https://example.com/image1.jpg",
-      "https://example.com/image2.jpg"
-    ]
-  }'`
-    },
-    {
-      method: 'GET',
-      path: '/products',
-      description: 'Tüm ürünleri listele',
-      status: 'stable',
-      parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'search', type: 'string', required: false, description: 'Ürün başlığında arama yapar' },
-        { name: 'brand', type: 'string', required: false, description: 'Marka adına göre filtreler' },
-        { name: 'category', type: 'integer', required: false, description: 'Ana kategori ID\'sine göre filtreler' },
-        { name: 'subcategory', type: 'integer', required: false, description: 'Alt kategori ID\'sine göre filtreler' },
-        { name: 'currency', type: 'string', required: false, description: 'Para birimi (TRY, USD, EUR)' },
-        { name: 'status', type: 'boolean', required: false, description: 'Ürün durumu (true: aktif, false: pasif)' },
-        { name: 'isVariantProduct', type: 'boolean', required: false, description: 'Varyasyonlu ürün filtresi' },
-        { name: 'minPrice', type: 'number', required: false, description: 'Minimum fiyat filtresi' },
-        { name: 'maxPrice', type: 'number', required: false, description: 'Maksimum fiyat filtresi' }
-      ],
-      response: `{
-  [
-    {
-      "id": "67c1bcbb3c56211e5c53289c",
-      "title": "Organik Keçiboynuzu Özü 315 gr BABY MG",
-      "description": "Keçiboynuzu özü, lif, potasyum, kalsiyum...",
-      "brand": "Yeni Marka Adı",
-      "currency": "TRY",
-      "basePrice": 140,
-      "status": true,
-      "category": {
-        "category": 1219,
-        "categoryName": "Süpermarket",
-        "subcategoryNames": ["Gıda & İçecek"]
-      },
-      "variations": [
-        {
-          "color": "Standart",
-          "size": "Standart",
-          "stock": 10,
-          "price": 150,
-          "currency": "TRY",
-          "sku": "24343432",
-          "barcode": "3432434"
-        }
-      ],
-      "images": [
-        {
-          "color": "Standart",
-          "variationImages": [
-            {
-              "imageUrl": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/..."
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}`,
-      example: `curl -X GET \\
-  '${BASE_URL}/products?search=keçiboynuzu&brand=Yeni Marka Adı&category=1219&subcategory=1385&currency=TRY&status=true&isVariantProduct=false&minPrice=140&maxPrice=150' \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
-    },
-    {
-      method: 'GET',
-      path: '/products/{id}',
-      description: 'Ürün detayını getir',
-      status: 'stable',
-      parameters: [
-        { name: 'id', type: 'string', required: true, description: 'Ürün ID\'si (MongoDB ObjectId)' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
-      ],
-      response: `{
-  "id": "67c1bcbb3c56211e5c53289c",
-  "title": "Organik Keçiboynuzu Özü 315 gr BABY MG",
-  "description": "Keçiboynuzu özü, lif, potasyum, kalsiyum, magnezyum ve demir gibi mineraller açısından zengindir...",
-  "brand": "Yeni Marka Adı",
-  "currency": "TRY",
-  "basePrice": 140,
-  "status": true,
-  "category": {
-    "category": 1219,
-    "subcategories": [1385, 1408],
-    "categoryName": null,
-    "subcategoryNames": []
-  },
-  "availability": {
-    "twoDimension": true,
-    "threeDimension": false,
-    "isInternational": false
-  },
-  "storeUser": {
-    "_id": "67c1b95d3201a327160dbca2",
-    "storeUserInformationId": {
-      "_id": "67c1b95d3201a327160dbca4",
-      "companyName": "Memleket Gurmesi"
-    }
-  },
-  "isVariantProduct": false,
-  "variations": [
-    {
-      "color": "Standart",
-      "size": "Standart", 
-      "stock": 10,
-      "price": 150,
-      "discountPrice": null,
-      "currency": "TRY",
-      "taxRate": 1,
-      "sku": "24343432",
-      "barcode": "3432434",
-      "enabled": true
-    }
-  ],
-  "images": [
-    {
-      "color": "Standart",
-      "variationImages": [
-        {
-          "imageUrl": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/67c1bcbb3c56211e5c53289c/1740750012081-image0.jpg"
-        }
-      ]
-    }
-  ],
-  "metaData": {
-    "metaTitle": "Organik Keçiboynuzu Özü 315 gr BABY MG - calvinklein",
-    "metaDescription": "Keçiboynuzu özü, lif, potasyum, kalsiyum...",
-    "metaUrlSlug": "organik-keiboynuzu-z-315-gr-baby-mg"
-  }
-}`,
-      example: `curl -X GET \\
-  ${BASE_URL}/products/67c1bcbb3c56211e5c53289c \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
-    },
-    {
-      method: 'GET',
-      path: '/categories',
-      description: 'Kategori listesini getir',
-      status: 'stable',
-      parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
-      ],
-      response: `{
-  [
-    {
-      "_id": "67ad9f2b37a30e14e93d7a6b",
-      "id": 368,
-      "name": "Aksesuar",
-      "parentId": null,
-      "subCategories": [
-        {
-          "_id": "6880a6a32113cecfb91c6089",
-          "id": 369,
-          "name": "Çanta",
-          "parentId": 368,
-          "subCategories": [
-            {
-              "id": 370,
-              "name": "Kadın Çanta",
-              "parentId": 369,
-              "subCategories": []
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}`,
-      example: `curl -X PUT \\
-  ${BASE_URL}/categories \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
-    },
-    {
-      method: 'GET',
-      path: '/brands',
-      description: 'Marka listesini getir',
-      status: 'stable',
-      parameters: [
-        { name: 'Authorization', type: 'string', required: false, description: 'Bearer token (Header) - Opsiyonel' }
-      ],
-      response: `{
-  [
-    {
-      "_id": "67c06206c03d6bf6a0fbeedb",
-      "value": "adidas",
-      "label": "Adidas"
-    },
-    {
-      "_id": "67c06206c03d6bf6a0fbeedc", 
-      "value": "apple",
-      "label": "Apple"
-    },
-    {
-      "_id": "67c06206c03d6bf6a0fbeedd",
-      "value": "armani", 
-      "label": "Armani"
-    }
-  ]
-}`,
-      example: `curl -X DELETE \\
-  ${BASE_URL}/brands`
-    }
-  ]
-
-  const orderEndpoints = [
-    {
-      method: 'GET',
-      path: '/orders',
-      description: 'Tüm siparişleri listele',
-      status: 'stable',
-      parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
-      ],
-      response: `{
-  "data": [
-    {
-      "id": "67d9250b98a026849af11ea5", 
-      "status": "confirmed",
-      "createdAt": "2024-01-15T10:30:00Z",
-      "totalAmount": 299.99,
-      "currency": "TRY",
-      "customer": {
-        "name": "John Doe",
-        "email": "john.doe@example.com"
-      },
-      "payment": {
-        "paidPrice": 299.99,
-        "currency": "TRY",
-        "status": "SUCCESS"
-      },
-      "shipping": {
-        "status": "shipped",
-        "provider": "Aras Kargo",
-        "trackingNumber": null
-      },
-      "items": [
-        {
-          "title": "Premium Kulaklık",
-          "brand": "TechBrand",
-          "quantity": 1,
-          "price": 299.99,
-          "total": 299.99,
-          "image": "https://example.com/headphones.jpg",
-          "variation": "Standart"
-        }
-      ]
-    },
-    {
-      "id": "67d89e927ce36855bce105ce", 
-      "status": "pending",
-      "createdAt": "2024-01-14T15:20:00Z",
-      "totalAmount": 149.99,
-      "currency": "TRY",
-      "customer": {
-        "name": "Jane Smith",
-        "email": "jane.smith@example.com"
-      },
-      "payment": {
-        "paidPrice": 149.99,
-        "currency": "TRY",
-        "status": "SUCCESS"
-      },
-      "shipping": {
-        "status": "awaiting_shipment",
-        "provider": "Sürat Kargo",
-        "trackingNumber": null
-      },
-      "items": [
-        {
-          "title": "Wireless Mouse",
-          "brand": "TechBrand",
-          "quantity": 1,
-          "price": 149.99,
-          "total": 149.99,
-          "image": "https://example.com/mouse.jpg",
-          "variation": "Standart"
-        }
-      ]
-    }
-  ]
-}`,
-      example: `curl -X GET \\
-  ${BASE_URL}/orders \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
-    },
-    {
-      method: 'GET',
-      path: '/orders/{id}',
-      description: 'Sipariş detayını getir',
-      status: 'stable',
-      parameters: [
-        { name: 'id', type: 'string', required: true, description: 'Sipariş ID\'si (MongoDB ObjectId)' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
-      ],
-      response: `{
-  "data": {
-    "id": "67d89c727ce36855bce10598", 
-    "status": "confirmed",
-    "createdAt": "2024-01-15T14:30:00Z",
-    "totalAmount": 199.99,
-    "currency": "TRY",
-    "customer": {
-      "name": "Michael Johnson",
-      "email": "michael.johnson@example.com",
-      "phone": "+90 555 123 4567"
-    },
-    "payment": {
-      "paidPrice": 199.99,
-      "currency": "TRY",
-      "status": "SUCCESS"
-    },
-    "shipping": {
-      "status": "shipped",
-      "provider": "Aras Kargo",
-      "trackingNumber": null,
-      "deliveryAddressId": {
-        "_id": "67d89a3f7ce36855bce10546", 
-        "firstname": "Michael",
-        "surname": "Johnson",
-        "addressTitle": "Ev Adresi",
-        "phoneNumber": "5551234567",
-        "addressDetails": "Örnek Mahallesi, Örnek Sokak No:123 Kadıköy/İstanbul",
-        "postalCode": "34710"
-      }
-    },
-    "items": [
-      {
-        "title": "Gaming Keyboard",
-        "brand": "TechBrand",
-        "quantity": 1,
-        "price": 199.99,
-        "total": 199.99,
-        "image": "https://example.com/keyboard.jpg",
-        "variation": "Standart"
-      }
-    ]
-  }
-}`,
-      example: `curl -X GET \\
-  ${BASE_URL}/orders/67d89c727ce36855bce10598 \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
-    }
-  ]
-
-  const shippingEndpoints = [
-    {
-      method: 'GET',
-      path: '/shipping',
-      description: 'Kargo şirketlerini listele (Güncellenmiş)',
-      status: 'stable',
-      parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
-      ],
-      response: `{
-  "data": [
-    {
-      "id": "67bc84d61c46630458270fdf",
-      "name": "Aras Kargo",
-      "slug": "aras",
-      "kargonomiId": 4
-    },
-    {
-      "id": "67bc84d61c46630458270fe0",
-      "name": "Sürat Kargo",
-      "slug": "surat",
-      "kargonomiId": 5
-    },
-    {
-      "id": "67bc84d61c46630458270fde",
-      "name": "Kolay Gelsin",
-      "slug": "sendeo",
-      "kargonomiId": 3
-    },
-    {
-      "id": "67bc84d61c46630458270fe1",
-      "name": "PTT Kargo",
-      "slug": "ptt",
-      "kargonomiId": 7
-    }
-  ]
-}`,
-      example: `curl -X GET \\
-  ${BASE_URL}/shipping \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
-    }
-  ]
-
-  const inventoryEndpoints = [
-    {
-      method: 'PUT',
-      path: '/inventory/{product_id}',
-      description: 'Stok miktarını güncelle',
-      status: 'development',
-      parameters: [
-        { name: 'product_id', type: 'integer', required: true, description: 'Ürün ID\'si' },
-        { name: 'quantity', type: 'integer', required: true, description: 'Yeni stok miktarı' },
-        { name: 'operation', type: 'string', required: false, description: 'İşlem türü (set, add, subtract) - varsayılan: set' }
-      ],
-      response: `{
-  "success": true,
-  "data": {
-    "product_id": 12345,
-    "previous_quantity": 50,
-    "new_quantity": 75,
-    "updated_at": "2024-01-15T15:00:00Z"
-  }
-}`,
-      example: `curl -X PUT \\
-  ${BASE_URL}/inventory/12345 \\
-  -H 'Authorization: Bearer YOUR_API_KEY' \\
-  -H 'Content-Type: application/json' \\
-  -d '{
-    "quantity": 75,
-    "operation": "set"
-  }'`
-    },
-    {
-      method: 'GET',
-      path: '/inventory/low-stock',
-      description: 'Düşük stoklu ürünleri getir',
-      status: 'development',
-      parameters: [
-        { name: 'threshold', type: 'integer', required: false, description: 'Stok eşik değeri (varsayılan: 10)' },
-        { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası' },
-        { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı' }
-      ],
-      response: `{
-  "success": true,
-  "data": [
-    {
-      "product_id": 12345,
-      "title": "Premium Kulaklık",
-      "current_stock": 5,
-      "threshold": 10,
-      "status": "low_stock"
-    },
-    {
-      "product_id": 12346,
-      "title": "Wireless Mouse",
-      "current_stock": 0,
-      "threshold": 10,
-      "status": "out_of_stock"
-    }
-  ],
-  "pagination": {
-    "current_page": 1,
-    "total_pages": 2,
-    "total_items": 15
-  }
-}`,
-      example: `curl -X GET \\
-  '${BASE_URL}/inventory/low-stock?threshold=10' \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
-    }
-  ]
-
-  const qaEndpoints = [
-    {
-      method: 'GET',
-      path: '/questions',
-      description: 'Ürünlere gelen soruları listele',
-      status: 'stable',
-      parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
-      ],
-      response: `{
-  "data": [
-    {
-      "id": "686295d1c5948b00b525bbd7", 
-      "question": "Bu ürünün garantisi var mı?",
-      "answer": "Evet, bu ürün 2 yıl garantili olarak satılmaktadır.",
-      "askedAt": "2024-01-10T10:30:00Z",
-      "answeredAt": "2024-01-10T14:15:00Z",
-      "isAnswered": true,
-      "user": {
-        "id": "67c01eef9d1c025922091bc2", 
-        "name": "Alex Wilson",
-        "username": "alexw",
-        "profilePicture": "https://example.com/avatar1.jpg"
-      },
-      "product": {
-        "id": "67c1bcbb3c56211e5c53289c", 
-        "title": "Premium Kulaklık",
-        "image": "https://example.com/headphones.jpg"
-      }
-    },
-    {
-      "id": "685ef564c5948b00b525bbd7", 
-      "question": "Kargo ücreti ne kadar?",
-      "answer": null,
-      "askedAt": "2024-01-12T16:20:00Z",
-      "answeredAt": null,
-      "isAnswered": false,
-      "user": {
-        "id": "67c01eef9d1c025922091bc2", 
-        "name": "Sarah Davis",
-        "username": "sarahd",
-        "profilePicture": "https://example.com/avatar2.jpg"
-      },
-      "product": {
-        "id": "67c1bcbb3c56211e5c53289c", 
-        "title": "Premium Kulaklık",
-        "image": "https://example.com/headphones.jpg"
-      }
-    }
-  ],
-  "meta": {
-    "totalCount": 9
-  }
-}`,
-      example: `curl -X GET \\
-  ${BASE_URL}/questions \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
-    },
-    {
-      method: 'PATCH',
-      path: '/questions/{id}/answer',
-      description: 'Soruya cevap ver',
-      status: 'stable',
-      parameters: [
-        { name: 'id', type: 'string', required: true, description: 'Soru ID\'si (MongoDB ObjectId)' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'answer', type: 'string', required: true, description: 'Cevap metni' }
-      ],
-      response: `{
-  "message": "Answer saved successfully",
-  "data": {
-    "id": "686295d1c5948b00b525bbd7", 
-    "answer": "Ürün tamamen doğal içeriklerden üretilmiştir.",
-    "answeredAt": "2024-01-15T09:30:00Z",
-    "isAnswered": true
-  }
-}`,
-      example: `curl -X PATCH \\
-  ${BASE_URL}/questions/686295d1c5948b00b525bbd7/answer \\
-  -H 'Authorization: Bearer YOUR_API_KEY' \\
-  -H 'Content-Type: application/json' \\
-  -d '{
-    "answer": "Ürün tamamen doğal içeriklerden üretilmiştir."
-  }'`
-    }
-  ]
 
   const returnEndpoints = [
     {
@@ -1212,28 +529,68 @@ const Endpoints = () => {
         { name: 'barcode', type: 'string', required: false, description: 'Barkod numarasına göre filtrele' }
       ],
       response: `{
-  "success": true,
-  "data": {
-    "data": [
-      {
-        "barcode": "8682458451244",
-        "modelCode": "test-model-3456",
-        "slicerAttribute": [
-          {
-            "attributeId": 249,
-            "attributeName": "SSD Kapasitesi",
-            "valueId": 3379,
-            "valueName": "512 GB"
-          }
+    "success": true,
+    "data": {
+        "data": [
+            {
+                "barcode": "8682458451225",
+                "sku": "test-sku-1235689",
+                "modelCode": "test-test123-12349",
+                "slicerAttribute": [
+                    {
+                        "attributeId": 249,
+                        "attributeName": "SSD Kapasitesi",
+                        "valueId": 1183806,
+                        "valueName": "960 GB"
+                    },
+                    {
+                        "attributeId": 232,
+                        "attributeName": "Ram (Sistem Belleği)",
+                        "valueId": 4016,
+                        "valueName": "64 GB"
+                    }
+                ],
+                "varianterAttribute": null,
+                "commonAttributes": [
+                    {
+                        "attributeId": 131,
+                        "attributeName": "Ekran Kartı Hafızası",
+                        "valueId": 10576991,
+                        "valueName": "48 GB"
+                    },
+                    {
+                        "attributeId": 210,
+                        "attributeName": "Dokunmatik Ekran",
+                        "valueId": 22196,
+                        "valueName": "Yok"
+                    },
+                    ...
+                ],
+                "status": "active",
+                "createdAt": "2026-01-16T16:40:46.440Z",
+                "categoryId": 1583,
+                "categoryName": "Dizüstü Bilgisayar",
+                "categoryCommission": 0,
+                "categoryVatRate": 0,
+                "price": 60.49,
+                "quantity": 96,
+                "brandName": "Apple",
+                "description": "MBA 15 SKY/10C GPU/16GB/256GB-TUR",
+                "title": "MacBook Air: Apple M4 chip with 10-core CPU and 10-core GPU 960GB SSD-64GB RAM",
+                "images": [
+                    "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/581644980/581644980-1183806-4016/1768581645318-etopch7tr4i-0.webp",
+                    "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/581644980/581644980-1183806-4016/1768581645304-m5ehq6kykr-1.webp",
+                    "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/581644980/581644980-1183806-4016/1768581645316-if7aj1kkx7-2.webp"
+                ]
+            }
         ],
-        "price": 1500,
-        "quantity": 50
-      }
-    ],
-    "totalPages": 1,
-    "currentPage": 1,
-    "totalItems": 1
-  }
+        "pagination": {
+            "page": 1,
+            "limit": 1,
+            "total": 1,
+            "totalPages": 1
+        }
+    }
 }`,
       example: `curl -X GET \\
   '${BASE_URL}/store/productsV2/product/v2?page=1&limit=50&status=active&barcode=8682458451225' \\
@@ -1254,9 +611,9 @@ const Endpoints = () => {
       response: `{
     "success": true,
     "data": {
-        "barcode": "8682458451223",
-        "sku": "test-sku-123",
-        "modelCode": "test-test123-12347",
+        "barcode": "8682458451225",
+        "sku": "test-urun-123",
+        "modelCode": "test-test123-12349",
         "slicerAttribute": [
             {
                 "attributeId": 249,
@@ -1291,154 +648,23 @@ const Endpoints = () => {
                 "valueId": 1220630,
                 "valueName": "USB-C"
             },
-            {
-                "attributeId": 23,
-                "attributeName": "Ekran Boyutu",
-                "valueId": 1194094,
-                "valueName": "14,5 inç"
-            },
-            {
-                "attributeId": 426,
-                "attributeName": "İşlemci Modeli",
-                "valueId": 10623885,
-                "valueName": "225"
-            },
-            {
-                "attributeId": 290,
-                "attributeName": "Garanti Tipi",
-                "valueId": 10623885,
-                "valueName": "225"
-            },
-            {
-                "attributeId": 168,
-                "attributeName": "İşlemci Tipi",
-                "valueId": 10646403,
-                "valueName": "Apple M5 Pro"
-            },
-            {
-                "attributeId": 315,
-                "attributeName": "Çözünürlük Standartı",
-                "valueId": 1223796,
-                "valueName": "2.5K"
-            },
-            {
-                "attributeId": 103,
-                "attributeName": "Cihaz Ağırlığı",
-                "valueId": 1612,
-                "valueName": "2 - 4 kg"
-            },
-            {
-                "attributeId": 433,
-                "attributeName": "Garanti Süresi",
-                "valueId": 352824,
-                "valueName": "4 Ay"
-            },
-            {
-                "attributeId": 354,
-                "attributeName": "Klavye",
-                "valueId": 1211140,
-                "valueName": "Q Türkçe (Aydınlatmasız)"
-            },
-            {
-                "attributeId": 306,
-                "attributeName": "Ekran Kartı Bellek Tipi",
-                "valueId": 3094,
-                "valueName": "DDR5"
-            },
-            {
-                "attributeId": 859,
-                "attributeName": "Maksimum İşlemci Hızı (GHz)",
-                "valueId": 4182,
-                "valueName": "İthalatçı Garantili"
-            },
-            {
-                "attributeId": 47,
-                "attributeName": "Renk",
-                "valueId": 10620526,
-                "valueName": "Bej"
-            },
-            {
-                "attributeId": 110,
-                "attributeName": "Çözünürlük",
-                "valueId": 10626851,
-                "valueName": "2880 x 1864"
-            },
-            {
-                "attributeId": 28,
-                "attributeName": "İşletim Sistemi",
-                "valueId": 831,
-                "valueName": "Mac Os"
-            },
-            {
-                "attributeId": 467,
-                "attributeName": "Hard Disk Kapasitesi",
-                "valueId": 10620452,
-                "valueName": "Belirtilmemiş"
-            },
-            {
-                "attributeId": 318,
-                "attributeName": "İşlemci Çekirdek Sayısı",
-                "valueId": 3437,
-                "valueName": "8"
-            },
-            {
-                "attributeId": 42,
-                "attributeName": "Kullanım Amacı",
-                "valueId": 10620453,
-                "valueName": "Belirtilmemiş"
-            },
-            {
-                "attributeId": 132,
-                "attributeName": "Ekran Kartı Tipi",
-                "valueId": 10619781,
-                "valueName": "Belirtilmemiş"
-            },
-            {
-                "attributeId": 1192,
-                "attributeName": "Menşei",
-                "valueId": 10633877,
-                "valueName": "UM"
-            },
-            {
-                "attributeId": 311,
-                "attributeName": "Ram (Sistem Belleği) Tipi",
-                "valueId": 1220591,
-                "valueName": "SDRAM"
-            },
-            {
-                "attributeId": 301,
-                "attributeName": "Ekran Kartı",
-                "valueId": 1220633,
-                "valueName": "M3"
-            },
-            {
-                "attributeId": 320,
-                "attributeName": "İşlemci Nesli",
-                "valueId": 1180289,
-                "valueName": "12. Nesil"
-            },
-            {
-                "attributeId": 698,
-                "attributeName": "Ekran Yenileme Hızı",
-                "valueId": 944772,
-                "valueName": "165 Hz"
-            }
+            ...
         ],
-        "status": "archived",
-        "createdAt": "2026-01-15T12:55:09.402Z",
+        "status": "pending",
+        "createdAt": "2026-01-15T15:54:16.206Z",
         "categoryId": 1583,
         "categoryName": "Dizüstü Bilgisayar",
         "categoryCommission": 0,
         "categoryVatRate": 0,
-        "price": 60.499,
-        "quantity": 100,
+        "price": 500,
+        "quantity": 150,
         "brandName": "Apple",
-        "description": "MBA 15 SKY/10C GPU/16GB/256GB-TUR",
-        "title": "MacBook Air: Apple M4 chip with 10-core CPU and 10-core GPU 960GB SSD-64GB RAM",
+        "description": "test description",
+        "title": "test title",
         "images": [
-            "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/481706918/481706918-1183806-4016/1768481707550-4hp7m14r21-0.webp",
-            "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/481706918/481706918-1183806-4016/1768481707539-i2sash4ccg-1.webp",
-            "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/481706918/481706918-1183806-4016/1768481707554-qaj8xsdml2-2.webp"
+            "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/492453604/492453604-1183806-4016/1768827936872-834i781tmdu-0.webp",
+            "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/492453604/492453604-1183806-4016/1768827936851-v84rfrbm2ws-1.webp",
+            "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/492453604/492453604-1183806-4016/1768827936869-u0doe0bnfpf-2.webp"
         ]
     }
 }`,
@@ -1602,11 +828,11 @@ const Endpoints = () => {
     },
     {
       method: 'PUT',
-      path: '/store/ordersV2/splitOrder/:orderId',
+      path: '/store/ordersV2/splitOrder/:packageNumber',
       description: 'Siparişi böl',
       status: 'stable',
       parameters: [
-        { name: 'orderId', type: 'string', required: true, description: 'Sipariş ID\'si' },
+        { name: 'packageNumber', type: 'string', required: true, description: 'Paket numarası' },
         { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
         { name: 'items', type: 'array', required: true, description: 'Bölünecek ürünler' }
       ],
@@ -1691,33 +917,191 @@ const Endpoints = () => {
         { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
       ],
       response: `{
-  "success": true,
-  "data": {
-    "id": "09b3ff84-5993-4946-b1ec-2a4a9d8820f5",
-    "type": "update_listing",
-    "status": "completed",
+    "success": true,
     "data": {
-      "listingsCount": 1,
-      "listings": [
-        {
-          "barcode": "8682458451243",
-          "quantity": 55,
-          "price": 220
-        }
-      ]
-    },
-    "result": {
-      "message": "Batch listing update completed",
-      "processedAt": "2026-01-12T09:29:24.224Z",
-      "results": [
-        {
-          "success": true,
-          "barcode": "8682458451243",
-          "message": "Listing updated successfully"
-        }
-      ]
+        "id": "034daf6d-d545-495a-8ace-359fa90678aa",
+        "type": "create_product",
+        "status": "completed",
+        "data": {
+            "productsCount": 1,
+            "bodies": [
+                {
+                    "modelCode": "test-test123-12378",
+                    "description": "Yüksek kalite pamuklu, günlük kullanım için ideal oversize tişört",
+                    "categoryId": 5592,
+                    "brandId": "0000000000000000000f4240",
+                    "brandName": "Dell",
+                    "commonAttributes": [
+                        {
+                            "attributeId": 348,
+                            "attributeName": "Web Color",
+                            "valueId": 686230,
+                            "valueName": "Çok Renkli"
+                        }
+                    ],
+                    "contents": [
+                        {
+                            "title": "Oversize Basic Pamuklu T-Shirt",
+                            "slicerAttribute": [
+                                {
+                                    "attributeId": 47,
+                                    "attributeName": "Renk",
+                                    "valueId": 10620526,
+                                    "valueName": "Bej"
+                                }
+                            ],
+                            "images": [
+                                {
+                                    "url": "data:image/webp;base64,UklGRnD4AABXRUJQVlA4IGT4AAAwBQWdASqwBAgHPlEmkEajoaOmoNWIuNAKCWk6Hj4X2h/t4/AaRwGy+Rx+nPig/TmbR+p8b3YftOLvpffVyAay/s/PJT6eo/+fYd/yfUPzBP/W9A78q2TP73/",
+                                    "alt": "Siyah Tişört Arka Görünüm",
+                                    "isPrimary": false,
+                                    "order": 0
+                                }
+                            ],
+                            "variants": [
+                                {
+                                    "barcode": "8682458451269",
+                                    "sku": "test-sku-650",
+                                    "varianterAttribute": {
+                                        "attributeId": 338,
+                                        "attributeName": "Beden",
+                                        "valueId": 1220061,
+                                        "valueName": "53-54 cm"
+                                    },
+                                    "price": 1760,
+                                    "quantity": 5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "result": {
+            "message": "Batch processing completed",
+            "processedAt": "2026-01-20T14:17:47.304Z",
+            "results": [
+                {
+                    "success": true,
+                    "barcodes": {
+                        "successful": [
+                            "8682458451269"
+                        ],
+                        "failed": []
+                    },
+                    "product": {
+                        "success": true,
+                        "product": {
+                            "productCode": "918617454",
+                            "description": "Yüksek kalite pamuklu, günlük kullanım için ideal oversize tişört",
+                            "brandName": "Dell",
+                            "modelCode": "test-test123-12378",
+                            "status": "active",
+                            "currency": "TRY",
+                            "has3DModel": false,
+                            "commonAttributes": [
+                                {
+                                    "attributeId": 348,
+                                    "attributeName": "Web Color",
+                                    "valueId": 686230,
+                                    "valueName": "Çok Renkli"
+                                }
+                            ],
+                            "contents": [
+                                {
+                                    "id": "696f8e69d27534b356283b2c",
+                                    "title": "Oversize Basic Pamuklu T-Shirt",
+                                    "slicerAttribute": [
+                                        {
+                                            "attributeId": 47,
+                                            "attributeName": "Renk",
+                                            "valueId": 10620526,
+                                            "valueName": "Bej",
+                                            "_id": "696f8e69d27534b356283b2f",
+                                            "id": "696f8e69d27534b356283b2f"
+                                        }
+                                    ],
+                                    "contentCode": "918617454-10620526",
+                                    "images": [
+                                        {
+                                            "url": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/918617454/918617454-10620526/1768918626717-gmuzdhqlby8-0.webp",
+                                            "alt": "Siyah Tişört Ön Görünüm",
+                                            "order": 0,
+                                            "isPrimary": false
+                                        },
+                                        {
+                                            "url": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/918617454/918617454-10620526/1768918626669-41xdzswwpkp-1.webp",
+                                            "alt": "Siyah Tişört Arka Görünüm",
+                                            "order": 0,
+                                            "isPrimary": false
+                                        }
+                                    ],
+                                    "status": null,
+                                    "variants": [
+                                        {
+                                            "id": "696f8e80d27534b3562860f2",
+                                            "varianterAttribute": {
+                                                "attributeId": 338,
+                                                "attributeName": "Beden",
+                                                "valueId": 1220061,
+                                                "valueName": "53-54 cm"
+                                            },
+                                            "variantCode": "918617454-10620526-1220061",
+                                            "barcode": "8682458451269",
+                                            "buybox": {
+                                                "sellerId": {
+                                                    "id": "696f8e81d27534b3562860f4",
+                                                    "firstname": "Eren",
+                                                    "surname": "Tın",
+                                                    "email": "eren.tin@cozmopol.com"
+                                                },
+                                                "price": 1760,
+                                                "quantity": 5,
+                                                "reservedQuantity": 0,
+                                                "availableQuantity": 5
+                                            },
+                                            "otherSellers": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "modelCode": "test-test123-12378",
+                        "results": {
+                            "contents": [
+                                {
+                                    "contentCode": "918617454-10620526",
+                                    "contentTitle": "Oversize Basic Pamuklu T-Shirt",
+                                    "variants": [
+                                        {
+                                            "success": true,
+                                            "variantCode": "918617454-10620526-1220061",
+                                            "barcode": "8682458451269"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "errors": null,
+                            "summary": {
+                                "totalContents": 1,
+                                "successfulContents": 1,
+                                "failedItems": 0,
+                                "isNewProduct": true
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "errors": [],
+        "summary": {
+            "total": 1,
+            "successful": 1,
+            "failed": 0
+        },
+        "createdAt": "2026-01-20T14:16:41.910Z",
+        "updatedAt": "2026-01-20T14:17:47.306Z"
     }
-  }
 }`,
       example: `curl -X GET \\
   ${BASE_URL}/store/batch-request/09b3ff84-5993-4946-b1ec-2a4a9d8820f5 \\
