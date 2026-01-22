@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
               <img
                 src="https://www.cozmopol.com.tr/_next/image?url=%2Fimages%2Fcozmopol-logo-colorfull-without-text.webp&w=128&q=75&dpl=dpl_8v1vihkVzrHqDKtL63GbiBQNm2JT"
                 alt="Cozmopol Logo"
-                className="w-8 h-8 rounded-lg"
+                className="h-8 w-auto object-contain rounded-lg"
               />
               <div>
                 <h1 className="text-lg font-semibold text-slate-900">Cozmopol API</h1>
@@ -282,7 +282,7 @@ const Layout = ({ children }) => {
                 <img
                   src="https://www.cozmopol.com.tr/_next/image?url=%2Fimages%2Fcozmopol-logo-colorfull-without-text.webp&w=128&q=75&dpl=dpl_8v1vihkVzrHqDKtL63GbiBQNm2JT"
                   alt="Cozmopol Logo"
-                  className="w-8 h-8 rounded-lg"
+                  className="h-8 w-auto object-contain rounded-lg"
                 />
                 <h3 className="text-lg font-semibold">Cozmopol API</h3>
               </div>

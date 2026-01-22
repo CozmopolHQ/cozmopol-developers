@@ -1287,11 +1287,11 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
       {/* Integration Authorization Section */}
       <section id="integration-auth" className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
-          🔐 Integration API - Kimlik Doğrulama
+          🔐 Kimlik Doğrulama
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Integration API için kimlik bilgileri yönetimi.
+            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Kimlik bilgileri yönetimi.
           </p>
         </div>
         <div className="space-y-4">
