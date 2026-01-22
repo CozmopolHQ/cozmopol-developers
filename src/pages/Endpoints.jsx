@@ -949,188 +949,50 @@ const Endpoints = () => {
       response: `{
     "success": true,
     "data": {
-        "id": "034daf6d-d545-495a-8ace-359fa90678aa",
-        "type": "create_product",
+        "id": "77f76bff-2d0c-4bc9-ad95-21e844f62aab",
+        "type": "update_listing",
         "status": "completed",
         "data": {
-            "productsCount": 1,
-            "bodies": [
+            "listingsCount": 2,
+            "listings": [
                 {
-                    "modelCode": "test-test123-12378",
-                    "description": "Yüksek kalite pamuklu, günlük kullanım için ideal oversize tişört",
-                    "categoryId": 5592,
-                    "brandId": "0000000000000000000f4240",
-                    "brandName": "Dell",
-                    "commonAttributes": [
-                        {
-                            "attributeId": 348,
-                            "attributeName": "Web Color",
-                            "valueId": 686230,
-                            "valueName": "Çok Renkli"
-                        }
-                    ],
-                    "contents": [
-                        {
-                            "title": "Oversize Basic Pamuklu T-Shirt",
-                            "slicerAttribute": [
-                                {
-                                    "attributeId": 47,
-                                    "attributeName": "Renk",
-                                    "valueId": 10620526,
-                                    "valueName": "Bej"
-                                }
-                            ],
-                            "images": [
-                                {
-                                    "url": "data:image/webp;base64,UklGRnD4AABXRUJQVlA4IGT4AAAwBQWdASqwBAgHPlEmkEajoaOmoNWIuNAKCWk6Hj4X2h/t4/AaRwGy+Rx+nPig/TmbR+p8b3YftOLvpffVyAay/s/PJT6eo/+fYd/yfUPzBP/W9A78q2TP73/",
-                                    "alt": "Siyah Tişört Arka Görünüm",
-                                    "isPrimary": false,
-                                    "order": 0
-                                }
-                            ],
-                            "variants": [
-                                {
-                                    "barcode": "8682458451269",
-                                    "sku": "test-sku-650",
-                                    "varianterAttribute": {
-                                        "attributeId": 338,
-                                        "attributeName": "Beden",
-                                        "valueId": 1220061,
-                                        "valueName": "53-54 cm"
-                                    },
-                                    "price": 1760,
-                                    "quantity": 5
-                                }
-                            ]
-                        }
-                    ]
+                    "barcode": "8682458451276",
+                    "quantity": 1290,
+                    "price": 650
+                },
+                {
+                    "barcode": "8682458451277",
+                    "quantity": 500,
+                    "price": 780
                 }
             ]
         },
         "result": {
-            "message": "Batch processing completed",
-            "processedAt": "2026-01-20T14:17:47.304Z",
+            "message": "Batch listing update completed",
+            "processedAt": "2026-01-20T11:58:13.039Z",
             "results": [
                 {
                     "success": true,
-                    "barcodes": {
-                        "successful": [
-                            "8682458451269"
-                        ],
-                        "failed": []
-                    },
-                    "product": {
-                        "success": true,
-                        "product": {
-                            "productCode": "918617454",
-                            "description": "Yüksek kalite pamuklu, günlük kullanım için ideal oversize tişört",
-                            "brandName": "Dell",
-                            "modelCode": "test-test123-12378",
-                            "status": "active",
-                            "currency": "TRY",
-                            "has3DModel": false,
-                            "commonAttributes": [
-                                {
-                                    "attributeId": 348,
-                                    "attributeName": "Web Color",
-                                    "valueId": 686230,
-                                    "valueName": "Çok Renkli"
-                                }
-                            ],
-                            "contents": [
-                                {
-                                    "id": "696f8e69d27534b356283b2c",
-                                    "title": "Oversize Basic Pamuklu T-Shirt",
-                                    "slicerAttribute": [
-                                        {
-                                            "attributeId": 47,
-                                            "attributeName": "Renk",
-                                            "valueId": 10620526,
-                                            "valueName": "Bej",
-                                            "_id": "696f8e69d27534b356283b2f",
-                                            "id": "696f8e69d27534b356283b2f"
-                                        }
-                                    ],
-                                    "contentCode": "918617454-10620526",
-                                    "images": [
-                                        {
-                                            "url": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/918617454/918617454-10620526/1768918626717-gmuzdhqlby8-0.webp",
-                                            "alt": "Siyah Tişört Ön Görünüm",
-                                            "order": 0,
-                                            "isPrimary": false
-                                        },
-                                        {
-                                            "url": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/918617454/918617454-10620526/1768918626669-41xdzswwpkp-1.webp",
-                                            "alt": "Siyah Tişört Arka Görünüm",
-                                            "order": 0,
-                                            "isPrimary": false
-                                        }
-                                    ],
-                                    "status": null,
-                                    "variants": [
-                                        {
-                                            "id": "696f8e80d27534b3562860f2",
-                                            "varianterAttribute": {
-                                                "attributeId": 338,
-                                                "attributeName": "Beden",
-                                                "valueId": 1220061,
-                                                "valueName": "53-54 cm"
-                                            },
-                                            "variantCode": "918617454-10620526-1220061",
-                                            "barcode": "8682458451269",
-                                            "buybox": {
-                                                "sellerId": {
-                                                    "id": "696f8e81d27534b3562860f4",
-                                                    "firstname": "Eren",
-                                                    "surname": "Tın",
-                                                    "email": "eren.tin@cozmopol.com"
-                                                },
-                                                "price": 1760,
-                                                "quantity": 5,
-                                                "reservedQuantity": 0,
-                                                "availableQuantity": 5
-                                            },
-                                            "otherSellers": []
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        "modelCode": "test-test123-12378",
-                        "results": {
-                            "contents": [
-                                {
-                                    "contentCode": "918617454-10620526",
-                                    "contentTitle": "Oversize Basic Pamuklu T-Shirt",
-                                    "variants": [
-                                        {
-                                            "success": true,
-                                            "variantCode": "918617454-10620526-1220061",
-                                            "barcode": "8682458451269"
-                                        }
-                                    ]
-                                }
-                            ],
-                            "errors": null,
-                            "summary": {
-                                "totalContents": 1,
-                                "successfulContents": 1,
-                                "failedItems": 0,
-                                "isNewProduct": true
-                            }
-                        }
-                    }
+                    "barcode": null,
+                    "quantity": 1290,
+                    "price": 650
+                },
+                {
+                    "success": true,
+                    "barcode": null,
+                    "quantity": 500,
+                    "price": 780
                 }
             ]
         },
-        "errors": [],
+        "errors": null,
         "summary": {
-            "total": 1,
-            "successful": 1,
+            "total": 2,
+            "successful": 2,
             "failed": 0
         },
-        "createdAt": "2026-01-20T14:16:41.910Z",
-        "updatedAt": "2026-01-20T14:17:47.306Z"
+        "createdAt": "2026-01-20T11:58:12.596Z",
+        "updatedAt": "2026-01-20T11:58:13.040Z"
     }
 }`,
       example: `curl -X GET \\
