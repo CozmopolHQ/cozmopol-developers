@@ -32,9 +32,9 @@ const DocLayout = ({ children }) => {
           href: '/endpoints',
           icon: '📚',
           subItems: [
+            { name: 'Kimlik Doğrulama', href: '/endpoints#integration-auth', icon: '🔐' },
             { name: 'Kategori ve Marka Listeleme', href: '/endpoints#category-brand', icon: '🏷️' },
             { name: 'Ürün Yönetimi', href: '/endpoints#product-management', icon: '📦' },
-            { name: 'Sipariş Yönetimi', href: '/endpoints#integration-orders', icon: '📋' },
             { name: 'Sipariş Yönetimi', href: '/endpoints#integration-orders', icon: '📋' },
             { name: 'Fatura Yükleme', href: '/endpoints#invoices', icon: '📄' },
             { name: 'Toplu İşlem Takibi', href: '/endpoints#integration-batch', icon: '⚙️' },
