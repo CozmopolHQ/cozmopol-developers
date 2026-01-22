@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react'
 
@@ -62,6 +62,21 @@ const DocLayout = ({ children }) => {
       [sectionId]: !prev[sectionId]
     }))
   }
+
+  useEffect(() => {
+    if (location.hash) {
+      const elementId = location.hash.replace('#', '');
+      const timer = setTimeout(() => {
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
 
   const isCurrentPage = (href) => location.pathname === href
 
@@ -140,15 +155,17 @@ const DocLayout = ({ children }) => {
                                   <span>{subItem.name}</span>
                                 </div>
                               ) : (
-                                <a
+                                <Link
                                   key={subItem.href}
-                                  href={subItem.href}
+                                  to={subItem.href}
                                   onClick={(e) => {
-                                    e.preventDefault();
-                                    const elementId = subItem.href.split('#')[1];
-                                    const element = document.getElementById(elementId);
-                                    if (element) {
-                                      element.scrollIntoView({ behavior: 'smooth' });
+                                    const [targetPath, targetHash] = subItem.href.split('#');
+                                    if (location.pathname === targetPath) {
+                                      e.preventDefault();
+                                      const element = document.getElementById(targetHash);
+                                      if (element) {
+                                        element.scrollIntoView({ behavior: 'smooth' });
+                                      }
                                     }
                                     setIsSidebarOpen(false);
                                   }}
@@ -156,7 +173,7 @@ const DocLayout = ({ children }) => {
                                 >
                                   <span className="text-sm">{subItem.icon}</span>
                                   <span>{subItem.name}</span>
-                                </a>
+                                </Link>
                               )
                             ))}
                           </div>
