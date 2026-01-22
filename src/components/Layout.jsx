@@ -44,9 +44,11 @@ const Layout = ({ children }) => {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-3" onClick={closeAllDropdowns}>
-              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">C</span>
-              </div>
+              <img
+                src="https://www.cozmopol.com.tr/_next/image?url=%2Fimages%2Fcozmopol-logo-colorfull-without-text.webp&w=128&q=75&dpl=dpl_8v1vihkVzrHqDKtL63GbiBQNm2JT"
+                alt="Cozmopol Logo"
+                className="w-8 h-8 rounded-lg"
+              />
               <div>
                 <h1 className="text-lg font-semibold text-slate-900">Cozmopol API</h1>
                 <span className="text-xs text-slate-500">v2.1</span>
@@ -277,9 +279,11 @@ const Layout = ({ children }) => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                  <span className="text-slate-900 font-bold text-sm">C</span>
-                </div>
+                <img
+                  src="https://www.cozmopol.com.tr/_next/image?url=%2Fimages%2Fcozmopol-logo-colorfull-without-text.webp&w=128&q=75&dpl=dpl_8v1vihkVzrHqDKtL63GbiBQNm2JT"
+                  alt="Cozmopol Logo"
+                  className="w-8 h-8 rounded-lg"
+                />
                 <h3 className="text-lg font-semibold">Cozmopol API</h3>
               </div>
               <p className="text-slate-400 mb-4 max-w-md">
