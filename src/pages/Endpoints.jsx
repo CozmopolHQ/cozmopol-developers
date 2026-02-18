@@ -241,7 +241,10 @@ const Endpoints = () => {
       description: 'Ürün kategorilerini listele',
       status: 'stable',
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
+        { name: 'parentId', type: 'integer', required: false, description: 'Üst kategori ID\'si ile filtrele', in: 'query' },
+        { name: 'search', type: 'string', required: false, description: 'Kategori adına göre arama', in: 'query' },
+        { name: 'type', type: 'string', required: false, description: 'Kategori tipi (root: üst, sub: alt)', in: 'query' }
       ],
       response: `{
   "success": true,
@@ -262,7 +265,7 @@ const Endpoints = () => {
   ]
 }`,
       example: `curl -X GET \\
-  ${BASE_URL}/common/product-categories \\
+  ${BASE_URL}/common/product-categories?parentId=368&search=örgü&type=sub \\
   -H 'Authorization: Bearer YOUR_TOKEN'`
     },
     {
