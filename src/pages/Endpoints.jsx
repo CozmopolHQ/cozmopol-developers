@@ -1,21 +1,45 @@
-import React from 'react'
-import EndpointCard from '../components/EndpointCard'
-import { BASE_URL } from '../config'
+import React from "react";
+import EndpointCard from "../components/EndpointCard";
+import { BASE_URL } from "../config";
 
 const Endpoints = () => {
-
   const returnEndpoints = [
     {
-      method: 'GET',
-      path: '/user/returns',
-      description: 'İade taleplerini listele',
-      status: 'stable',
+      method: "GET",
+      path: "/user/returns",
+      description: "İade taleplerini listele",
+      status: "stable",
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'status', type: 'string', required: false, description: 'İade durumu (pending, approved, rejected, completed)' },
-        { name: 'orderId', type: 'string', required: false, description: 'Sipariş ID\'sine göre filtrele' },
-        { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı (varsayılan: 10)' },
-        { name: 'skip', type: 'integer', required: false, description: 'Atlanacak öğe sayısı (varsayılan: 0)' }
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "status",
+          type: "string",
+          required: false,
+          description: "İade durumu (pending, approved, rejected, completed)",
+        },
+        {
+          name: "orderId",
+          type: "string",
+          required: false,
+          description: "Sipariş ID'sine göre filtrele",
+        },
+        {
+          name: "limit",
+          type: "integer",
+          required: false,
+          description: "Sayfa başına öğe sayısı (varsayılan: 10)",
+        },
+        {
+          name: "skip",
+          type: "integer",
+          required: false,
+          description: "Atlanacak öğe sayısı (varsayılan: 0)",
+        },
       ],
       response: `{
   "data": [
@@ -61,16 +85,26 @@ const Endpoints = () => {
 }`,
       example: `curl -X GET \\
   '${BASE_URL}/user/returns?status=pending&limit=10&skip=0' \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
+  -H 'Authorization: Bearer YOUR_API_KEY'`,
     },
     {
-      method: 'GET',
-      path: '/user/returns/:id',
-      description: 'İade talebi detayını getir',
-      status: 'stable',
+      method: "GET",
+      path: "/user/returns/:id",
+      description: "İade talebi detayını getir",
+      status: "stable",
       parameters: [
-        { name: 'id', type: 'string', required: true, description: 'İade talebi ID\'si (MongoDB ObjectId)' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+        {
+          name: "id",
+          type: "string",
+          required: true,
+          description: "İade talebi ID'si (MongoDB ObjectId)",
+        },
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
       ],
       response: `{
   "data": {
@@ -123,18 +157,38 @@ const Endpoints = () => {
 }`,
       example: `curl -X GET \\
   ${BASE_URL}/user/returns/67e1234567890abcdef12345 \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
+  -H 'Authorization: Bearer YOUR_API_KEY'`,
     },
     {
-      method: 'PATCH',
-      path: '/user/returns/:id/status',
-      description: 'İade talebi durumunu güncelle',
-      status: 'stable',
+      method: "PATCH",
+      path: "/user/returns/:id/status",
+      description: "İade talebi durumunu güncelle",
+      status: "stable",
       parameters: [
-        { name: 'id', type: 'string', required: true, description: 'İade talebi ID\'si (MongoDB ObjectId)' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'status', type: 'string', required: true, description: 'Yeni durum (approved)' },
-        { name: 'note', type: 'string', required: false, description: 'İade notu' }
+        {
+          name: "id",
+          type: "string",
+          required: true,
+          description: "İade talebi ID'si (MongoDB ObjectId)",
+        },
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "status",
+          type: "string",
+          required: true,
+          description: "Yeni durum (approved)",
+        },
+        {
+          name: "note",
+          type: "string",
+          required: false,
+          description: "İade notu",
+        },
       ],
       response: `{
   "success": true,
@@ -153,20 +207,163 @@ const Endpoints = () => {
   -d '{
     "status": "approved",
     "note": "Return accepted"
-  }'`
-    }
-  ]
+  }'`,
+    },
+  ];
+
+  const returnV2Endpoints = [
+    {
+      method: "GET",
+      path: "/store/returnsV2",
+      description: "İade taleplerini listele (V2)",
+      status: "stable",
+      parameters: [
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "page",
+          type: "integer",
+          required: false,
+          description: "Sayfa numarası",
+        },
+        {
+          name: "limit",
+          type: "integer",
+          required: false,
+          description: "Sayfa başına öğe sayısı",
+        },
+        {
+          name: "status",
+          type: "string",
+          required: false,
+          description: "İade durumu filtresi",
+        },
+        {
+          name: "orderNumber",
+          type: "string",
+          required: false,
+          description: "Sipariş numarasına göre filtrele",
+        },
+      ],
+      response: `{
+  "success": true,
+  "data": {
+    "data": [
+      {
+        "returnId": "68a1f0c4e3b9a21d4c7f8e30",
+        "orderNumber": "7224100418",
+        "packageNumber": "4567342578",
+        "status": "pending",
+        "reason": "Ürün hasarlı geldi",
+        "customer": {
+          "firstname": "Sinan",
+          "surname": "Karatas",
+          "phoneNumber": "+90 532 456 7890"
+        },
+        "items": [
+          {
+            "barcode": "8682458451225",
+            "name": "MacBook Air: Apple M4 chip with 10-core CPU and 10-core GPU 960GB SSD-64GB RAM",
+            "quantity": 1,
+            "price": 65,
+            "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/581644980/581644980-1183806-4016/1768581645318-etopch7tr4i-0.webp"
+          }
+        ],
+        "cargoTrackingNumber": "1234567890",
+        "createdAt": "2026-01-16T10:24:11.000Z",
+        "updatedAt": "2026-01-16T10:24:11.000Z"
+      }
+    ],
+    "page": 1,
+    "limit": 20,
+    "total": 1,
+    "totalPages": 1
+  }
+}`,
+      example: `curl -X GET \\
+  '${BASE_URL}/store/returnsV2?status=pending&page=1&limit=50' \\
+  -H 'Authorization: Bearer YOUR_TOKEN'`,
+    },
+    {
+      method: "POST",
+      path: "/store/returnsV2/:returnId/update",
+      description: "İade talebini güncelle (V2)",
+      status: "stable",
+      parameters: [
+        {
+          name: "returnId",
+          type: "string",
+          required: true,
+          description: "İade talebi ID'si",
+        },
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "status",
+          type: "string",
+          required: true,
+          description: "Yeni iade durumu (approved, rejected)",
+        },
+        {
+          name: "note",
+          type: "string",
+          required: false,
+          description: "İade notu",
+        },
+      ],
+      response: `{
+  "success": true,
+  "data": {
+    "returnId": "68a1f0c4e3b9a21d4c7f8e30",
+    "status": "approved",
+    "note": "İade onaylandı",
+    "updatedAt": "2026-01-16T11:05:00.000Z"
+  }
+}`,
+      example: `curl -X POST \\
+  ${BASE_URL}/store/returnsV2/68a1f0c4e3b9a21d4c7f8e30/update \\
+  -H 'Authorization: Bearer YOUR_TOKEN' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "status": "approved",
+    "note": "İade onaylandı"
+  }'`,
+    },
+  ];
 
   const integrationAuthEndpoints = [
     {
-      method: 'POST',
-      path: '/integration/auth/login',
-      description: 'Get Access Key',
-      status: 'stable',
+      method: "POST",
+      path: "/integration/auth/login",
+      description: "Get Access Key",
+      status: "stable",
       parameters: [
-        { name: 'sellerId', type: 'string', required: true, description: 'Satıcı ID' },
-        { name: 'apiKey', type: 'string', required: true, description: 'API Anahtarı' },
-        { name: 'apiSecretKey', type: 'string', required: true, description: 'API Gizli Anahtarı' }
+        {
+          name: "sellerId",
+          type: "string",
+          required: true,
+          description: "Satıcı ID",
+        },
+        {
+          name: "apiKey",
+          type: "string",
+          required: true,
+          description: "API Anahtarı",
+        },
+        {
+          name: "apiSecretKey",
+          type: "string",
+          required: true,
+          description: "API Gizli Anahtarı",
+        },
       ],
       response: `{
     "success": true,
@@ -181,18 +378,23 @@ const Endpoints = () => {
     "sellerId": "6968c77222ceea24cb9cbfec",
     "apiKey": "7b8c71c09ee28e389091e288633c2085",
     "apiSecretKey": "814327462ce242265a16e064ede7458477f0acecf41f60805af5855d427d440b"
-  }'`
-    }
-  ]
+  }'`,
+    },
+  ];
 
   const categoryBrandEndpoints = [
     {
-      method: 'GET',
-      path: '/store/brands',
-      description: 'Tüm markaları listele (Integration API)',
-      status: 'stable',
+      method: "GET",
+      path: "/store/brands",
+      description: "Tüm markaları listele (Integration API)",
+      status: "stable",
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
       ],
       response: `[
   {
@@ -233,18 +435,41 @@ const Endpoints = () => {
 ]`,
       example: `curl -X GET \\
   ${BASE_URL}/store/brands \\
-  -H 'Authorization: Bearer YOUR_TOKEN'`
+  -H 'Authorization: Bearer YOUR_TOKEN'`,
     },
     {
-      method: 'GET',
-      path: '/common/product-categories',
-      description: 'Ürün kategorilerini listele',
-      status: 'stable',
+      method: "GET",
+      path: "/common/product-categories",
+      description: "Ürün kategorilerini listele",
+      status: "stable",
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'parentId', type: 'integer', required: false, description: 'Üst kategori ID\'si ile filtrele', in: 'query' },
-        { name: 'search', type: 'string', required: false, description: 'Kategori adına göre arama', in: 'query' },
-        { name: 'type', type: 'string', required: false, description: 'Kategori tipi (root: üst, sub: alt)', in: 'query' }
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "parentId",
+          type: "integer",
+          required: false,
+          description: "Üst kategori ID'si ile filtrele",
+          in: "query",
+        },
+        {
+          name: "search",
+          type: "string",
+          required: false,
+          description: "Kategori adına göre arama",
+          in: "query",
+        },
+        {
+          name: "type",
+          type: "string",
+          required: false,
+          description: "Kategori tipi (root: üst, sub: alt)",
+          in: "query",
+        },
       ],
       response: `{
   "success": true,
@@ -266,16 +491,26 @@ const Endpoints = () => {
 }`,
       example: `curl -X GET \\
   ${BASE_URL}/common/product-categories?parentId=368&search=örgü&type=sub \\
-  -H 'Authorization: Bearer YOUR_TOKEN'`
+  -H 'Authorization: Bearer YOUR_TOKEN'`,
     },
     {
-      method: 'GET',
-      path: '/common/product-categories/:categoryId/attributes',
-      description: 'Kategori özelliklerini getir',
-      status: 'stable',
+      method: "GET",
+      path: "/common/product-categories/:categoryId/attributes",
+      description: "Kategori özelliklerini getir",
+      status: "stable",
       parameters: [
-        { name: 'categoryId', type: 'integer', required: true, description: 'Kategori ID\'si' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+        {
+          name: "categoryId",
+          type: "integer",
+          required: true,
+          description: "Kategori ID'si",
+        },
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
       ],
       response: `{
   "success": true,
@@ -312,19 +547,41 @@ const Endpoints = () => {
 }`,
       example: `curl -X GET \\
   ${BASE_URL}/common/product-categories/1583/attributes \\
-  -H 'Authorization: Bearer YOUR_TOKEN'`
-    }
-  ]
+  -H 'Authorization: Bearer YOUR_TOKEN'`,
+    },
+  ];
 
   const productManagementEndpoints = [
     {
-      method: 'POST',
-      path: '/store/productsV2/product/bulk',
-      description: 'Toplu ürün oluştur',
-      status: 'stable',
+      method: "POST",
+      path: "/store/productsV2/product/bulk",
+      description: "Toplu ürün oluştur",
+      status: "stable",
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'products', type: 'array', required: true, description: 'Ürün listesi' }
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "products",
+          type: "array",
+          required: true,
+          description: "Ürün listesi",
+        },
+        {
+          name: "desi",
+          type: "number",
+          required: false,
+          description: "Ürün desi değeri (kargo hacim ağırlığı)",
+        },
+        {
+          name: "estimatedDays",
+          type: "integer",
+          required: false,
+          description: "Tahmini termin/hazırlık süresi (gün)",
+        },
       ],
       response: `{
     "success": true,
@@ -341,6 +598,8 @@ const Endpoints = () => {
         "brandName": "Apple",
         "description": "MBA 15 SKY/10C GPU/16GB/256GB-TUR",
         "modelCode": "test-test123-12366",
+        "desi": 5,
+        "estimatedDays": 3,
         "commonAttributes": [
             {
                 "attributeId": 131,
@@ -509,19 +768,57 @@ const Endpoints = () => {
         
     .....
     
-    ]`
+    ]`,
     },
     {
-      method: 'GET',
-      path: '/store/productsV2/product/v2',
-      description: 'Ürünleri listele (V2)',
-      status: 'stable',
+      method: "GET",
+      path: "/store/productsV2/product/v2",
+      description: "Ürünleri listele (V2)",
+      status: "stable",
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası' },
-        { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı' },
-        { name: 'status', type: 'string', required: false, description: 'Ürün durumu (active, inactive)' },
-        { name: 'barcode', type: 'string', required: false, description: 'Barkod numarasına göre filtrele' }
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "page",
+          type: "integer",
+          required: false,
+          description: "Sayfa numarası",
+        },
+        {
+          name: "limit",
+          type: "integer",
+          required: false,
+          description: "Sayfa başına öğe sayısı",
+        },
+        {
+          name: "status",
+          type: "string",
+          required: false,
+          description:
+            "Ürün durumu (active, inactive, pending, rejected, suspended, archived, out_of_stock)",
+        },
+        {
+          name: "barcode",
+          type: "string",
+          required: false,
+          description: "Barkod numarasına göre filtrele",
+        },
+        {
+          name: "sortBy",
+          type: "string",
+          required: false,
+          description: "Sıralama alanı (örn: createdAt, price)",
+        },
+        {
+          name: "sortOrder",
+          type: "string",
+          required: false,
+          description: "Sıralama yönü (asc, desc)",
+        },
       ],
       response: `{
     "success": true,
@@ -576,7 +873,26 @@ const Endpoints = () => {
                     "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/581644980/581644980-1183806-4016/1768581645318-etopch7tr4i-0.webp",
                     "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/581644980/581644980-1183806-4016/1768581645304-m5ehq6kykr-1.webp",
                     "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/581644980/581644980-1183806-4016/1768581645316-if7aj1kkx7-2.webp"
-                ]
+                ],
+                "productId": "68a1f0c4e3b9a21d4c7f8e10",
+                "listingId": "68a1f0c4e3b9a21d4c7f8e11",
+                "isBuyboxWinner": true,
+                "has3DModel": false,
+                "model3DUrl": null,
+                "generatedModelId": null,
+                "listPrice": 75,
+                "vatRate": 20,
+                "desi": 5,
+                "estimatedDays": 3,
+                "campaign": {
+                    "id": "68a1f0c4e3b9a21d4c7f8e12",
+                    "name": "Yaz İndirimi",
+                    "title": "Yaz İndirimi - %20",
+                    "type": "percentage",
+                    "discountValue": 20,
+                    "startDate": "2026-06-01T00:00:00.000Z",
+                    "endDate": "2026-06-30T23:59:59.000Z"
+                }
             }
         ],
         "pagination": {
@@ -589,19 +905,93 @@ const Endpoints = () => {
 }`,
       example: `curl -X GET \\
   '${BASE_URL}/store/productsV2/product/v2?page=1&limit=50&status=active&barcode=8682458451225' \\
-  -H 'Authorization: Bearer YOUR_TOKEN'`
+  -H 'Authorization: Bearer YOUR_TOKEN'`,
     },
     {
-      method: 'PUT',
-      path: '/store/productsV2/product/:barcode',
-      description: 'Ürün güncelle',
-      status: 'stable',
+      method: "PUT",
+      path: "/store/productsV2/product/:barcode",
+      description: "Ürün güncelle",
+      status: "stable",
       parameters: [
-        { name: 'barcode', type: 'string', required: true, description: 'Ürün barkodu' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'description', type: 'string', required: false, description: 'Ürün açıklaması' },
-        { name: 'price', type: 'number', required: false, description: 'Ürün fiyatı' },
-        { name: 'quantity', type: 'integer', required: false, description: 'Stok miktarı' }
+        {
+          name: "barcode",
+          type: "string",
+          required: true,
+          description: "Ürün barkodu",
+        },
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "sku",
+          type: "string",
+          required: false,
+          description: "Stok kodu (SKU)",
+        },
+        {
+          name: "title",
+          type: "string",
+          required: false,
+          description: "Ürün başlığı",
+        },
+        {
+          name: "status",
+          type: "string",
+          required: false,
+          description:
+            "Ürün durumu (active, inactive, pending, rejected, suspended, archived, out_of_stock)",
+        },
+        {
+          name: "description",
+          type: "string",
+          required: false,
+          description: "Ürün açıklaması",
+        },
+        {
+          name: "price",
+          type: "number",
+          required: false,
+          description: "Ürün fiyatı",
+        },
+        {
+          name: "quantity",
+          type: "integer",
+          required: false,
+          description: "Stok miktarı",
+        },
+        {
+          name: "images",
+          type: "array",
+          required: false,
+          description: "Ürün görselleri",
+        },
+        {
+          name: "commonAttributes",
+          type: "array",
+          required: false,
+          description: "Ortak ürün özellikleri",
+        },
+        {
+          name: "vatRate",
+          type: "number",
+          required: false,
+          description: "KDV oranı (%)",
+        },
+        {
+          name: "desi",
+          type: "number",
+          required: false,
+          description: "Ürün desi değeri (kargo hacim ağırlığı)",
+        },
+        {
+          name: "estimatedDays",
+          type: "integer",
+          required: false,
+          description: "Tahmini termin/hazırlık süresi (gün)",
+        },
       ],
       response: `{
     "success": true,
@@ -660,7 +1050,26 @@ const Endpoints = () => {
             "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/492453604/492453604-1183806-4016/1768827936872-834i781tmdu-0.webp",
             "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/492453604/492453604-1183806-4016/1768827936851-v84rfrbm2ws-1.webp",
             "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/492453604/492453604-1183806-4016/1768827936869-u0doe0bnfpf-2.webp"
-        ]
+        ],
+        "productId": "68a1f0c4e3b9a21d4c7f8e10",
+        "listingId": "68a1f0c4e3b9a21d4c7f8e11",
+        "isBuyboxWinner": true,
+        "has3DModel": false,
+        "model3DUrl": null,
+        "generatedModelId": null,
+        "listPrice": 750,
+        "vatRate": 20,
+        "desi": 5,
+        "estimatedDays": 3,
+        "campaign": {
+            "id": "68a1f0c4e3b9a21d4c7f8e12",
+            "name": "Yaz İndirimi",
+            "title": "Yaz İndirimi - %20",
+            "type": "percentage",
+            "discountValue": 20,
+            "startDate": "2026-06-01T00:00:00.000Z",
+            "endDate": "2026-06-30T23:59:59.000Z"
+        }
     }
 }`,
       example: `curl -X PUT \\
@@ -688,6 +1097,9 @@ const Endpoints = () => {
     "description": "test description",
     "price": 500,
     "quantity": 150,
+    "vatRate": 20,
+    "desi": 5,
+    "estimatedDays": 3,
     "commonAttributes": [
         {
             "attributeId": 131,
@@ -709,16 +1121,26 @@ const Endpoints = () => {
         },
        .....
     ]
-  }'`
+  }'`,
     },
     {
-      method: 'DELETE',
-      path: '/store/productsV2/product/:barcode',
-      description: 'Ürün sil',
-      status: 'stable',
+      method: "DELETE",
+      path: "/store/productsV2/product/:barcode",
+      description: "Ürün sil",
+      status: "stable",
       parameters: [
-        { name: 'barcode', type: 'string', required: true, description: 'Ürün barkodu' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+        {
+          name: "barcode",
+          type: "string",
+          required: true,
+          description: "Ürün barkodu",
+        },
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
       ],
       response: `{
     "success": true,
@@ -726,16 +1148,26 @@ const Endpoints = () => {
 }`,
       example: `curl -X DELETE \\
   ${BASE_URL}/store/productsV2/product/8682458451243 \\
-  -H 'Authorization: Bearer YOUR_TOKEN'`
+  -H 'Authorization: Bearer YOUR_TOKEN'`,
     },
     {
-      method: 'PUT',
-      path: '/store/productsV2/listing',
-      description: 'Ürün listesini toplu güncelle (fiyat ve stok)',
-      status: 'stable',
+      method: "PUT",
+      path: "/store/productsV2/listing",
+      description: "Ürün listesini toplu güncelle (fiyat ve stok)",
+      status: "stable",
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'listings', type: 'array', required: true, description: 'Güncellenecek ürün listesi' }
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "listings",
+          type: "array",
+          required: true,
+          description: "Güncellenecek ürün listesi",
+        },
       ],
       response: `{
   "success": true,
@@ -753,25 +1185,95 @@ const Endpoints = () => {
         "quantity": 50
       }
     ]
-  }'`
-    }
-  ]
+  }'`,
+    },
+  ];
 
   const integrationOrderEndpoints = [
     {
-      method: 'GET',
-      path: '/store/ordersV2',
-      description: 'Siparişleri listele (Integration V2)',
-      status: 'stable',
+      method: "GET",
+      path: "/store/ordersV2",
+      description: "Siparişleri listele (Integration V2)",
+      status: "stable",
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası' },
-        { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı' },
-        { name: 'status', type: 'string', required: false, description: 'Sipariş durumu filtresi' },
-        { name: 'startDate', type: 'string', required: false, description: 'Başlangıç tarihi (ISO format)' },
-        { name: 'endDate', type: 'string', required: false, description: 'Bitiş tarihi (ISO format)' },
-        { name: 'orderByField', type: 'string', required: false, description: 'Sıralama alanı (örn: orderDate)' },
-        { name: 'orderByDirection', type: 'string', required: false, description: 'Sıralama yönü (asc, desc)' }
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "page",
+          type: "integer",
+          required: false,
+          description: "Sayfa numarası",
+        },
+        {
+          name: "limit",
+          type: "integer",
+          required: false,
+          description: "Sayfa başına öğe sayısı",
+        },
+        {
+          name: "status",
+          type: "string",
+          required: false,
+          description: "Sipariş durumu filtresi",
+        },
+        {
+          name: "startDate",
+          type: "string",
+          required: false,
+          description: "Başlangıç tarihi (ISO format)",
+        },
+        {
+          name: "endDate",
+          type: "string",
+          required: false,
+          description: "Bitiş tarihi (ISO format)",
+        },
+        {
+          name: "orderByField",
+          type: "string",
+          required: false,
+          description: "Sıralama alanı (örn: orderDate)",
+        },
+        {
+          name: "orderByDirection",
+          type: "string",
+          required: false,
+          description: "Sıralama yönü (asc, desc)",
+        },
+        {
+          name: "orderNumber",
+          type: "string",
+          required: false,
+          description: "Sipariş numarasına göre filtrele",
+        },
+        {
+          name: "barcode",
+          type: "string",
+          required: false,
+          description: "Barkoda göre filtrele",
+        },
+        {
+          name: "productName",
+          type: "string",
+          required: false,
+          description: "Ürün adına göre filtrele",
+        },
+        {
+          name: "cargoProviderName",
+          type: "string",
+          required: false,
+          description: "Kargo firması adına göre filtrele",
+        },
+        {
+          name: "invoiced",
+          type: "boolean",
+          required: false,
+          description: "Faturalanma durumuna göre filtrele (true/false)",
+        },
       ],
       response: `{
   "success": true,
@@ -782,12 +1284,14 @@ const Endpoints = () => {
           "firstname": "Sinan",
           "surname": "Karatas",
           "email": "sinan.karatas@cozmopol.com",
+          "phoneNumber": "+90 532 456 7890",
           "identityNo": "11111111111",
           "companyName": null,
           "taxNumber": null,
           "taxOffice": null
         },
         "shipment": {
+          "id": "68a1f0c4e3b9a21d4c7f8e20",
           "firstname": "firstnametest",
           "surname": "surnametest",
           "email": "sinan.karatas@cozmopol.com",
@@ -797,6 +1301,9 @@ const Endpoints = () => {
           "taxNumber": null,
           "taxOffice": null,
           "city": "Aydın",
+          "district": "Efeler",
+          "neighborhood": "Cumhuriyet Mahallesi",
+          "zipCode": "09010",
           "fullAddress": "Atatürk Bulvarı No: 29"
         },
         "invoice": {
@@ -809,6 +1316,9 @@ const Endpoints = () => {
           "taxNumber": null,
           "taxOffice": null,
           "city": "Aydın",
+          "district": "Efeler",
+          "neighborhood": "Cumhuriyet Mahallesi",
+          "zipCode": "09010",
           "fullAddress": "Atatürk Bulvarı No: 29"
         },
         "totalPrice": 117.5,
@@ -831,22 +1341,26 @@ const Endpoints = () => {
             "name": "MacBook Air: Apple M4 chip with 10-core CPU and 10-core GPU 960GB SSD-64GB RAM",
             "quantity": 1,
             "price": 65,
-            "sku": "test-sku-1235"
+            "sku": "test-sku-1235",
+            "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/581644980/581644980-1183806-4016/1768581645318-etopch7tr4i-0.webp"
           },
           {
             "barcode": "8682458451224",
             "name": "MacBook Air: Apple M4 chip with 10-core CPU and 10-core GPU 512GB SSD-32GB RAM",
             "quantity": 1,
             "price": 52.5,
-            "sku": ""
+            "sku": "",
+            "image": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/products/492453604/492453604-1183806-4016/1768827936872-834i781tmdu-0.webp"
           }
         ],
         "orderNumber": "7224100418",
         "packageNumber": "4567342578",
         "orderDate": "2026-01-15T15:20:15.086Z",
+        "latestShipmentDate": "2026-01-18T15:20:15.086Z",
         "cargoProviderName": "Test Kargo Firması",
         "cargoTrackingNumber": "1234567890",
-        "cargoTrackingLink": "https://www.cozmopol.com.tr"
+        "cargoTrackingLink": "https://www.cozmopol.com.tr",
+        "invoicePdfUrl": "https://cozmopol-bucket.s3.eu-central-1.amazonaws.com/invoices/4567342578-invoice.pdf"
       }
     ],
     "page": 1,
@@ -857,17 +1371,32 @@ const Endpoints = () => {
 }`,
       example: `curl -X GET \\
   '${BASE_URL}/store/ordersV2?status=created&startDate=2026-01-14T15:44:30&endDate=2026-01-17T17:44:30&page=1&limit=50&orderByField=orderDate&orderByDirection=asc' \\
-  -H 'Authorization: Bearer YOUR_TOKEN'`
+  -H 'Authorization: Bearer YOUR_TOKEN'`,
     },
     {
-      method: 'PUT',
-      path: '/store/ordersV2/splitOrder/:packageNumber',
-      description: 'Siparişi böl',
-      status: 'stable',
+      method: "PUT",
+      path: "/store/ordersV2/splitOrder/:packageNumber",
+      description: "Siparişi böl",
+      status: "stable",
       parameters: [
-        { name: 'packageNumber', type: 'string', required: true, description: 'Paket numarası' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'items', type: 'array', required: true, description: 'Bölünecek ürünler' }
+        {
+          name: "packageNumber",
+          type: "string",
+          required: true,
+          description: "Paket numarası",
+        },
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "items",
+          type: "array",
+          required: true,
+          description: "Bölünecek ürünler",
+        },
       ],
       response: `{
   "success": true,
@@ -884,17 +1413,32 @@ const Endpoints = () => {
         "quantity": 1
       }
     ]
-  }'`
+  }'`,
     },
     {
-      method: 'PUT',
-      path: '/store/ordersV2/status/:orderId',
-      description: 'Sipariş durumunu güncelle',
-      status: 'stable',
+      method: "PUT",
+      path: "/store/ordersV2/status/:packageNumber",
+      description: "Sipariş durumunu güncelle",
+      status: "stable",
       parameters: [
-        { name: 'orderId', type: 'string', required: true, description: 'Sipariş ID\'si' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'status', type: 'string', required: true, description: 'Yeni sipariş durumu' }
+        {
+          name: "packageNumber",
+          type: "string",
+          required: true,
+          description: "Paket numarası",
+        },
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "status",
+          type: "string",
+          required: true,
+          description: "Yeni sipariş durumu (picking, invoiced)",
+        },
       ],
       response: `{
   "success": true,
@@ -906,17 +1450,32 @@ const Endpoints = () => {
   -H 'Content-Type: application/json' \\
   -d '{
     "status": "picking"
-  }'`
+  }'`,
     },
     {
-      method: 'POST',
-      path: '/store/ordersV2/test',
-      description: 'CREATE (createTestOrder)',
-      status: 'stable',
+      method: "POST",
+      path: "/store/ordersV2/test",
+      description: "CREATE (createTestOrder)",
+      status: "stable",
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'limit', type: 'text', required: false, description: 'Limit parameter (disabled)' },
-        { name: 'body', type: 'json', required: true, description: 'Test order items' }
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "limit",
+          type: "text",
+          required: false,
+          description: "Limit parameter (disabled)",
+        },
+        {
+          name: "body",
+          type: "json",
+          required: true,
+          description: "Test order items",
+        },
       ],
       response: `{
   "success": true,
@@ -935,19 +1494,29 @@ const Endpoints = () => {
         "barcode": "8682458451277",
         "quantity": 3
     }
-]'`
-    }
-  ]
+]'`,
+    },
+  ];
 
   const integrationBatchEndpoints = [
     {
-      method: 'GET',
-      path: '/store/batch-request/:batchId',
-      description: 'Toplu işlem durumunu sorgula',
-      status: 'stable',
+      method: "GET",
+      path: "/store/batch-request/:batchId",
+      description: "Toplu işlem durumunu sorgula",
+      status: "stable",
       parameters: [
-        { name: 'batchId', type: 'string', required: true, description: 'Batch request ID\'si' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+        {
+          name: "batchId",
+          type: "string",
+          required: true,
+          description: "Batch request ID'si",
+        },
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
       ],
       response: `{
     "success": true,
@@ -1000,18 +1569,23 @@ const Endpoints = () => {
 }`,
       example: `curl -X GET \\
   ${BASE_URL}/store/batch-request/09b3ff84-5993-4946-b1ec-2a4a9d8820f5 \\
-  -H 'Authorization: Bearer YOUR_TOKEN'`
-    }
-  ]
+  -H 'Authorization: Bearer YOUR_TOKEN'`,
+    },
+  ];
 
   const integrationQaEndpoints = [
     {
-      method: 'GET',
-      path: '/store/product-questions',
-      description: 'Satıcıya gelen ürün sorularını listele',
-      status: 'stable',
+      method: "GET",
+      path: "/store/product-questions",
+      description: "Satıcıya gelen ürün sorularını listele",
+      status: "stable",
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
       ],
       response: `{
     "success": true,
@@ -1038,17 +1612,32 @@ const Endpoints = () => {
 }`,
       example: `curl -X GET \\
   \${BASE_URL}/store/product-questions \\
-  -H 'Authorization: Bearer YOUR_TOKEN'`
+  -H 'Authorization: Bearer YOUR_TOKEN'`,
     },
     {
-      method: 'PATCH',
-      path: '/store/product-questions/:id/answer',
-      description: 'Bir ürün sorusunu cevapla',
-      status: 'stable',
+      method: "PATCH",
+      path: "/store/product-questions/:id/answer",
+      description: "Bir ürün sorusunu cevapla",
+      status: "stable",
       parameters: [
-        { name: 'id', type: 'string', required: true, description: 'Soru ID (URL parametresi)' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'answer', type: 'string', required: true, description: 'Cevap metni' }
+        {
+          name: "id",
+          type: "string",
+          required: true,
+          description: "Soru ID (URL parametresi)",
+        },
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "answer",
+          type: "string",
+          required: true,
+          description: "Cevap metni",
+        },
       ],
       response: `{
     "success": true,
@@ -1077,24 +1666,59 @@ const Endpoints = () => {
   -H 'Content-Type: application/json' \\
   -d '{
     "answer": "Thank you for your question! This product comes with a 2-year warranty."
-  }'`
-    }
-  ]
+  }'`,
+    },
+  ];
 
   const invoiceEndpoints = [
     {
-      method: 'GET',
-      path: '/user/invoices',
-      description: 'Fatura listesini getir',
-      status: 'stable',
+      method: "GET",
+      path: "/user/invoices",
+      description: "Fatura listesini getir",
+      status: "stable",
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'order_id', type: 'string', required: false, description: 'Sipariş ID\'sine göre filtrele' },
-        { name: 'status', type: 'string', required: false, description: 'Fatura durumu (draft, sent, paid, overdue, cancelled)' },
-        { name: 'start_date', type: 'string', required: false, description: 'Başlangıç tarihi (YYYY-MM-DD)' },
-        { name: 'end_date', type: 'string', required: false, description: 'Bitiş tarihi (YYYY-MM-DD)' },
-        { name: 'page', type: 'integer', required: false, description: 'Sayfa numarası' },
-        { name: 'limit', type: 'integer', required: false, description: 'Sayfa başına öğe sayısı' }
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "order_id",
+          type: "string",
+          required: false,
+          description: "Sipariş ID'sine göre filtrele",
+        },
+        {
+          name: "status",
+          type: "string",
+          required: false,
+          description: "Fatura durumu (draft, sent, paid, overdue, cancelled)",
+        },
+        {
+          name: "start_date",
+          type: "string",
+          required: false,
+          description: "Başlangıç tarihi (YYYY-MM-DD)",
+        },
+        {
+          name: "end_date",
+          type: "string",
+          required: false,
+          description: "Bitiş tarihi (YYYY-MM-DD)",
+        },
+        {
+          name: "page",
+          type: "integer",
+          required: false,
+          description: "Sayfa numarası",
+        },
+        {
+          name: "limit",
+          type: "integer",
+          required: false,
+          description: "Sayfa başına öğe sayısı",
+        },
       ],
       response: `{
   "data": [
@@ -1153,16 +1777,26 @@ const Endpoints = () => {
 }`,
       example: `curl -X GET \\
   '${BASE_URL}/user/invoices?status=paid&start_date=2024-01-01&end_date=2024-01-31' \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
+  -H 'Authorization: Bearer YOUR_API_KEY'`,
     },
     {
-      method: 'GET',
-      path: '/user/invoices/:id',
-      description: 'Fatura detayını getir',
-      status: 'stable',
+      method: "GET",
+      path: "/user/invoices/:id",
+      description: "Fatura detayını getir",
+      status: "stable",
       parameters: [
-        { name: 'id', type: 'string', required: true, description: 'Fatura ID\'si (MongoDB ObjectId)' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+        {
+          name: "id",
+          type: "string",
+          required: true,
+          description: "Fatura ID'si (MongoDB ObjectId)",
+        },
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
       ],
       response: `{
   "data": {
@@ -1232,16 +1866,26 @@ const Endpoints = () => {
 }`,
       example: `curl -X GET \\
   ${BASE_URL}/user/invoices/67f1234567890abcdef12345 \\
-  -H 'Authorization: Bearer YOUR_API_KEY'`
+  -H 'Authorization: Bearer YOUR_API_KEY'`,
     },
     {
-      method: 'GET',
-      path: '/user/invoices/:id/pdf',
-      description: 'Fatura PDF\'ini indir',
-      status: 'stable',
+      method: "GET",
+      path: "/user/invoices/:id/pdf",
+      description: "Fatura PDF'ini indir",
+      status: "stable",
       parameters: [
-        { name: 'id', type: 'string', required: true, description: 'Fatura ID\'si (MongoDB ObjectId)' },
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' }
+        {
+          name: "id",
+          type: "string",
+          required: true,
+          description: "Fatura ID'si (MongoDB ObjectId)",
+        },
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
       ],
       response: `Content-Type: application/pdf
 Content-Disposition: attachment; filename="INV-2024-001.pdf"
@@ -1250,17 +1894,32 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
       example: `curl -X GET \\
   ${BASE_URL}/user/invoices/67f1234567890abcdef12345/pdf \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
-  -o invoice.pdf`
+  -o invoice.pdf`,
     },
     {
-      method: 'POST',
-      path: '/user/invoices/upload',
-      description: 'Fatura PDF\'i yükle',
-      status: 'stable',
+      method: "POST",
+      path: "/user/invoices/upload",
+      description: "Fatura PDF'i yükle",
+      status: "stable",
       parameters: [
-        { name: 'Authorization', type: 'string', required: true, description: 'Bearer token (Header)' },
-        { name: 'orderId', type: 'string', required: true, description: 'Sipariş ID' },
-        { name: 'invoicePdf', type: 'file', required: true, description: 'Fatura PDF dosyası' }
+        {
+          name: "Authorization",
+          type: "string",
+          required: true,
+          description: "Bearer token (Header)",
+        },
+        {
+          name: "orderId",
+          type: "string",
+          required: true,
+          description: "Sipariş ID",
+        },
+        {
+          name: "invoicePdf",
+          type: "file",
+          required: true,
+          description: "Fatura PDF dosyası",
+        },
       ],
       response: `{
   "success": true,
@@ -1274,9 +1933,9 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
   ${BASE_URL}/user/invoices/upload \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -F 'orderId=67d9250b98a026849af11ea5' \\
-  -F 'invoicePdf=@/path/to/invoice.pdf'`
-    }
-  ]
+  -F 'invoicePdf=@/path/to/invoice.pdf'`,
+    },
+  ];
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
@@ -1294,7 +1953,8 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma hazırdır. Kimlik bilgileri yönetimi.
+            <strong>✅ Stable:</strong> Bu endpoint'ler production'da kullanıma
+            hazırdır. Kimlik bilgileri yönetimi.
           </p>
         </div>
         <div className="space-y-4">
@@ -1328,7 +1988,8 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Ürün oluşturma, güncelleme, silme ve stok/fiyat yönetimi.
+            <strong>✅ Stable:</strong> Ürün oluşturma, güncelleme, silme ve
+            stok/fiyat yönetimi.
           </p>
         </div>
         <div className="space-y-4">
@@ -1345,7 +2006,8 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Sipariş sorgulama ve durum güncelleme işlemleri.
+            <strong>✅ Stable:</strong> Sipariş sorgulama ve durum güncelleme
+            işlemleri.
           </p>
         </div>
         <div className="space-y-4">
@@ -1396,7 +2058,8 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> Müşteri sorularını listeleme ve cevaplama.
+            <strong>✅ Stable:</strong> Müşteri sorularını listeleme ve
+            cevaplama.
           </p>
         </div>
         <div className="space-y-4">
@@ -1413,11 +2076,30 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800 text-sm">
-            <strong>✅ Stable:</strong> İade taleplerini yönetme ve durum güncelleme işlemleri.
+            <strong>✅ Stable:</strong> İade taleplerini yönetme ve durum
+            güncelleme işlemleri.
           </p>
         </div>
         <div className="space-y-4">
           {returnEndpoints.map((endpoint, index) => (
+            <EndpointCard key={index} {...endpoint} />
+          ))}
+        </div>
+      </section>
+
+      {/* 8. İade Yönetimi V2 */}
+      <section id="returns-v2" className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-purple-600 pb-2">
+          ↩️ İade Yönetimi V2
+        </h2>
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <p className="text-green-800 text-sm">
+            <strong>✅ Stable:</strong> İade taleplerini listeleme ve güncelleme
+            (V2).
+          </p>
+        </div>
+        <div className="space-y-4">
+          {returnV2Endpoints.map((endpoint, index) => (
             <EndpointCard key={index} {...endpoint} />
           ))}
         </div>
@@ -1434,7 +2116,7 @@ Content-Disposition: attachment; filename="INV-2024-001.pdf"
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Endpoints
+export default Endpoints;

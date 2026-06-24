@@ -1,34 +1,42 @@
-import React from 'react'
-import { CheckCircle, AlertTriangle, Code, Zap, Shield, Clock } from 'lucide-react'
-import CodeBlock from '../components/CodeBlock'
-import { BASE_URL } from '../config'
+import React from "react";
+import {
+  CheckCircle,
+  AlertTriangle,
+  Code,
+  Zap,
+  Shield,
+  Clock,
+} from "lucide-react";
+import CodeBlock from "../components/CodeBlock";
+import { BASE_URL } from "../config";
 
 const IntegrationGuide = () => {
   const integrationSteps = [
     {
-      title: 'Hesap Oluşturma ve API Anahtarı Alma',
-      description: 'Cozmopol Partner Portal\'dan hesabınızı oluşturun ve API anahtarlarınızı alın',
+      title: "Hesap Oluşturma ve API Anahtarı Alma",
+      description:
+        "Cozmopol Partner Portal'dan hesabınızı oluşturun ve API anahtarlarınızı alın",
       icon: Shield,
       steps: [
-        'Cozmopol Partner Portal\'a kayıt olun',
-        'Mağaza bilgilerinizi tamamlayın',
-        'API anahtarlarınızı (API Key ve Secret Key) alın',
-        'Test ve canlı ortam anahtarlarını not edin'
+        "Cozmopol Partner Portal'a kayıt olun",
+        "Mağaza bilgilerinizi tamamlayın",
+        "API anahtarlarınızı (API Key ve Secret Key) alın",
+        "Test ve canlı ortam anahtarlarını not edin",
       ],
       code: `// API Anahtarları
 const API_KEY = "259aa5b375e08fb26e6e0ebf3f0949ca"
 const API_SECRET_KEY = "720f5664ee414a5047bb130144f1a29cba65130d4e7585f18992421a02e6f065"
-const STORE_USER_ID = "67c1b95d3201a327160dbca2"`
+const STORE_USER_ID = "67c1b95d3201a327160dbca2"`,
     },
     {
-      title: 'Kimlik Doğrulama Token\'ı Alma',
-      description: 'API istekleri için gerekli olan Bearer token\'ı alın',
+      title: "Kimlik Doğrulama Token'ı Alma",
+      description: "API istekleri için gerekli olan Bearer token'ı alın",
       icon: Code,
       steps: [
-        'POST /api/auth/token endpoint\'ini kullanın',
-        'Vendor bilgilerinizi gönderin',
-        'Dönen token\'ı saklayın',
-        'Token\'ı tüm API isteklerinde kullanın'
+        "POST /api/auth/token endpoint'ini kullanın",
+        "Vendor bilgilerinizi gönderin",
+        "Dönen token'ı saklayın",
+        "Token'ı tüm API isteklerinde kullanın",
       ],
       code: `// Token alma
 const getAuthToken = async () => {
@@ -46,17 +54,17 @@ const getAuthToken = async () => {
   
   const data = await response.json();
   return data.token;
-};`
+};`,
     },
     {
-      title: 'İlk API Çağrısı - Bağlantı Testi',
-      description: 'API bağlantınızı test edin ve sistem durumunu kontrol edin',
+      title: "İlk API Çağrısı - Bağlantı Testi",
+      description: "API bağlantınızı test edin ve sistem durumunu kontrol edin",
       icon: Zap,
       steps: [
-        'GET /api/test/ping endpoint\'ini çağırın',
-        'Bearer token\'ı header\'da gönderin',
+        "GET /api/test/ping endpoint'ini çağırın",
+        "Bearer token'ı header'da gönderin",
         '"pong" yanıtını alın',
-        'Bağlantınızın çalıştığını doğrulayın'
+        "Bağlantınızın çalıştığını doğrulayın",
       ],
       code: `// Bağlantı testi
 const testConnection = async (token) => {
@@ -70,17 +78,17 @@ const testConnection = async (token) => {
   
   const data = await response.json();
   console.log(data); // { "message": "pong" }
-};`
+};`,
     },
     {
-      title: 'Kategori ve Marka Bilgilerini Alma',
-      description: 'Ürün yüklemeden önce mevcut kategori ve markaları öğrenin',
+      title: "Kategori ve Marka Bilgilerini Alma",
+      description: "Ürün yüklemeden önce mevcut kategori ve markaları öğrenin",
       icon: CheckCircle,
       steps: [
-        'GET /api/categories ile kategorileri alın',
-        'GET /api/brands ile markaları alın',
-        'Ürünleriniz için uygun kategori ID\'lerini belirleyin',
-        'Marka bilgilerini eşleştirin'
+        "GET /api/categories ile kategorileri alın",
+        "GET /api/brands ile markaları alın",
+        "Ürünleriniz için uygun kategori ID'lerini belirleyin",
+        "Marka bilgilerini eşleştirin",
       ],
       code: `// Kategori ve marka bilgilerini alma
 const getCategories = async (token) => {
@@ -95,17 +103,17 @@ const getBrands = async (token) => {
     headers: { 'Authorization': \`Bearer \${token}\` }
   });
   return await response.json();
-};`
+};`,
     },
     {
-      title: 'İlk Ürün Yükleme',
-      description: 'API üzerinden ilk ürününüzü sisteme yükleyin',
+      title: "İlk Ürün Yükleme",
+      description: "API üzerinden ilk ürününüzü sisteme yükleyin",
       icon: Clock,
       steps: [
-        'Ürün bilgilerini hazırlayın',
-        'POST /v2/products endpoint\'ini kullanın',
-        'Zorunlu alanları doldurun',
-        'Ürün ID\'sini saklayın'
+        "Ürün bilgilerini hazırlayın",
+        "POST /v2/products endpoint'ini kullanın",
+        "Zorunlu alanları doldurun",
+        "Ürün ID'sini saklayın",
       ],
       code: `// Ürün yükleme
 const createProduct = async (token) => {
@@ -120,7 +128,9 @@ const createProduct = async (token) => {
       "https://example.com/image2.jpg"
     ],
     sku: "PRD-001",
-    weight: 250
+    weight: 250,
+    desi: 5,
+    estimatedDays: 3
   };
 
   const response = await fetch(\`${BASE_URL}/products\`, {
@@ -133,44 +143,46 @@ const createProduct = async (token) => {
   });
   
   return await response.json();
-};`
-    }
-  ]
+};`,
+    },
+  ];
 
   const bestPractices = [
     {
-      title: 'Güvenlik',
+      title: "Güvenlik",
       items: [
-        'API anahtarlarınızı güvenli saklayın',
-        'Environment variables kullanın',
-        'HTTPS bağlantısı kullanın',
-        'Token\'ları düzenli olarak yenileyin'
-      ]
+        "API anahtarlarınızı güvenli saklayın",
+        "Environment variables kullanın",
+        "HTTPS bağlantısı kullanın",
+        "Token'ları düzenli olarak yenileyin",
+      ],
     },
     {
-      title: 'Performans',
+      title: "Performans",
       items: [
-        'Rate limiting kurallarına uyun',
-        'Batch işlemler için uygun endpoint\'leri kullanın',
-        'Gereksiz API çağrılarından kaçının',
-        'Response\'ları cache\'leyin'
-      ]
+        "Rate limiting kurallarına uyun",
+        "Batch işlemler için uygun endpoint'leri kullanın",
+        "Gereksiz API çağrılarından kaçının",
+        "Response'ları cache'leyin",
+      ],
     },
     {
-      title: 'Hata Yönetimi',
+      title: "Hata Yönetimi",
       items: [
-        'HTTP status kodlarını kontrol edin',
-        'Retry mekanizması uygulayın',
-        'Hata mesajlarını loglayin',
-        'Fallback stratejileri hazırlayın'
-      ]
-    }
-  ]
+        "HTTP status kodlarını kontrol edin",
+        "Retry mekanizması uygulayın",
+        "Hata mesajlarını loglayin",
+        "Fallback stratejileri hazırlayın",
+      ],
+    },
+  ];
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Nasıl Entegrasyon Yaparım?</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          Nasıl Entegrasyon Yaparım?
+        </h1>
         <p className="text-xl text-gray-600">
           Cozmopol API ile entegrasyonunuzu adım adım tamamlayın
         </p>
@@ -179,7 +191,10 @@ const createProduct = async (token) => {
       {/* Integration Steps */}
       <div className="space-y-12 mb-16">
         {integrationSteps.map((step, index) => (
-          <div key={index} className="bg-white border border-gray-200 rounded-lg p-8">
+          <div
+            key={index}
+            className="bg-white border border-gray-200 rounded-lg p-8"
+          >
             <div className="flex items-start space-x-6">
               {/* Step Number */}
               <div className="flex-shrink-0">
@@ -192,17 +207,24 @@ const createProduct = async (token) => {
               <div className="flex-1">
                 <div className="flex items-center space-x-3 mb-4">
                   <step.icon className="w-6 h-6 text-blue-600" />
-                  <h2 className="text-2xl font-semibold text-gray-900">{step.title}</h2>
+                  <h2 className="text-2xl font-semibold text-gray-900">
+                    {step.title}
+                  </h2>
                 </div>
 
                 <p className="text-gray-600 mb-6">{step.description}</p>
 
                 {/* Steps List */}
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Adımlar:</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Adımlar:
+                  </h3>
                   <ul className="space-y-2">
                     {step.steps.map((stepItem, stepIndex) => (
-                      <li key={stepIndex} className="flex items-start space-x-3">
+                      <li
+                        key={stepIndex}
+                        className="flex items-start space-x-3"
+                      >
                         <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                         <span className="text-gray-700">{stepItem}</span>
                       </li>
@@ -212,7 +234,9 @@ const createProduct = async (token) => {
 
                 {/* Code Example */}
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Kod Örneği:</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Kod Örneği:
+                  </h3>
                   <CodeBlock code={step.code} language="javascript" />
                 </div>
               </div>
@@ -223,9 +247,12 @@ const createProduct = async (token) => {
 
       {/* Complete Integration Example */}
       <div className="bg-white border border-gray-200 rounded-lg p-8 mb-16">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Tam Entegrasyon Örneği</h2>
+        <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+          Tam Entegrasyon Örneği
+        </h2>
         <p className="text-gray-600 mb-6">
-          Aşağıda tüm adımları içeren kapsamlı bir entegrasyon örneği bulabilirsiniz:
+          Aşağıda tüm adımları içeren kapsamlı bir entegrasyon örneği
+          bulabilirsiniz:
         </p>
 
         <CodeBlock
@@ -369,12 +396,16 @@ main();`}
 
       {/* Best Practices */}
       <div className="bg-white border border-gray-200 rounded-lg p-8 mb-16">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-8">En İyi Uygulamalar</h2>
+        <h2 className="text-2xl font-semibold text-gray-900 mb-8">
+          En İyi Uygulamalar
+        </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {bestPractices.map((practice, index) => (
             <div key={index} className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">{practice.title}</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                {practice.title}
+              </h3>
               <ul className="space-y-2">
                 {practice.items.map((item, itemIndex) => (
                   <li key={itemIndex} className="flex items-start space-x-2">
@@ -392,34 +423,45 @@ main();`}
       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-8">
         <div className="flex items-center space-x-3 mb-6">
           <AlertTriangle className="w-6 h-6 text-yellow-600" />
-          <h2 className="text-2xl font-semibold text-yellow-800">Sık Karşılaşılan Sorunlar</h2>
+          <h2 className="text-2xl font-semibold text-yellow-800">
+            Sık Karşılaşılan Sorunlar
+          </h2>
         </div>
 
         <div className="space-y-4">
           <div>
-            <h3 className="font-semibold text-yellow-800 mb-2">401 Unauthorized Hatası</h3>
+            <h3 className="font-semibold text-yellow-800 mb-2">
+              401 Unauthorized Hatası
+            </h3>
             <p className="text-yellow-700 text-sm">
-              API anahtarınızı kontrol edin ve token'ın süresi dolmamış olduğundan emin olun.
+              API anahtarınızı kontrol edin ve token'ın süresi dolmamış
+              olduğundan emin olun.
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-yellow-800 mb-2">429 Rate Limit Hatası</h3>
+            <h3 className="font-semibold text-yellow-800 mb-2">
+              429 Rate Limit Hatası
+            </h3>
             <p className="text-yellow-700 text-sm">
-              Çok fazla istek gönderiyorsunuz. İstekler arasında bekleme süresi ekleyin.
+              Çok fazla istek gönderiyorsunuz. İstekler arasında bekleme süresi
+              ekleyin.
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-yellow-800 mb-2">Ürün Yükleme Hatası</h3>
+            <h3 className="font-semibold text-yellow-800 mb-2">
+              Ürün Yükleme Hatası
+            </h3>
             <p className="text-yellow-700 text-sm">
-              Zorunlu alanların (title, description, price, category_id) dolu olduğundan emin olun.
+              Zorunlu alanların (title, description, price, category_id) dolu
+              olduğundan emin olun.
             </p>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default IntegrationGuide
+export default IntegrationGuide;
