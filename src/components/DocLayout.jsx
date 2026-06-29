@@ -87,7 +87,7 @@ const DocLayout = ({ children }) => {
           ],
         },
         {
-          name: "Webhooks (Yakında)",
+          name: "Webhooks (Yakında.)",
           href: "/webhooks",
           icon: "🔗",
           disabled: true,
