@@ -25,7 +25,7 @@ const CodeBlock = ({ code, language = "bash", title }) => {
         <button
           onClick={handleCopy}
           className="absolute top-3 right-3 p-2 text-slate-400 hover:text-white transition-colors bg-slate-800 rounded-md"
-          title={copied ? "Kopyalandı!" : "Kopyala."}
+          title={copied ? "Kopyalandı!" : "Kopyala"}
         >
           {copied ? (
             <Check className="w-4 h-4" />
