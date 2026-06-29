@@ -568,16 +568,60 @@ const Endpoints = () => {
           name: "products",
           type: "array",
           required: true,
-          description: "Ürün listesi",
+          description: "Ürün listesi (her eleman bir ürün objesi)",
+        },
+        {
+          name: "categoryId",
+          in: "body",
+          type: "integer",
+          required: true,
+          description: "Kategori ID",
+        },
+        {
+          name: "brandId",
+          in: "body",
+          type: "string",
+          required: true,
+          description: "Marka ID",
+        },
+        {
+          name: "brandName",
+          in: "body",
+          type: "string",
+          required: true,
+          description: "Marka adı",
+        },
+        {
+          name: "description",
+          in: "body",
+          type: "string",
+          required: true,
+          description: "Ürün açıklaması",
+        },
+        {
+          name: "modelCode",
+          in: "body",
+          type: "string",
+          required: true,
+          description: "Model kodu",
+        },
+        {
+          name: "commonAttributes",
+          in: "body",
+          type: "array",
+          required: true,
+          description: "Ortak ürün özellikleri",
         },
         {
           name: "desi",
+          in: "body",
           type: "number",
           required: false,
           description: "Ürün desi değeri (kargo hacim ağırlığı)",
         },
         {
           name: "estimatedDays",
+          in: "body",
           type: "integer",
           required: false,
           description: "Tahmini termin/hazırlık süresi (gün)",
@@ -1392,10 +1436,10 @@ const Endpoints = () => {
           description: "Bearer token (Header)",
         },
         {
-          name: "items",
+          name: "splitOrders",
           type: "array",
           required: true,
-          description: "Bölünecek ürünler",
+          description: "Bölünecek ürünler (barcode, quantity)",
         },
       ],
       response: `{
@@ -1407,7 +1451,7 @@ const Endpoints = () => {
   -H 'Authorization: Bearer YOUR_TOKEN' \\
   -H 'Content-Type: application/json' \\
   -d '{
-    "items": [
+    "splitOrders": [
       {
         "barcode": "8682458451243",
         "quantity": 1
