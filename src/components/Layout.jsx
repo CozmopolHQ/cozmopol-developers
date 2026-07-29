@@ -1,40 +1,87 @@
-import React, { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, ExternalLink, Github, MessageCircle, ChevronDown } from 'lucide-react'
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  Menu,
+  X,
+  ExternalLink,
+  Github,
+  MessageCircle,
+  ChevronDown,
+} from "lucide-react";
 
 const Layout = ({ children }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isDocsMenuOpen, setIsDocsMenuOpen] = useState(false)
-  const [isStatusMenuOpen, setIsStatusMenuOpen] = useState(false)
-  const location = useLocation()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDocsMenuOpen, setIsDocsMenuOpen] = useState(false);
+  const [isStatusMenuOpen, setIsStatusMenuOpen] = useState(false);
+  const location = useLocation();
 
   const mainNavigation = [
-    { name: 'Ana Sayfa', href: '/', current: location.pathname === '/' },
-    { name: 'Hızlı Başlangıç', href: '/quickstart', current: location.pathname === '/quickstart' },
-  ]
+    { name: "Ana Sayfa", href: "/", current: location.pathname === "/" },
+    {
+      name: "Hızlı Başlangıç",
+      href: "/quickstart",
+      current: location.pathname === "/quickstart",
+    },
+  ];
 
   const docsNavigation = [
-    { name: 'Kimlik Doğrulama', href: '/authentication', current: location.pathname === '/authentication' },
-    { name: 'API Endpoints', href: '/endpoints', current: location.pathname === '/endpoints' },
-    { name: 'Nasıl Entegrasyon Yaparım?', href: '/integration-guide', current: location.pathname === '/integration-guide' },
-    { name: 'Hata Kodları (Yakında)', href: '/error-codes', current: location.pathname === '/error-codes' },
-    { name: 'Webhooks (Yakında)', href: '/webhooks', current: location.pathname === '/webhooks' },
-    { name: 'Postman Collections (Yakında)', href: '/postman', current: location.pathname === '/postman' },
-    { name: 'SDK\'lar (Yakında)', href: '/sdks', current: location.pathname === '/sdks' },
-  ]
+    {
+      name: "Kimlik Doğrulama",
+      href: "/authentication",
+      current: location.pathname === "/authentication",
+    },
+    {
+      name: "API Endpoints",
+      href: "/endpoints",
+      current: location.pathname === "/endpoints",
+    },
+    {
+      name: "Nasıl Entegrasyon Yaparım?",
+      href: "/integration-guide",
+      current: location.pathname === "/integration-guide",
+    },
+    {
+      name: "Hata Kodları (Yakında)",
+      href: "/error-codes",
+      current: location.pathname === "/error-codes",
+    },
+    {
+      name: "Webhooks (Yakında)",
+      href: "/webhooks",
+      current: location.pathname === "/webhooks",
+    },
+    {
+      name: "Postman Collections (Yakında)",
+      href: "/postman",
+      current: location.pathname === "/postman",
+    },
+    {
+      name: "SDK'lar (Yakında)",
+      href: "/sdks",
+      current: location.pathname === "/sdks",
+    },
+  ];
 
   const statusNavigation = [
-    { name: 'Health Check', href: '/health', current: location.pathname === '/health' },
-    { name: 'Status', href: '/status', current: location.pathname === '/status' },
-  ]
+    {
+      name: "Health Check",
+      href: "/health",
+      current: location.pathname === "/health",
+    },
+    {
+      name: "Status",
+      href: "/status",
+      current: location.pathname === "/status",
+    },
+  ];
 
-  const isDocsActive = docsNavigation.some(item => item.current)
-  const isStatusActive = statusNavigation.some(item => item.current)
+  const isDocsActive = docsNavigation.some((item) => item.current);
+  const isStatusActive = statusNavigation.some((item) => item.current);
 
   const closeAllDropdowns = () => {
-    setIsDocsMenuOpen(false)
-    setIsStatusMenuOpen(false)
-  }
+    setIsDocsMenuOpen(false);
+    setIsStatusMenuOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -43,14 +90,20 @@ const Layout = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3" onClick={closeAllDropdowns}>
+            <Link
+              to="/"
+              className="flex items-center space-x-3"
+              onClick={closeAllDropdowns}
+            >
               <img
-                src="https://www.cozmopol.com.tr/_next/image?url=%2Fimages%2Fcozmopol-logo-colorfull-without-text.webp&w=128&q=75&dpl=dpl_8v1vihkVzrHqDKtL63GbiBQNm2JT"
+                src="https://www.cozmopol.com/assets/16ddff9e-008c-4d53-b66e-89e38293daa3/cozmopol-logo.png"
                 alt="Cozmopol Logo"
                 className="h-8 w-auto object-contain rounded-lg"
               />
               <div>
-                <h1 className="text-lg font-semibold text-slate-900">Cozmopol API</h1>
+                <h1 className="text-lg font-semibold text-slate-900">
+                  Cozmopol API
+                </h1>
                 <span className="text-xs text-slate-500">v2.1</span>
               </div>
             </Link>
@@ -62,10 +115,11 @@ const Layout = ({ children }) => {
                   key={item.name}
                   to={item.href}
                   onClick={closeAllDropdowns}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${item.current
-                    ? 'text-slate-900 bg-slate-100'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    }`}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    item.current
+                      ? "text-slate-900 bg-slate-100"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
                 >
                   {item.name}
                 </Link>
@@ -75,16 +129,19 @@ const Layout = ({ children }) => {
               <div className="relative">
                 <button
                   onClick={() => {
-                    setIsStatusMenuOpen(false)
-                    setIsDocsMenuOpen(!isDocsMenuOpen)
+                    setIsStatusMenuOpen(false);
+                    setIsDocsMenuOpen(!isDocsMenuOpen);
                   }}
-                  className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isDocsActive
-                    ? 'text-slate-900 bg-slate-100'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    }`}
+                  className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isDocsActive
+                      ? "text-slate-900 bg-slate-100"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
                 >
                   <span>Dökümantasyon</span>
-                  <ChevronDown className={`w-3 h-3 transition-transform ${isDocsMenuOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown
+                    className={`w-3 h-3 transition-transform ${isDocsMenuOpen ? "rotate-180" : ""}`}
+                  />
                 </button>
 
                 {isDocsMenuOpen && (
@@ -93,10 +150,11 @@ const Layout = ({ children }) => {
                       <Link
                         key={item.name}
                         to={item.href}
-                        className={`block px-4 py-2 text-sm transition-colors ${item.current
-                          ? 'text-slate-900 bg-slate-100'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                          }`}
+                        className={`block px-4 py-2 text-sm transition-colors ${
+                          item.current
+                            ? "text-slate-900 bg-slate-100"
+                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                        }`}
                         onClick={closeAllDropdowns}
                       >
                         {item.name}
@@ -110,16 +168,19 @@ const Layout = ({ children }) => {
               <div className="relative">
                 <button
                   onClick={() => {
-                    setIsDocsMenuOpen(false)
-                    setIsStatusMenuOpen(!isStatusMenuOpen)
+                    setIsDocsMenuOpen(false);
+                    setIsStatusMenuOpen(!isStatusMenuOpen);
                   }}
-                  className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isStatusActive
-                    ? 'text-slate-900 bg-slate-100'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    }`}
+                  className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isStatusActive
+                      ? "text-slate-900 bg-slate-100"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
                 >
                   <span>Durum</span>
-                  <ChevronDown className={`w-3 h-3 transition-transform ${isStatusMenuOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown
+                    className={`w-3 h-3 transition-transform ${isStatusMenuOpen ? "rotate-180" : ""}`}
+                  />
                 </button>
 
                 {isStatusMenuOpen && (
@@ -128,10 +189,11 @@ const Layout = ({ children }) => {
                       <Link
                         key={item.name}
                         to={item.href}
-                        className={`block px-4 py-2 text-sm transition-colors ${item.current
-                          ? 'text-slate-900 bg-slate-100'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                          }`}
+                        className={`block px-4 py-2 text-sm transition-colors ${
+                          item.current
+                            ? "text-slate-900 bg-slate-100"
+                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                        }`}
                         onClick={closeAllDropdowns}
                       >
                         {item.name}
@@ -171,12 +233,16 @@ const Layout = ({ children }) => {
             <div className="lg:hidden">
               <button
                 onClick={() => {
-                  setIsMobileMenuOpen(!isMobileMenuOpen)
-                  closeAllDropdowns()
+                  setIsMobileMenuOpen(!isMobileMenuOpen);
+                  closeAllDropdowns();
                 }}
                 className="text-slate-600 hover:text-slate-900 p-2"
               >
-                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {isMobileMenuOpen ? (
+                  <X className="w-5 h-5" />
+                ) : (
+                  <Menu className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
@@ -190,13 +256,14 @@ const Layout = ({ children }) => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${item.current
-                    ? 'text-slate-900 bg-slate-100'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    }`}
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                    item.current
+                      ? "text-slate-900 bg-slate-100"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
                   onClick={() => {
-                    setIsMobileMenuOpen(false)
-                    closeAllDropdowns()
+                    setIsMobileMenuOpen(false);
+                    closeAllDropdowns();
                   }}
                 >
                   {item.name}
@@ -211,13 +278,14 @@ const Layout = ({ children }) => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`block px-3 py-2 rounded-md text-base font-medium ${item.current
-                      ? 'text-slate-900 bg-slate-100'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                      }`}
+                    className={`block px-3 py-2 rounded-md text-base font-medium ${
+                      item.current
+                        ? "text-slate-900 bg-slate-100"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    }`}
                     onClick={() => {
-                      setIsMobileMenuOpen(false)
-                      closeAllDropdowns()
+                      setIsMobileMenuOpen(false);
+                      closeAllDropdowns();
                     }}
                   >
                     {item.name}
@@ -233,13 +301,14 @@ const Layout = ({ children }) => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`block px-3 py-2 rounded-md text-base font-medium ${item.current
-                      ? 'text-slate-900 bg-slate-100'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                      }`}
+                    className={`block px-3 py-2 rounded-md text-base font-medium ${
+                      item.current
+                        ? "text-slate-900 bg-slate-100"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    }`}
                     onClick={() => {
-                      setIsMobileMenuOpen(false)
-                      closeAllDropdowns()
+                      setIsMobileMenuOpen(false);
+                      closeAllDropdowns();
                     }}
                   >
                     {item.name}
@@ -261,17 +330,12 @@ const Layout = ({ children }) => {
 
         {/* Dropdown overlay */}
         {(isDocsMenuOpen || isStatusMenuOpen) && (
-          <div
-            className="fixed inset-0 z-40"
-            onClick={closeAllDropdowns}
-          ></div>
+          <div className="fixed inset-0 z-40" onClick={closeAllDropdowns}></div>
         )}
       </header>
 
       {/* Main Content */}
-      <main className="flex-1">
-        {children}
-      </main>
+      <main className="flex-1">{children}</main>
 
       {/* Footer */}
       <footer className="bg-slate-900 text-white">
@@ -280,55 +344,117 @@ const Layout = ({ children }) => {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
                 <img
-                  src="https://www.cozmopol.com.tr/_next/image?url=%2Fimages%2Fcozmopol-logo-colorfull-without-text.webp&w=128&q=75&dpl=dpl_8v1vihkVzrHqDKtL63GbiBQNm2JT"
+                  src="https://www.cozmopol.com/assets/16ddff9e-008c-4d53-b66e-89e38293daa3/cozmopol-logo.png"
                   alt="Cozmopol Logo"
                   className="h-8 w-auto object-contain rounded-lg"
                 />
                 <h3 className="text-lg font-semibold">Cozmopol API</h3>
               </div>
               <p className="text-slate-400 mb-4 max-w-md">
-                Güçlü ve esnek e-ticaret API çözümleri ile pazaryeri entegrasyonunuzu kolaylaştırın.
+                Güçlü ve esnek e-ticaret API çözümleri ile pazaryeri
+                entegrasyonunuzu kolaylaştırın.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-slate-400 hover:text-white transition-colors">
+                <a
+                  href="#"
+                  className="text-slate-400 hover:text-white transition-colors"
+                >
                   <Github className="w-4 h-4" />
                 </a>
-                <a href="#" className="text-slate-400 hover:text-white transition-colors">
+                <a
+                  href="#"
+                  className="text-slate-400 hover:text-white transition-colors"
+                >
                   <MessageCircle className="w-4 h-4" />
                 </a>
               </div>
             </div>
 
             <div>
-              <h4 className="text-sm font-semibold text-white mb-4">Kaynaklar</h4>
+              <h4 className="text-sm font-semibold text-white mb-4">
+                Kaynaklar
+              </h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">API Referansı</a></li>
-                <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Örnekler</a></li>
-                <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Changelog</a></li>
-                <li><Link to="/status" className="text-slate-400 hover:text-white transition-colors text-sm">Status Sayfası</Link></li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-slate-400 hover:text-white transition-colors text-sm"
+                  >
+                    API Referansı
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-slate-400 hover:text-white transition-colors text-sm"
+                  >
+                    Örnekler
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-slate-400 hover:text-white transition-colors text-sm"
+                  >
+                    Changelog
+                  </a>
+                </li>
+                <li>
+                  <Link
+                    to="/status"
+                    className="text-slate-400 hover:text-white transition-colors text-sm"
+                  >
+                    Status Sayfası
+                  </Link>
+                </li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-sm font-semibold text-white mb-4">Destek</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Yardım Merkezi</a></li>
-                <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Canlı Destek</a></li>
-                <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">İletişim</a></li>
                 <li>
-                  <span className="text-slate-400 text-sm">developers@cozmopol.com</span>
+                  <a
+                    href="#"
+                    className="text-slate-400 hover:text-white transition-colors text-sm"
+                  >
+                    Yardım Merkezi
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-slate-400 hover:text-white transition-colors text-sm"
+                  >
+                    Canlı Destek
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-slate-400 hover:text-white transition-colors text-sm"
+                  >
+                    İletişim
+                  </a>
+                </li>
+                <li>
+                  <span className="text-slate-400 text-sm">
+                    developers@cozmopol.com
+                  </span>
                 </li>
               </ul>
             </div>
           </div>
 
           <div className="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400">
-            <p className="text-sm">&copy; 2024 Cozmopol. Tüm hakları saklıdır.</p>
+            <p className="text-sm">
+              &copy; 2024 Cozmopol. Tüm hakları saklıdır.
+            </p>
           </div>
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
